@@ -16,4 +16,4 @@ class FullBlogSpider(CrawlSpider):
   
   @staticmethod
   def isWordpress(body):
-    return "/wp-content/" in body or "/wp-includes/" in body or "/wp-admin/" in body
+    return "/wp-content/" in body or "/wp-includes/" in body or "/wp-admin/" in body  
