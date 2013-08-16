@@ -4,15 +4,15 @@ from scrapy.settings import Settings
 from scrapy.xlib.pydispatch import dispatcher
 from scrapy import signals
 # from scrapy import log
-import blogforever-crawler.spiders.newcrawl
-
+import spiders.newcrawl
+ 
 def stop_reactor():
   reactor.stop()
 
 if __name__=="__main__":
-  dispatcher.connect(stop_reactor, signal=signals.spider_closed)
   spider = spiders.newcrawl.RssBasedCrawler("mnmlist.com")
-  crawler = Crawler(Settings())
+  crawler = Crawler(Settings({"CONCURRENT_REQUESTS": 1, "CONCURRENT_REQUESTS_PER_DOMAIN": 1, "CONCURRENT_REQUESTS_PER_IP": 1}))
+  crawler.signals.connect(reactor.stop, signal=signals.spider_closed)
   crawler.configure()
   crawler.crawl(spider)
   crawler.start()
