@@ -86,11 +86,11 @@ def xPathSelectFirst(response, query):
   """Executes a XPath query and return a string representation of the first
   result. Example:
   
-  >>> from scrapy.http import TextResponse
-  >>> complex = "<html><body><div>#1</div><div>#2<div><p>nested\\
-  ... </p></div></div></body></html>"
-  >>> xPathSelectFirst(TextResponse("", body=complex), '/html/body/div[2]/div/p')
-  u'<p>nested</p>'
+    >>> from scrapy.http import TextResponse
+    >>> complex = "<html><body><div>#1</div><div>#2<div><p>nested\\
+    ... </p></div></div></body></html>"
+    >>> xPathSelectFirst(TextResponse("", body=complex), '/html/body/div[2]/div/p')
+    u'<p>nested</p>'
 
   @type  response: scrapy.http.TextResponse
   @param response: the html page to process
@@ -134,7 +134,7 @@ def buildUrlFilter(urls, debug=False):
     >>> times = buildUrlFilter([\
         u"http://www.thetimes.co.uk/tto/news/world/europe/article3844546.ece",\
         u"http://www.thetimes.co.uk/tto/business/industries/leisure/article3843571.ece" ], True)
-    DEBUG: ^http://www.thetimes.co.uk/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+/
+    Url regex: ^http://www.thetimes.co.uk/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+$
     >>> times(u"http://www.thetimes.co.uk/tto/opinion/columnists/philipcollins/article3844110.ece")
     True
     >>> times(u"http://www.thetimes.co.uk/tto/public/article2582551.ece")
@@ -143,7 +143,7 @@ def buildUrlFilter(urls, debug=False):
     >>> engadget = buildUrlFilter([\
         u"http://www.engadget.com/2013/08/14/back-to-school-guide-tablets/",\
         u"http://www.engadget.com/2013/08/15/we-can-do-this-hyperloop/" ], True)
-    DEBUG: ^http://www.engadget.com/\d+/\d+/\d+/[^/]+//
+    Url regex: ^http://www.engadget.com/\d+/\d+/\d+/[^/]+/$
     >>> engadget(u"http://www.engadget.com/2013/08/15/yahoo-weather-android-redesign/")
     True
     >>> engadget(u"http://www.engadget.com/THATSNAN/08/15/title/")
@@ -156,24 +156,52 @@ def buildUrlFilter(urls, debug=False):
   @rtype: function of string => boolean
   @return: the pruned url
   """
+  EOL = "#"
   beginsWith = lambda regex: (
-      lambda str: bool(re.match("^" + regex, str + "/")))
+      lambda str: bool(re.match(regex, str + "/" + EOL)))
   (scheme, netloc, _, _, _) = urlsplit(urls[0])
   # Note that something like "[a-zA-Z]" would not be safe as it could append
   # that only one article out of many contains a digit in the title. Also if
   # we try to match more precisely the urls we might find a temporary pattern
   # like /2013/.
-  patterns = (scheme, "://", netloc, "/", "\d+/", "[^/]+/")
+  patterns = ("{}://".format(scheme), netloc, EOL + "$", "/", "\d+/", "[^/]+/")
   def _bestRegex(current):
     for pattern in patterns:
       if all(imap(beginsWith(current + pattern), urls)):
         return _bestRegex(current + pattern)
     return current
   
-  if debug: print("DEBUG: {}".format(_bestRegex("^")))
+  if debug: print("Url regex: {}".format(_bestRegex("^").replace("/" + EOL, "")))
   return beginsWith(_bestRegex("^"))
 
-# Super overkill functional solution to unique url filter with project:
+
+def priorityHeuristic(link, sourceUrl, isBlogPost):
+  """
+  Compute the download priority of a link using a simple heuristic.
+  
+    >>> f = lambda _: _[-1].isdigit()
+    >>> priorityHeuristic("/1", "/a", f) > priorityHeuristic("/p", "/a", f)
+    True
+    >>> priorityHeuristic("/p", "/1", f) > priorityHeuristic("/p", "/a", f)
+    True
+  
+  @type  link: string
+  @param link: the link to 
+  @type  sourceUrl:
+  @param sourceUrl:
+  @type  isBlogPost: function of string => boolean
+  @param isBlogPost: a function filtering blog posts
+  @rtype: integer
+  @return: the link priority
+  """
+  if isBlogPost(link):
+    return 2
+  elif isBlogPost(sourceUrl):
+    return 1
+  else:
+    return 0
+  
+# Super overkill functional solution to unique url filter with projection:
 # links = filter(lambda _: self.allowed_domains[0] in _, extractLinks(response))
 # uniquePrunedZipLinks = uniqueGroupby(links, pruneUrl)
 # newPrunedZipLinks = filter(

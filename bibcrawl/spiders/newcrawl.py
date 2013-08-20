@@ -12,11 +12,12 @@ class RssBasedCrawler(BaseSpider):
   name = "man"
   seensofar = 0
   
-  def __init__(self, blogUrl, *args, **kwargs):
+  def __init__(self, blogUrl, maxPages, *args, **kwargs):
     super(RssBasedCrawler, self).__init__(*args, **kwargs)
     self.allowed_domains = [ blogUrl ]
     self.start_urls = [ "http://{}/".format(blogUrl) ]
-    
+    self.maxPages = maxPages
+  
   def parse(self, response):
     """ Step 1: Find the rss feed from the website entry point.
     """
@@ -31,45 +32,49 @@ class RssBasedCrawler(BaseSpider):
     """
     entries = feedparser.parse(response.body).entries
     self.rssContent = entries[0].content[0].value
-    self.rssTitle = ___ # entry.title
+    self.rssTitle = entries[0].title
     self.rssAuthor = ___
     self.rssDate = ___
-    self.postUrlFilter = buildUrlFilter(map(lambda _: _.link, entries))
+    self.isBlogPost = buildUrlFilter(map(lambda _: _.link, entries), True)
     return Request(entries[0].link, self.parsePost)
   
+  def parsePost(self, response):
     """ Step 3: Back to the website, compute the best XPath queries to extract.
     the first rss entry.
     """
-  def parsePost(self, response):
     html = etree.HTML(response.body)
     self.xPathContent = bestXPathTo(self.rssContent, html)
     self.xPathTitle = ___
     self.xPathAuthor = ___
     self.xPathDate = ___
-    self.seen = set([pruneUrl(response.url)])
+    self.seen = set(response.url)
     print("Best XPath is: {}.".format(self.xPathContent))
     return self.fullBlog(response)
   
   def fullBlog(self, response):
     """ Step 4: Recursively download all the blog and extract relevant data.
     """
-    if self.seensofar > 10:
+    if self.seensofar > self.maxPages:
       from twisted.internet import reactor
       reactor.stop()
-    else:
+    elif self.isBlogPost(response.url):
       self.seensofar += 1
-    print response.url
-    content = xPathSelectFirst(response, self.xPathContent)
-    # print((content
-    #       .replace(u"\n", "").replace("\t", " ").replace("  ", ""))
-    #       .encode('ascii', 'replace')[:200] + " [...]")
-    url = response.url
-    title = ___
-    author = ___
-    date = ___
+      print "   " + response.url
+    else:
+      print "<<<" + response.url
     
-    prunedZipLinks = imap(lambda _: (pruneUrl(_), _), extractLinks(response))
-    for (pruned, link) in prunedZipLinks:
-      if pruned not in self.seen:
-        self.seen.add(pruned)
-        yield Request(link, self.fullBlog)
+    if self.isBlogPost(response.url):
+      content = xPathSelectFirst(response, self.xPathContent)
+      # print((content
+      #       .replace(u"\n", "").replace("\t", " ").replace("  ", ""))
+      #       .encode('ascii', 'replace')[:200] + " [...]")
+      url = response.url
+      title = ___
+      author = ___
+      date = ___
+    
+    for link in extractLinks(response):
+      if link not in self.seen and link.startswith(self.start_urls[0]):
+        self.seen.add(link)
+        yield Request(link, self.fullBlog,
+            priority=priorityHeuristic(link, response.url, self.isBlogPost))
