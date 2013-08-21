@@ -7,7 +7,7 @@ from scrapy.selector import HtmlXPathSelector
 from itertools import *
 
 
-def extractLinks(response):
+def extractUrls(response):
   """Extracts all href links of a page.
   
   @type  response: scrapy.http.Response
@@ -154,7 +154,7 @@ def buildUrlFilter(urls, debug=False):
   @type  debug: boolean
   @param debug: enable regex print, default=False
   @rtype: function of string => boolean
-  @return: the pruned url
+  @return: the function filtering blog posts
   """
   EOL = "#"
   beginsWith = lambda regex: (
@@ -171,7 +171,8 @@ def buildUrlFilter(urls, debug=False):
         return _bestRegex(current + pattern)
     return current
   
-  if debug: print("Url regex: {}".format(_bestRegex("^").replace("/" + EOL, "")))
+  if debug:
+    print("Url regex: {}".format(_bestRegex("^").replace("/" + EOL, "")))
   return beginsWith(_bestRegex("^"))
 
 
@@ -200,9 +201,9 @@ def priorityHeuristic(link, sourceUrl, isBlogPost):
     return 1
   else:
     return 0
-  
+
 # Super overkill functional solution to unique url filter with projection:
-# links = filter(lambda _: self.allowed_domains[0] in _, extractLinks(response))
+# links = filter(lambda _: self.allowed_domains[0] in _, extractUrls(response))
 # uniquePrunedZipLinks = uniqueGroupby(links, pruneUrl)
 # newPrunedZipLinks = filter(
 #     lambda _: _[0] not in self.seen, 

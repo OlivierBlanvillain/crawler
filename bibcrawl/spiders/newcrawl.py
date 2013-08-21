@@ -1,29 +1,31 @@
 import re
-import feedparser # Doc: http://pythonhosted.org/feedparser/
-from lxml import etree
-from scrapy.spider import BaseSpider # Doc: https://scrapy.readthedocs.org/
+import feedparser # http://pythonhosted.org/feedparser/
+from lxml import etree # http://lxml.de/index.html#documentation
+from scrapy.spider import BaseSpider # https://scrapy.readthedocs.org/
 from scrapy.http import Request
-from utils import *
 from itertools import *
+
+from utils import *
+from priorityheuristic import PriorityPredictor
 
 ___ = "TODO"
 
 class RssBasedCrawler(BaseSpider):
   name = "man"
-  seensofar = 0
   
   def __init__(self, blogUrl, maxPages, *args, **kwargs):
     super(RssBasedCrawler, self).__init__(*args, **kwargs)
     self.allowed_domains = [ blogUrl ]
     self.start_urls = [ "http://{}/".format(blogUrl) ]
     self.maxPages = maxPages
+    self.seensofar = 0
   
   def parse(self, response):
     """ Step 1: Find the rss feed from the website entry point.
     """
     rssLink = extractRssLink(response)
     try:
-      return Request(rssLink.next(), self.parseRss)
+      return Request(rssLink.next(), self.parseeRss)
     except StopIteration:
       raise NotImplementedError("There is no rss. TODO: fallback to page/diff?")
   
@@ -35,7 +37,9 @@ class RssBasedCrawler(BaseSpider):
     self.rssTitle = entries[0].title
     self.rssAuthor = ___
     self.rssDate = ___
+    
     self.isBlogPost = buildUrlFilter(map(lambda _: _.link, entries), True)
+    self.priorityHeuristic = PriorityPredictor(isBlogPost)
     return Request(entries[0].link, self.parsePost)
   
   def parsePost(self, response):
@@ -59,22 +63,22 @@ class RssBasedCrawler(BaseSpider):
       reactor.stop()
     elif self.isBlogPost(response.url):
       self.seensofar += 1
-      print "   " + response.url
+      print "p    " + response.url
     else:
-      print "<<<" + response.url
+      print "g<<<<" + response.url
     
     if self.isBlogPost(response.url):
       content = xPathSelectFirst(response, self.xPathContent)
       # print((content
       #       .replace(u"\n", "").replace("\t", " ").replace("  ", ""))
       #       .encode('ascii', 'replace')[:200] + " [...]")
-      url = response.url
+      url = ___
       title = ___
       author = ___
       date = ___
     
-    for link in extractLinks(response):
-      if link not in self.seen and link.startswith(self.start_urls[0]):
-        self.seen.add(link)
-        yield Request(link, self.fullBlog,
-            priority=priorityHeuristic(link, response.url, self.isBlogPost))
+    for url in extractUrls(response):
+      if url not in self.seen and url.startswith(self.start_urls[0]):
+        self.seen.add(url)
+        yield Request(url, self.fullBlog,
+            priority=self.priorityHeuristic(url))

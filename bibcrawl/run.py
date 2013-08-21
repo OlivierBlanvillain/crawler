@@ -10,7 +10,7 @@ def stop_reactor():
   reactor.stop()
 
 if __name__=="__main__":
-  spider = spiders.newcrawl.RssBasedCrawler("korben.info", 100)
+  spider = spiders.newcrawl.RssBasedCrawler("korben.info", 500)
   crawler = Crawler(Settings())
   # crawler = Crawler(Settings({"CONCURRENT_REQUESTS": 1, "CONCURRENT_REQUESTS_PER_DOMAIN": 1, "CONCURRENT_REQUESTS_PER_IP": 1}))
   crawler.signals.connect(reactor.stop, signal=signals.spider_closed)
