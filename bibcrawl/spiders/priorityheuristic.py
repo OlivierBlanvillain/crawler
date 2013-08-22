@@ -5,56 +5,63 @@ from math import ceil
 from itertools import *
 
 class PriorityPredictor:
-  """Implements a url priority predictor using a the Distance-Weighted k
-  -Nearest-Neighbor classifier, as described in this paper:
+  """Implements a string priority predictor using a the Distance-Weighted k
+  -Nearest-Neighbor classifier, as described in:
   http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=5408784
-  This predictor can be used as an active machine learning algorithm, by
-  feeding it little by little with new pages/score as they are downloaded.
+  This predictor can be used as an active machine learning algorithm by
+  feeding it little by little with new item/score as they are discovered.
   
-    >>> pp = PriorityPredictor(isBlogPost=lambda _: False)
-    >>> pp.feed("http://korben.info/category/infos/societe", score=10)
-    >>> pp.feed("http://korben.info/tag/pirate", score=0)
-    >>> pp.feed("http://korben.info/category/infos/windows", score=8)
-    >>> pp.feed("http://korben.info/tag/futur", score=0)
-    >>> pp.feed("http://korben.info/tag/kinect", score=0)
-    >>> pp("http://korben.info/tag/a_tag")
+    >>> pp = PriorityPredictor(highPriority=lambda _: False)
+    >>> pp.feed("/category/infos/societe", score=10)
+    >>> pp.feed("/tag/pirate", score=0)
+    >>> pp.feed("/category/infos/windows", score=8)
+    >>> pp.feed("/tag/futur", score=0)
+    >>> pp.feed("/tag/kinect", score=1)
+    >>> pp("/tag/a_tag")
     0
-    >>> pp("http://korben.info/category/infos/category")
-    6
+    >>> pp("/category/infos/category")
+    7
   """
-  def __init__(self, isBlogPost):
+  def __init__(self, highPriority):
     """Creates a PriorityPredictor instance.
     
-    @type  isBlogPost: function of string => boolean
-    @param isBlogPost: a function filtering blog posts
+    @type  highPriority: function of string => boolean
+    @param highPriority: a function filtering high priority elements
     """
-    self.isBlogPost = isBlogPost
-    self.pages = [("", 0)]
+    self.highPriority = highPriority
+    self.items = [("", 0)]
   
-  def __call__(self, url):
-    """Predicts priority of a url.
+  def __call__(self, item):
+    """Predicts the priority of an item. Running time is O(#feeds).
     
-    @type  url: string
-    @param url: the url to predict
+    @type  item: string
+    @param item: the item to predict
     @rtype: integer
     @return: the predicted priority
     """
-    if self.isBlogPost(url):
+    if self.highPriority(item):
       return maxint
     else:
-      getUrl = getPage = lambda _: _[0] # For the lulz.
-      getScore = getRatio = lambda _: _[1]
-      ratio = lambda _: Levenshtein.ratio(url, getUrl(_))
-      pagesZipRatio = imap(lambda _: (_, ratio(_)), self.pages)
-      k = min(5, int(ceil(len(self.pages) / 2.0)))
-      knearestPagesZipRatio = nlargest(k, pagesZipRatio, key=getRatio)
-      sumRatios = sum(imap(getRatio, knearestPagesZipRatio))
-      weightedScores = imap(lambda _: getRatio(_) * getScore(getPage(_)),
-          knearestPagesZipRatio)
+      k = min(5, int(ceil(len(self.items) / 2.0)))
+      ratio = lambda (itm, _): Levenshtein.ratio(item, itm)
+      getRatio = lambda _: _[1] # For the lulz.
+      
+      itemsZipRatio = imap(lambda _: (_, ratio(_)), self.items)
+      knearestItemsZipRatio = nlargest(k, itemsZipRatio, key=getRatio)
+      sumRatios = sum(imap(getRatio, knearestItemsZipRatio))
+      weightedScores = imap(lambda ((_, score), ratio): ratio * score,
+          knearestItemsZipRatio)
       return int(round(sum(weightedScores) / sumRatios))
 
-  def feed(self, url, score):
-    """TODO <<<<<<<<------------------------------
+  def feed(self, item, score):
+    """Feeds the predictor with a new item and the associated score. It is
+    perfectly fine to feed items little by little, alternating with
+    prediction calls.
+        
+    @type  item: string
+    @param item: the item to feed
+    @type  scroe: integer
+    @param scroe: the score of the item
     """
-    if not self.isBlogPost(url):
-      self.pages.append((url, score))
+    if not self.highPriority(item):
+      self.items.append((item, score))
