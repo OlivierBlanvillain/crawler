@@ -1,5 +1,4 @@
-# """Utility functions for the RssBasedCrawler spider.
-# """
+"""Utility functions for the RssBasedCrawler spider."""
 import re
 import Levenshtein
 from urlparse import urlsplit, urlunsplit, urljoin
