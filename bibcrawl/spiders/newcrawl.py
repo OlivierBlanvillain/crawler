@@ -1,14 +1,11 @@
 """RssBasedCrawler """
-
-import feedparser # http://pythonhosted.org/feedparser/
-from lxml import etree # http://lxml.de/index.html#documentation
 from scrapy.spider import BaseSpider # https://scrapy.readthedocs.org/
 from scrapy.http import Request
-from itertools import ifilter
-
-from bibcrawl.spiders.utils import extractUrls, extractRssLink, bestXPathTo
-from bibcrawl.spiders.utils import xPathSelectFirst, buildUrlFilter
+from itertools import ifilter, imap
+from bibcrawl.spiders.utils import extractUrls, extractRssLink
+from bibcrawl.spiders.utils import buildUrlFilter
 from bibcrawl.spiders.scorepredictor import ScorePredictor
+from bibcrawl.spiders.contentextractor import ContentExtractor
 
 ___ = "TODO"
 
@@ -16,74 +13,58 @@ class RssBasedCrawler(BaseSpider):
   """I am spiderman:"""
   name = "man"
 
-  def __init__(self, blogUrl, maxPages, *args, **kwargs):
+  def __init__(self, blogUrl, maxDownloads, *args, **kwargs):
+    """TODO"""
     super(RssBasedCrawler, self).__init__(*args, **kwargs)
     self.allowed_domains = [ blogUrl ]
     self.start_urls = [ "http://{}/".format(blogUrl) ]
-    self.maxPages = maxPages
-    self.seensofar = 0
-    self.rssContent = ""
-    self.rssTitle = ""
-    self.rssAuthor = ""
-    self.rssDate = ""
-    self.xPathContent = ""
-    self.xPathTitle = ""
-    self.xPathAuthor = ""
-    self.xPathDate = ""
-    self.isBlogPost = ""
-    self.priorityHeuristic = ""
+    self.maxDownloads = maxDownloads
+    self.downloadsSoFar = 0
     self.seen = set()
+    self.contentExtractor = None
+    self.isBlogPost = None
+    self.priorityHeuristic = None
 
   def parse(self, response):
-    """ Step 1: Find the rss feed from the website entry point.
-    """
-    rssLink = extractRssLink(response)
+    """ Step 1: Find the rss feed from the website entry point. """
     try:
-      return Request(rssLink.next(), self.parseRss)
+      return Request(extractRssLink(response).next(), self.parseRss)
     except StopIteration:
-      raise NotImplementedError("There is no rss. TODO: fallback to page/diff?")
+      raise NotImplementedError("There is no rss. Fallback to page/diff? TODO")
 
   def parseRss(self, response):
-    """ Step 2: Extract the desired informations on the first rss entry.
-    """
-    entries = feedparser.parse(response.body).entries
-    self.rssContent = entries[0].content[0].value
-    self.rssTitle = entries[0].title
-    self.rssAuthor = ___
-    self.rssDate = ___
-
-    self.isBlogPost = buildUrlFilter(map(lambda _: _.link, entries), True)
-    self.priorityHeuristic = ScorePredictor()
-    return Request(entries[0].link, self.parsePost)
+    """ Step 2: Extract the desired informations on the first rss entry. """
+    self.contentExtractor = ContentExtractor(response)
+    self.isBlogPost = buildUrlFilter(self.contentExtractor.getRssLinks(), True)
+    self.priorityHeuristic = ScorePredictor(self.isBlogPost)
+    return imap(
+        # meta={ "u": _ } is here to keep a "safe" copy of the source url.
+        # I don't trust response.url == (what was pased as Request.url).
+        lambda _: Request(_, self.parsePost, meta={ "u": _ }),
+        self.contentExtractor.getRssLinks())          .next()
 
   def parsePost(self, response):
-    """ Step 3: Back to the website, compute the best XPath queries to extract.t
+    """ Step 3: Back to the website, compute the best XPath queries to extract
     the first rss entry.
     """
-    html = etree.HTML(response.body)
-    self.xPathContent = bestXPathTo(self.rssContent, html)
-    self.xPathTitle = ___
-    self.xPathAuthor = ___
-    self.xPathDate = ___
+    self.contentExtractor.feed(response.body, response.meta["u"])
+
     self.seen.add(response.url)
-    print("Best XPath is: {}.".format(self.xPathContent))
     return self.fullBlog(response)
 
   def fullBlog(self, response):
-    """ Step 4: Recursively download all the blog and extract relevant data.
+    """ Step 4: Recursively download all the blog an-+d extract relevant data.
     """
-    if self.seensofar > self.maxPages:
+    if self.downloadsSoFar > self.maxDownloads:
       from twisted.internet import reactor
       reactor.stop()
     elif self.isBlogPost(response.url):
-      self.seensofar += 1
+      self.downloadsSoFar += 1
       print "p    " + response.url
-    else:
-      print "g<<<<" + response.url
 
     if self.isBlogPost(response.url):
       # content =
-      xPathSelectFirst(response, self.xPathContent)
+      self.contentExtractor(response)
     #   # print((content
     #   #       .replace(u"\n", "").replace("\t", " ").replace("  ", ""))
     #   #       .encode('ascii', 'replace')[:200] + " [...]")
@@ -92,11 +73,14 @@ class RssBasedCrawler(BaseSpider):
     #   author = ___
     #   date = ___
 
-    urls = extractUrls(response)
-    score = len(list(ifilter(self.isBlogPost, set(urls).difference(self.seen))))
-    self.priorityHeuristic.feed(response.urls, score)
-
-    for url in urls:
-      if url not in self.seen and url.startswith(self.start_urls[0]):
-        self.seen.add(url)
-        yield Request(url, self.fullBlog, priority=self.priorityHeuristic(url))
+    newUrls = set(ifilter(
+      lambda _: _ not in self.seen and _.startswith(self.start_urls[0]), #TODO
+      extractUrls(response)))
+    self.seen.update(newUrls)
+    self.priorityHeuristic.feed(response.url, len(newUrls))
+    if not self.isBlogPost(response.url):
+      print "got {} on {}".format(len(newUrls), response.url)
+    return list(imap(
+      lambda _: Request(_, self.fullBlog, priority=self.priorityHeuristic(_)
+),
+      newUrls))

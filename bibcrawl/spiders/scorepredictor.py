@@ -1,4 +1,5 @@
 """Score predictor."""
+from sys import maxint
 from Levenshtein import ratio
 from heapq import nlargest
 from math import ceil
@@ -24,7 +25,14 @@ class ScorePredictor(object):
     >>> pp("/category/infos/category")
     7
   """
-  itemsZipScore = [("", 0)]
+  def __init__(self, highScore):
+    """Create a new ScorePredictor for a given highScore function.
+
+    @type  highScore: function of string => boolean
+    @param highScore: filter for item that should be given a very high score
+    """
+    self.itemsZscore = [("", 0)]
+    self.highScore = highScore
 
   def __call__(self, item):
     """Predicts the score of an item. Running time is O(#feeds).
@@ -34,18 +42,24 @@ class ScorePredictor(object):
     @rtype: integer
     @return: the predicted score
     """
-    k = min(5, int(ceil(len(self.itemsZipScore) / 2.0)))
-    first = lambda _: _[0] # For the lulz.
+    if self.highScore(item):
+      return maxint
+    else:
+      k = min(5, int(ceil(len(self.itemsZscore) / 2.0)))
+      first = lambda _: _[0] # For the lulz.
 
-    ratioZipScore = imap(lambda (i, s): (ratio(item, i), s), self.itemsZipScore)
-    knearestRatioZipScore = nlargest(k, ratioZipScore, first)
-    sumRatios = sum(imap(first, knearestRatioZipScore))
-    weightedScores = imap(lambda (r, s): r * s, knearestRatioZipScore)
-    return int(round(sum(weightedScores) / (sumRatios or 1)))
+      ratioZscore = imap(lambda (i, s): (ratio(item, i), s), self.itemsZscore)
+      knearestRatioZscore = nlargest(k, ratioZscore, first)
+      sumRatios = sum(imap(first, knearestRatioZscore))
+      weightedScores = imap(lambda (r, s): r * s, knearestRatioZscore)
+      # print "    Predicted {} for url {}.".format(
+      #     int(round(sum(weightedScores) / (sumRatios or 1))),
+      #     item)
+      return int(round(sum(weightedScores) / (sumRatios or 1)))
 
   def feed(self, item, score):
     """Feeds the predictor with a new item and the associated score. It is
-    perfectly fine to feed itemsZipScore little by little, alternating with
+    perfectly fine to feed itemsZscore little by little, alternating with
     prediction calls.
 
     @type  item: string
@@ -53,4 +67,5 @@ class ScorePredictor(object):
     @type  scroe: integer
     @param scroe: the score of the item
     """
-    self.itemsZipScore.append((item, score))
+    if not self.highScore(item):
+      self.itemsZscore.append((item, score))
