@@ -1,9 +1,10 @@
 """Content Extractor."""
-from itertools import imap, ifilter
+from itertools import imap, ifilter, chain
 from lxml import etree # http://lxml.de/index.html#documentation
 from scrapy.selector import HtmlXPathSelector
 import Levenshtein
 import feedparser # http://pythonhosted.org/feedparser/
+import re
 
 class ContentExtractor(object):
   """Extracts the content of blog posts using a rss feed."""
@@ -15,7 +16,7 @@ class ContentExtractor(object):
     @param rss: the rss/atom feed
     """
     self.rssEntries = feedparser.parse(rss.body).entries
-    self.rssLinks = tuple(imap(lambda _:_.link, self.rssEntries))
+    self.rssLinks = tuple(imap(lambda _: _.link, self.rssEntries))
     self.urlZipPages = list()
     self.xPaths = None
     self.needsRefresh = True
@@ -34,7 +35,7 @@ class ContentExtractor(object):
     @type  page: string
     @param page: the html page feeded
     @type  url: string
-    @param url: the url of the page, (important) as found in the rss feed
+    @param url: the url of the page, as found in the rss feed
     """
     self.needsRefresh = True
     self.urlZipPages.append((url, page))
@@ -71,7 +72,6 @@ class ContentExtractor(object):
         lambda (_, page): etree.HTML(page),
         sorted(
           ifilter(lambda (url, _): url in self.rssLinks, self.urlZipPages),
-          ifilter(lambda (url, _): url in self.rssLinks, self.urlZipPages),
           key=lambda (url, _): url)))
     contents = (
         lambda _: _.content[0].value,
@@ -81,18 +81,34 @@ class ContentExtractor(object):
         lambda _: _bestPath(zip(imap(_, entries), parsedPages)),
         contents))
 
-    print("Best XPath is: {}.".format(self.xPaths[0]))
+    print("Best XPaths are: {}.".format(self.xPaths))
+    from time import sleep
+    sleep(100)
 
 def _bestPath(contentZipPages):
-  """lol"""
-  return _bestXPathTo( * contentZipPages[0] )
-  # nodePaths = imap(lambda _: etree.ElementTree(html).getpath(_), html.iter())
-  # xPathEvaluator = lambda _: unicode(etree.tostring(html.xpath(_)[0]))
-  # ratio = lambda _: Levenshtein.ratio(xPathEvaluator(_), string)
-  # return max(nodePaths, key=ratio)
+  """Undocumented
+  """
+  def _nodePaths():
+    for _, page in contentZipPages:
+      for node in page.iter():
+        for selector in ("id", "class"):
+          for attribute in (node.get(selector) or "").split(" "):
+            if not any(imap(lambda _: _.isdigit(), attribute)):
+              yield "//div[@{}='{}']".format(selector, attribute)
+  nodePaths = set(_nodePaths())
+  xPathEval = lambda path, page: unicode(
+      etree.tostring(page.xpath(path)[0]) if (page.xpath(path)) else "")
+  ratio = lambda path, content, page: (
+      Levenshtein.ratio(xPathEval(path, page), content))
+  averageRatio = lambda path: sum(
+      imap(lambda (content, page): ratio(path, content, page),
+      contentZipPages[0:1]))
+  return max(nodePaths, key=averageRatio)
+  # <<<<<<<<<<<<<<<<<<< compute for each page and take the best/most frequent?
 
+# Old school, not used atm,
 def _bestXPathTo(string, html):
-  """Computes the XPath query returning the node with closest string
+  """Computes the XPath allDivsBy returning the node with closest string
   representation to a given string. Here are a few examples:
 
     >>> page = "<html><head><title>title</title></head><body><h1>post"
@@ -116,15 +132,15 @@ def _bestXPathTo(string, html):
   @type  html: lxml.etree._Element
   @param html: the html document tree where to search for the string
   @rtype: string
-  @return: the XPath query that returns the node the most similar to string
+  @return: the XPath allDivsBy that returns the node the most similar to string
   """
   nodePaths = imap(lambda _: etree.ElementTree(html).getpath(_), html.iter())
   xPathEvaluator = lambda _: unicode(etree.tostring(html.xpath(_)[0]))
   ratio = lambda _: Levenshtein.ratio(xPathEvaluator(_), string)
   return max(nodePaths, key=ratio)
 
-def _xPathSelectFirst(response, query):
-  """Executes a XPath query and return a string representation of the first
+def _xPathSelectFirst(response, allDivsBy):
+  """Executes a XPath allDivsBy and return a string representation of the first
   result. Example:
 
     >>> from scrapy.http import TextResponse
@@ -136,10 +152,10 @@ def _xPathSelectFirst(response, query):
 
   @type  response: scrapy.http.TextResponse
   @param response: the html page to process
-  @type  query: string
-  @param query: the XPath query to execute
+  @type  allDivsBy: string
+  @param allDivsBy: the XPath allDivsBy to execute
   @rtype: string
-  @return: the first result of the query, empty string if no result
+  @return: the first result of the allDivsBy, empty string if no result
   """
-  return (HtmlXPathSelector(response).select(query).extract()
+  return (HtmlXPathSelector(response).select(allDivsBy).extract()
       or [""])[0] # Fuck semantics. (in Scala: .headOption.getOrElse(""))

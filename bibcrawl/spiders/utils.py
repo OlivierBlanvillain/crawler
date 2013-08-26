@@ -1,10 +1,10 @@
 """Utility functions for the RssBasedCrawler spider."""
 import re
-from urlparse import urlsplit, urljoin
-from lxml import etree
+import sgmllib
+from itertools import imap, chain
 from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
 from scrapy.selector import HtmlXPathSelector
-from itertools import imap, chain
+from urlparse import urlsplit, urljoin
 
 def extractUrls(response):
   """Extracts all href links of a page.
@@ -14,7 +14,11 @@ def extractUrls(response):
   @rtype: generator of strings (itertools.imap)
   @return: all the href links of the page
   """
-  return imap(lambda _: _.url, SgmlLinkExtractor().extract_links(response))
+  try:
+    return imap(lambda _: _.url, SgmlLinkExtractor().extract_links(response))
+  except sgmllib.SGMLParseError:
+    return list()
+
 
 def extractRssLink(response):
   """Extracts all the RSS and ATOM feed links of a page.
@@ -43,29 +47,6 @@ def extractRssLink(response):
   results = chain(*imap(lambda _: parser.select(_).extract(), paths))
   absoluts = imap(lambda _: urljoin(response.url, _), results)
   return absoluts
-
-# def pruneUrl(url):
-#   """Prunes a given url to extract only the essential information for
-#   duplicate detection purpose. Note that the returned string is not a valid
-#   url. Here are a few examples of pruning:
-
-#     >>> pruneUrl("https://mnmlist.com/havent/")
-#     'mnmlist.com/havent'
-#     >>> pruneUrl("http://en.wikipedia.org/wiki/Pixies#Influences")
-#     'en.wikipedia.org/wiki/pixies'
-#     >>> pruneUrl("http://WWW.W3SCHOOLS.COM/html/html_examples.asp")
-#     'www.w3schools.com/html/html_examples'
-
-#   @type  url: string
-#   @param url: the url to prune
-#   @rtype: string
-#   @return: the pruned url
-#   """
-#   (_, netloc, path, query, _) = urlsplit(url)
-#   extensionRegex = ("(?i)\\.(asp|aspx|cgi|exe|fcgi|fpl|htm|html|jsp|php|"
-#         + "php3|php4|php5|php6|phps|phtml|pl|py|shtm|shtml|wml)$")
-#   prunedPath = re.sub(extensionRegex, "", path.rstrip("/"))
-#return urlunsplit((None, netloc, prunedPath, query, None)).lstrip('/').lower()
 
 def buildUrlFilter(urls, debug=False):
   """Given a tuple of urls with similar pattern, computes a filtering function

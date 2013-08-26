@@ -38,3 +38,6 @@ nosetests.xml
 Gemfile
 Gemfile.lock
 Guardfile
+
+# scrapy http cache
+.scrapy

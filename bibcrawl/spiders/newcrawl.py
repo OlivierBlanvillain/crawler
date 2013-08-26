@@ -1,13 +1,12 @@
 """RssBasedCrawler """
-from scrapy.spider import BaseSpider # https://scrapy.readthedocs.org/
-from scrapy.http import Request
-from itertools import ifilter, imap
-from bibcrawl.spiders.utils import extractUrls, extractRssLink
-from bibcrawl.spiders.utils import buildUrlFilter
-from bibcrawl.spiders.scorepredictor import ScorePredictor
 from bibcrawl.spiders.contentextractor import ContentExtractor
-
-___ = "TODO"
+from bibcrawl.spiders.priorityheuristic import PriorityHeuristic
+from bibcrawl.spiders.utils import buildUrlFilter
+from bibcrawl.spiders.utils import extractUrls, extractRssLink
+from itertools import ifilter, imap, chain
+from scrapy.http import Request, Response
+from scrapy.spider import BaseSpider # https://scrapy.readthedocs.org/
+from twisted.internet import reactor
 
 class RssBasedCrawler(BaseSpider):
   """I am spiderman:"""
@@ -24,6 +23,7 @@ class RssBasedCrawler(BaseSpider):
     self.contentExtractor = None
     self.isBlogPost = None
     self.priorityHeuristic = None
+    self.bufferedPosts = list()
 
   def parse(self, response):
     """ Step 1: Find the rss feed from the website entry point. """
@@ -36,51 +36,55 @@ class RssBasedCrawler(BaseSpider):
     """ Step 2: Extract the desired informations on the first rss entry. """
     self.contentExtractor = ContentExtractor(response)
     self.isBlogPost = buildUrlFilter(self.contentExtractor.getRssLinks(), True)
-    self.priorityHeuristic = ScorePredictor(self.isBlogPost)
+    self.priorityHeuristic = PriorityHeuristic(self.isBlogPost)
     return imap(
-        # meta={ "u": _ } is here to keep a "safe" copy of the source url.
-        # I don't trust response.url == (what was pased as Request.url).
-        lambda _: Request(_, self.parsePost, meta={ "u": _ }),
-        self.contentExtractor.getRssLinks())          .next()
+        lambda _: Request(url=_,
+            callback=self.bufferPost,
+            errback=self.bufferPost,
+            meta={ "u": _ },
+            dont_filter=True),
+        self.contentExtractor.getRssLinks())
 
-  def parsePost(self, response):
+  def bufferPost(self, response):
     """ Step 3: Back to the website, compute the best XPath queries to extract
     the first rss entry.
     """
-    self.contentExtractor.feed(response.body, response.meta["u"])
+    self.bufferedPosts.append(response)
+    if len(self.bufferedPosts) == len(self.contentExtractor.getRssLinks()):
+      posts = tuple(ifilter(
+          lambda _: isinstance(_, Response),
+          self.bufferedPosts))
+      tuple(imap(lambda _: self.contentExtractor.feed(_.body, _.url), posts))
+      self.seen.update(imap(lambda _: _.url, posts))
 
-    self.seen.add(response.url)
-    return self.fullBlog(response)
+      # meta={ "u": _ } is here to keep a "safe" copy of the source url.
+      # I don't trust response.url == (what was passed as Request url).
+      for post in posts:
+        if post.meta["u"] != post.url:
+          raise NotImplementedError("This meta was indeed needed."
+              "(TODO: remove post.meta[u] if this never appends.)")
 
-  def fullBlog(self, response):
-    """ Step 4: Recursively download all the blog an-+d extract relevant data.
+      return tuple(chain.from_iterable(imap(lambda _: self.crawl(_), posts)))
+
+  def crawl(self, response):
+    """ Step 4: Recursively download all the blog and extract relevant data.
     """
     if self.downloadsSoFar > self.maxDownloads:
-      from twisted.internet import reactor
       reactor.stop()
     elif self.isBlogPost(response.url):
       self.downloadsSoFar += 1
+      self.contentExtractor(response)
       print "p    " + response.url
 
-    if self.isBlogPost(response.url):
-      # content =
-      self.contentExtractor(response)
-    #   # print((content
-    #   #       .replace(u"\n", "").replace("\t", " ").replace("  ", ""))
-    #   #       .encode('ascii', 'replace')[:200] + " [...]")
-    #   url = ___
-    #   title = ___
-    #   author = ___
-    #   date = ___
-
     newUrls = set(ifilter(
-      lambda _: _ not in self.seen and _.startswith(self.start_urls[0]), #TODO
-      extractUrls(response)))
+        lambda _: _ not in self.seen and _.startswith(self.start_urls[0]), #TODO
+        extractUrls(response)))
     self.seen.update(newUrls)
-    self.priorityHeuristic.feed(response.url, len(newUrls))
-    if not self.isBlogPost(response.url):
-      print "got {} on {}".format(len(newUrls), response.url)
-    return list(imap(
-      lambda _: Request(_, self.fullBlog, priority=self.priorityHeuristic(_)
-),
-      newUrls))
+    self.priorityHeuristic.feed(response.url, newUrls)
+    return tuple(imap(
+        lambda _: Request(
+          url=_,
+          callback=self.crawl,
+          priority=self.priorityHeuristic(_),
+          dont_filter=True),
+        newUrls))

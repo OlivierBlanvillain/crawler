@@ -1,18 +1,18 @@
 """Score predictor."""
-from sys import maxint
-from Levenshtein import ratio
 from heapq import nlargest
+from itertools import imap, ifilter
+from Levenshtein import ratio
 from math import ceil
-from itertools import imap
+from sys import maxint
 
-class ScorePredictor(object):
+class PriorityHeuristic(object):
   """Implements a string score predictor using a the Distance-Weighted k
   -Nearest-Neighbor classifier, as described in:
   http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=5408784
   This predictor can be used as an active machine learning algorithm by
-  feeding it little by little with new item/score as they are discovered.
+  feeding it little by little with new url/score as they are discovered.
 
-    >>> pp = ScorePredictor()
+    >>> pp = PriorityHeuristic()
     >>> pp("anything")
     0
     >>> pp.feed("/category/infos/societe", score=10)
@@ -26,46 +26,48 @@ class ScorePredictor(object):
     7
   """
   def __init__(self, highScore):
-    """Create a new ScorePredictor for a given highScore function.
+    """Create a new PriorityHeuristic for a given highScore function.
 
     @type  highScore: function of string => boolean
-    @param highScore: filter for item that should be given a very high score
+    @param highScore: filter for url that should be given a very high score
     """
-    self.itemsZscore = [("", 0)]
+    self.urlsZscore = [("", 0)]
     self.highScore = highScore
 
-  def __call__(self, item):
-    """Predicts the score of an item. Running time is O(#feeds).
+  def __call__(self, url):
+    """Predicts the score of an url. Running time is O(#feeds).
 
-    @type  item: string
-    @param item: the item to predict
+    @type  url: string
+    @param url: the url to predict
     @rtype: integer
     @return: the predicted score
     """
-    if self.highScore(item):
+    if self.highScore(url):
       return maxint
     else:
-      k = min(5, int(ceil(len(self.itemsZscore) / 2.0)))
+      k = min(10, int(ceil(len(self.urlsZscore) / 2.0)))
       first = lambda _: _[0] # For the lulz.
 
-      ratioZscore = imap(lambda (i, s): (ratio(item, i), s), self.itemsZscore)
+      ratioZscore = imap(lambda (i, s): (ratio(url, i), s), self.urlsZscore)
       knearestRatioZscore = nlargest(k, ratioZscore, first)
       sumRatios = sum(imap(first, knearestRatioZscore))
       weightedScores = imap(lambda (r, s): r * s, knearestRatioZscore)
       # print "    Predicted {} for url {}.".format(
       #     int(round(sum(weightedScores) / (sumRatios or 1))),
-      #     item)
+      #     url)
       return int(round(sum(weightedScores) / (sumRatios or 1)))
 
-  def feed(self, item, score):
-    """Feeds the predictor with a new item and the associated score. It is
-    perfectly fine to feed itemsZscore little by little, alternating with
+  def feed(self, url, links):
+    """Feeds the predictor with a new url and the associated list of links. It
+    is perfectly fine to feed the predictor little by little, alternating with
     prediction calls.
 
-    @type  item: string
-    @param item: the item to feed
-    @type  scroe: integer
-    @param scroe: the score of the item
+    @type  url: string
+    @param url: the url of the page to feed
+    @type  links: list of strings
+    @param links: the links present on the page
     """
-    if not self.highScore(item):
-      self.itemsZscore.append((item, score))
+    if not self.highScore(url):
+      score = len(links) + 99 * len(tuple(ifilter(self.highScore, links)))
+      print "got {}, panned {} on {}".format(score, self.__call__(url), url)
+      self.urlsZscore.append((url, score))
