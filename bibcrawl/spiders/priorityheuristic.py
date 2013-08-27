@@ -1,7 +1,7 @@
 """Score predictor."""
 from heapq import nlargest
 from itertools import imap, ifilter
-from Levenshtein import ratio
+from Levenshtein import ratio as stringSimilarity
 from math import ceil
 from sys import maxint
 
@@ -12,18 +12,18 @@ class PriorityHeuristic(object):
   This predictor can be used as an active machine learning algorithm by
   feeding it little by little with new url/score as they are discovered.
 
-    >>> pp = PriorityHeuristic()
+    >>> pp = PriorityHeuristic(lambda _: _[0].isdigit())
     >>> pp("anything")
     0
-    >>> pp.feed("/category/infos/societe", score=10)
-    >>> pp.feed("/tag/pirate", score=0)
-    >>> pp.feed("/category/infos/windows", score=8)
-    >>> pp.feed("/tag/futur", score=0)
-    >>> pp.feed("/tag/kinect", score=1)
+    >>> pp.feed("/category/infos/societe", ["1/", "2/", "a/", "b/"])
+    >>> pp.feed("/tag/pirate", ["c/", "d/"])
+    >>> pp.feed("/category/infos/windows", ["3/", "2/"])
+    >>> pp.feed("/tag/futur", list())
+    >>> pp.feed("/tag/kinect", ["e/"])
     >>> pp("/tag/a_tag")
-    0
+    1
     >>> pp("/category/infos/category")
-    7
+    155
   """
   def __init__(self, highScore):
     """Create a new PriorityHeuristic for a given highScore function.
@@ -45,10 +45,11 @@ class PriorityHeuristic(object):
     if self.highScore(url):
       return maxint
     else:
-      k = min(10, int(ceil(len(self.urlsZscore) / 2.0)))
+      k = min(5, int(ceil(len(self.urlsZscore) / 2.0)))
       first = lambda _: _[0] # For the lulz.
-
-      ratioZscore = imap(lambda (i, s): (ratio(url, i), s), self.urlsZscore)
+      ratioZscore = imap(
+          lambda (i, s): (stringSimilarity(url, i), s),
+          self.urlsZscore)
       knearestRatioZscore = nlargest(k, ratioZscore, first)
       sumRatios = sum(imap(first, knearestRatioZscore))
       weightedScores = imap(lambda (r, s): r * s, knearestRatioZscore)
@@ -69,5 +70,5 @@ class PriorityHeuristic(object):
     """
     if not self.highScore(url):
       score = len(links) + 99 * len(tuple(ifilter(self.highScore, links)))
-      print "got {}, panned {} on {}".format(score, self.__call__(url), url)
+      # print "got {}, panned {} on {}".format(score, self.__call__(url), url)
       self.urlsZscore.append((url, score))

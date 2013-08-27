@@ -1,10 +1,10 @@
 """Content Extractor."""
-from itertools import imap, ifilter, chain
+from functools import partial
+from heapq import nlargest
+from itertools import imap, ifilter
 from lxml import etree # http://lxml.de/index.html#documentation
-from scrapy.selector import HtmlXPathSelector
-import Levenshtein
+from Levenshtein import jaro as stringSimilarity
 import feedparser # http://pythonhosted.org/feedparser/
-import re
 
 class ContentExtractor(object):
   """Extracts the content of blog posts using a rss feed."""
@@ -43,14 +43,15 @@ class ContentExtractor(object):
   def __call__(self, page):
     """Extracts content from a page.
 
-    @type  page: scrapy.http.Response
+    @type  page: string
     @param page: the html page to process
     @rtype: 1-tuple of strings
     @return: the extracted (content, )
     """
     if self.needsRefresh:
       self._refresh()
-    return tuple(imap(lambda _: _xPathSelectFirst(page, _), self.xPaths))
+    parsedPage = etree.HTML(page)
+    return tuple(imap(lambda _: _xPathSelectFirst(parsedPage, _), self.xPaths))
 
   def _refresh(self):
     """Refreshes the XPaths with the current pages. Called internally once per
@@ -78,7 +79,7 @@ class ContentExtractor(object):
         # lambda _: _.title,
     )
     self.xPaths = tuple(imap(
-        lambda _: _bestPath(zip(imap(_, entries), parsedPages)),
+        lambda content: _bestPath(zip(imap(content, entries), parsedPages)),
         contents))
 
     print("Best XPaths are: {}.".format(self.xPaths))
@@ -86,76 +87,66 @@ class ContentExtractor(object):
     sleep(100)
 
 def _bestPath(contentZipPages):
-  """Undocumented
+  """Undocumented """
+  nodeQueries = set(_nodeQueries(imap(lambda _: _[1], contentZipPages)))
+  ratio = lambda content, page, query: (
+      stringSimilarity(content, _xPathSelectFirst(page, query)))
+  topQueriesForFirst = nlargest(10, nodeQueries, key=
+      partial(ratio, *contentZipPages[0]))
+  sumRatio = lambda query: sum(imap(
+    lambda (c, p): ratio(c, p, query),
+    contentZipPages))
+
+  from pprint import pprint
+  c, p = contentZipPages[0]
+  pprint(c)
+  pprint(etree.tostring(p))
+  print ""
+  for q in nodeQueries:
+    s = partial(ratio, *contentZipPages[0])(q)
+    if s > 0:
+      print str(s), ":", q
+
+  return max(topQueriesForFirst, key=sumRatio)
+
+def _nodeQueries(pages):
+  """Compute queries to each node of the html page using per id/class global
+  selection.
+
+    >>> from lxml.etree import HTML
+    >>> page = HTML("<div class='main'>#1</div><div id='footer'>#2</div> [...]")
+    >>> tuple( _nodeQueries([page]) )
+    ("//div[@class='main']", "//div[@id='footer']")
+
+  @type  pages: collections.Iterable of lxml.etree._Element
+  @param pages: the pages to process
+  @rtype: generator of strings
+  @return: the queries
   """
-  def _nodePaths():
-    for _, page in contentZipPages:
-      for node in page.iter():
-        for selector in ("id", "class"):
-          for attribute in (node.get(selector) or "").split(" "):
-            if not any(imap(lambda _: _.isdigit(), attribute)):
-              yield "//div[@{}='{}']".format(selector, attribute)
-  nodePaths = set(_nodePaths())
-  xPathEval = lambda path, page: unicode(
-      etree.tostring(page.xpath(path)[0]) if (page.xpath(path)) else "")
-  ratio = lambda path, content, page: (
-      Levenshtein.ratio(xPathEval(path, page), content))
-  averageRatio = lambda path: sum(
-      imap(lambda (content, page): ratio(path, content, page),
-      contentZipPages[0:1]))
-  return max(nodePaths, key=averageRatio)
-  # <<<<<<<<<<<<<<<<<<< compute for each page and take the best/most frequent?
+  for page in pages:
+    for node in page.iter():
+      for selector in ("id", "class"):
+        for attribute in (node.get(selector) or "").split(" "):
+          if attribute and not any(imap(lambda _: _.isdigit(), attribute)):
+            yield "//div[@{}='{}']".format(selector, attribute)
 
-# Old school, not used atm,
-def _bestXPathTo(string, html):
-  """Computes the XPath allDivsBy returning the node with closest string
-  representation to a given string. Here are a few examples:
-
-    >>> page = "<html><head><title>title</title></head><body><h1>post"
-    ... "</h1></body></html>"
-    >>> _bestXPathTo(u"a post", etree.HTML(page))
-    '/html/body/h1'
-    >>> complex = "<html><body><div>#1</div><div>#2<div><p>nested"
-    ... "</p></div></div></body></html>"
-    >>> _bestXPathTo(u"nested", etree.HTML(complex))
-    '/html/body/div[2]/div/p'
-
-  The Levenshtein distance is used to measure string similarity. The current
-  implementation iterates over all the html nodes and computes the Levenshtein
-  distance to the input node for each of them. In order to improve performance
-  a first filtering phase using the node length and (possibly) the character
-  occurrences could be used to reduce the calls to the expensive O(n^2)
-  Levenshtein algorithm.
-
-  @type  string: string
-  @param string: the string to search in the document
-  @type  html: lxml.etree._Element
-  @param html: the html document tree where to search for the string
-  @rtype: string
-  @return: the XPath allDivsBy that returns the node the most similar to string
-  """
-  nodePaths = imap(lambda _: etree.ElementTree(html).getpath(_), html.iter())
-  xPathEvaluator = lambda _: unicode(etree.tostring(html.xpath(_)[0]))
-  ratio = lambda _: Levenshtein.ratio(xPathEvaluator(_), string)
-  return max(nodePaths, key=ratio)
-
-def _xPathSelectFirst(response, allDivsBy):
-  """Executes a XPath allDivsBy and return a string representation of the first
+def _xPathSelectFirst(page, query):
+  """Executes a XPath query and return a string representation of the first
   result. Example:
 
-    >>> from scrapy.http import TextResponse
-    >>> complex = "<html><body><div>#1</div><div>#2<div><p>nested"
-    ... "</p></div></div></body></html>"
-    >>> _xPathSelectFirst(TextResponse("", body=complex),
-    ... '/html/body/div[2]/div/p')
+    >>> from lxml.etree import HTML
+    >>> page = HTML("<html><body><div>#1</div><div>#2<div><p>nested") # [...]
+    >>> _xPathSelectFirst(page, '/html/body/div[2]/div/p')
     u'<p>nested</p>'
 
-  @type  response: scrapy.http.TextResponse
-  @param response: the html page to process
-  @type  allDivsBy: string
-  @param allDivsBy: the XPath allDivsBy to execute
+  @type  page: lxml.etree._Element
+  @param page: the parsed page to process
+  @type  query: string
+  @param query: the XPath query to execute
   @rtype: string
-  @return: the first result of the allDivsBy, empty string if no result
+  @return: the first result of the query, empty string if no result
   """
-  return (HtmlXPathSelector(response).select(allDivsBy).extract()
-      or [""])[0] # Fuck semantics. (in Scala: .headOption.getOrElse(""))
+  # Fuck semantics. In Scala:
+  # page.xpath(query).headOption.map(etree.tostring(_)).getOrElse("")
+  results = page.xpath(query)
+  return unicode(etree.tostring(results[0])) if(results) else u""

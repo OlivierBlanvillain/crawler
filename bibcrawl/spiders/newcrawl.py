@@ -54,9 +54,8 @@ class RssBasedCrawler(BaseSpider):
       posts = tuple(ifilter(
           lambda _: isinstance(_, Response),
           self.bufferedPosts))
-      tuple(imap(lambda _: self.contentExtractor.feed(_.body, _.url), posts))
-      self.seen.update(imap(lambda _: _.url, posts))
-
+      for post in posts:
+        self.contentExtractor.feed(post.body, post.url)
       # meta={ "u": _ } is here to keep a "safe" copy of the source url.
       # I don't trust response.url == (what was passed as Request url).
       for post in posts:
@@ -73,7 +72,7 @@ class RssBasedCrawler(BaseSpider):
       reactor.stop()
     elif self.isBlogPost(response.url):
       self.downloadsSoFar += 1
-      self.contentExtractor(response)
+      self.contentExtractor(response.body)
       print "p    " + response.url
 
     newUrls = set(ifilter(

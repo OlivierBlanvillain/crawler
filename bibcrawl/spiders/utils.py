@@ -11,7 +11,7 @@ def extractUrls(response):
 
   @type  response: scrapy.http.Response
   @param response: the html page to process
-  @rtype: generator of strings (itertools.imap)
+  @rtype: collections.Iterable of strings
   @return: all the href links of the page
   """
   try:
@@ -25,7 +25,7 @@ def extractRssLink(response):
 
   @type  response: scrapy.http.Response
   @param response: the html page to process
-  @rtype: generator of strings (itertools.imap)
+  @rtype: collections.Iterable of strings
   @return: all the feed links of the page
   """
   parser = HtmlXPathSelector(response)
