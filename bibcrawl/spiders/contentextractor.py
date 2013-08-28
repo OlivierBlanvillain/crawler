@@ -1,9 +1,9 @@
 """Content Extractor."""
+from bibcrawl.spiders.stringsimilarity import stringSimilarity
 from functools import partial
 from heapq import nlargest
 from itertools import imap, ifilter
 from lxml import etree # http://lxml.de/index.html#documentation
-from Levenshtein import jaro as stringSimilarity
 import feedparser # http://pythonhosted.org/feedparser/
 
 class ContentExtractor(object):
@@ -91,23 +91,17 @@ def _bestPath(contentZipPages):
   nodeQueries = set(_nodeQueries(imap(lambda _: _[1], contentZipPages)))
   ratio = lambda content, page, query: (
       stringSimilarity(content, _xPathSelectFirst(page, query)))
-  topQueriesForFirst = nlargest(10, nodeQueries, key=
+  topQueriesForFirst = nlargest(20, nodeQueries, key=
       partial(ratio, *contentZipPages[0]))
-  sumRatio = lambda query: sum(imap(
-    lambda (c, p): ratio(c, p, query),
-    contentZipPages))
-
-  from pprint import pprint
-  c, p = contentZipPages[0]
-  pprint(c)
-  pprint(etree.tostring(p))
-  print ""
-  for q in nodeQueries:
-    s = partial(ratio, *contentZipPages[0])(q)
-    if s > 0:
-      print str(s), ":", q
-
-  return max(topQueriesForFirst, key=sumRatio)
+  # sumRatio = lambda query: sum(imap(
+  #   lambda (c, p): ratio(c, p, query),
+  #   contentZipPages))
+  topQueries = tuple(imap(
+      lambda (c, p): max(topQueriesForFirst, key=partial(ratio, c, p)),
+      contentZipPages))
+  print "\n".join(topQueries)
+  return max(set(topQueries), key=topQueries.count)
+  # max(topQueriesForFirst, key=sumRatio)
 
 def _nodeQueries(pages):
   """Compute queries to each node of the html page using per id/class global
