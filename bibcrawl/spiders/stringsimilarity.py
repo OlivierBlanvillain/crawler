@@ -1,100 +1,55 @@
-import lxml.html, lxml.html.clean
+"""Dice's coefficient string similarity."""
+
 from lxml.html.clean import Cleaner
 
-# http://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/
-# Dice's_coefficient
-def dice_coefficient(a, b):
-    """dice coefficient 2nt/na + nb."""
-    a_bigrams = set(a)
-    b_bigrams = set(b)
-    print "a_bigrams"
-    print a_bigrams
-    print "b_bigrams"
-    print b_bigrams
-    print ""
-    overlap = len(a_bigrams & b_bigrams)
-    return overlap * 2.0/(len(a_bigrams) + len(b_bigrams))
+def _bigrams(string):
+  """Compute the bigrams of a string.
 
-def dice_coefficient2(a, b):
-    """dice coefficient 2nt/na + nb."""
-    if not len(a) or not len(b): return 0.0
-    if len(a) == 1:  a=a+u'.'
-    if len(b) == 1:  b=b+u'.'
+    >>> _bigrams("test")
+    set(['te', 'es', 'st'])
 
-    a_bigram_list=[]
-    for i in range(len(a)-1):
-      a_bigram_list.append(a[i:i+2])
-    b_bigram_list=[]
-    for i in range(len(b)-1):
-      b_bigram_list.append(b[i:i+2])
+  @type  page: string
+  @param page: the string to process
+  @rtype: set of string of size two
+  @return: the set of bigrams
+   """
+  return { string[i:i+2] for i in xrange(len(string) - 1) }
 
-    a_bigrams = set(a_bigram_list)
-    b_bigrams = set(b_bigram_list)
-    overlap = len(a_bigrams & b_bigrams)
-    dice_coeff = overlap * 2.0/(len(a_bigrams) + len(b_bigrams))
-    return dice_coeff
+def _cleanTags(string):
+  """Remove all html tags from the string.
 
-# http://stackoverflow.com/questions/653157/a-better-similarity-ranking-
-# algorithm-for-variable-length-strings
-def get_bigrams(string):
-    '''
-    Takes a string and returns a list of bigrams
-    '''
-    s = string.lower()
-    return [s[i:i+2] for i in xrange(len(s) - 1)]
+    >>> _cleanTags("<html><head><title>Hello</title><body>Test</body></html>")
+    '<div>HelloTest</div>'
 
-def string_similarity(str1, str2):
-    '''
-    Perform bigram comparison between two strings
-    and return a percentage match in decimal form
-    '''
-    pairs1 = get_bigrams(str1)
-    pairs2 = get_bigrams(str2)
-    union  = len(pairs1) + len(pairs2)
-    hit_count = 0
-    for x in pairs1:
-        for y in pairs2:
-            if x == y:
-                hit_count += 1
-                break
-    return (2.0 * hit_count) / union
+  @type  page: string
+  @param page: the string to clean
+  @rtype: string
+  @return: the cleaned up string
+  """
+  cleaner = Cleaner(allow_tags=[''], remove_unknown_tags=False)
+  return cleaner.clean_html(string or u"dummy")
 
-def get_bigrams2(s):
-    '''
-    Takes a string and returns a list of bigrams
-    '''
-    return { s[i:i+2] for i in xrange(len(s) - 1) }
+def stringSimilarity(string1, string2):
+    """Computes the dice's coefficient similarity between two strings.
 
-def string_similarity2(str1, str2):
-    '''
-    Perform bigram comparison between two strings
-    and return a percentage match in decimal form
-    '''
-    pairs1 = get_bigrams2(str1)
-    pairs2 = get_bigrams2(str2)
-    intersection = pairs1 & pairs2
-    return (2.0 * len(intersection)) / (len(pairs1) + len(pairs2))
+      >>> round(stringSimilarity("Robert", "Richard"), 2)
+      0.52
+      >>> round(stringSimilarity("Robert", "Amy Robertson and co"), 2)
+      0.67
+      >>> from Levenshtein import ratio
+      >>> round(ratio("Robert", "Richard"), 2)
+      >>> round(ratio("Robert", "Amy Robertson and co"), 2)
 
-from Levenshtein import ratio # as stringSimilarity
-from Levenshtein import jaro # as stringSimilarity
-
-cleanTag = lambda string: (
-  Cleaner(allow_tags=[''], remove_unknown_tags=False).clean_html(string or u"dummy")
-)
-# (
-#   lxml.etree.tostring(
-#     lxml.html.clean.Cleaner(
-#       allow_tags=[''],
-#       remove_unknown_tags = False
-#     ).clean_html(
-#       lxml.html.fromstring(
-#         (string or "dummy")))))
-
-def stringSimilarity (str1, str2):
-  # print "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-  # print cleanTag(str2)
-  # print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-  return string_similarity2(
-    # filter(lambda _: _.isalnum(), str1),
-    # filter(lambda _: _.isalnum(), str2))
-    cleanTag(str1), cleanTag(str2))
+    @type  string1: string
+    @param string1: the string to clean
+    @type  string2: string
+    @param string2: the string to clean
+    @rtype: float in [0;1]
+    @return: the similarity of the inputs
+    """
+    # Slower and more accurate:
+    # return Levenshtein.ratio(_cleanTags(string1), _cleanTags(string1))
+    bigrams1 = _bigrams(_cleanTags(string1))
+    bigrams2 = _bigrams(_cleanTags(string2))
+    intersection = bigrams1.intersection(bigrams2)
+    return (2.0 * len(intersection)) / (len(bigrams1) + len(bigrams2))

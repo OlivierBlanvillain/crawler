@@ -81,27 +81,26 @@ class ContentExtractor(object):
     self.xPaths = tuple(imap(
         lambda content: _bestPath(zip(imap(content, entries), parsedPages)),
         contents))
-
     print("Best XPaths are: {}.".format(self.xPaths))
-    from time import sleep
-    sleep(100)
 
 def _bestPath(contentZipPages):
-  """Undocumented """
+  """Given a list of content/page, computes the best XPath query that would
+  return the content on each page.
+
+  @type  contentZipPages: list of pairs of string/lxml.etree._Element
+  @param contentZipPages: the list of content/page used to guide the process
+  @rtype: string
+  @return: the XPath query that matches at best the content on each page
+  """
   nodeQueries = set(_nodeQueries(imap(lambda _: _[1], contentZipPages)))
   ratio = lambda content, page, query: (
       stringSimilarity(content, _xPathSelectFirst(page, query)))
-  topQueriesForFirst = nlargest(20, nodeQueries, key=
+  topQueriesForFirst = nlargest(6, nodeQueries, key=
       partial(ratio, *contentZipPages[0]))
-  # sumRatio = lambda query: sum(imap(
-  #   lambda (c, p): ratio(c, p, query),
-  #   contentZipPages))
   topQueries = tuple(imap(
       lambda (c, p): max(topQueriesForFirst, key=partial(ratio, c, p)),
       contentZipPages))
-  print "\n".join(topQueries)
   return max(set(topQueries), key=topQueries.count)
-  # max(topQueriesForFirst, key=sumRatio)
 
 def _nodeQueries(pages):
   """Compute queries to each node of the html page using per id/class global
