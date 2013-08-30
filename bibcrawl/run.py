@@ -12,7 +12,7 @@ def stop_reactor():
 
 def main():
   """Crawler entry point."""
-  spider = newcrawl.RssBasedCrawler("korben.info", 5000)
+  spider = newcrawl.RssBasedCrawler("meinrhyme.wordpress.com", 5000)
   crawler = Crawler(Settings({
       #RFC2616Policy,
       "HTTPCACHE_POLICY": "scrapy.contrib.httpcache.DummyPolicy",

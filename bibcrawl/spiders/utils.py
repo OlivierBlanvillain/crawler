@@ -6,7 +6,7 @@ from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
 from scrapy.selector import HtmlXPathSelector
 from urlparse import urlsplit, urljoin
 
-def extractUrls(response):
+def extractLinks(response):
   """Extracts all href links of a page.
 
   @type  response: scrapy.http.Response

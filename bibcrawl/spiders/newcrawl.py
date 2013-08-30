@@ -2,7 +2,7 @@
 from bibcrawl.spiders.contentextractor import ContentExtractor
 from bibcrawl.spiders.priorityheuristic import PriorityHeuristic
 from bibcrawl.spiders.utils import buildUrlFilter
-from bibcrawl.spiders.utils import extractUrls, extractRssLink
+from bibcrawl.spiders.utils import extractLinks, extractRssLink
 from itertools import ifilter, imap, chain
 from scrapy.http import Request, Response
 from scrapy.spider import BaseSpider # https://scrapy.readthedocs.org/
@@ -41,8 +41,7 @@ class RssBasedCrawler(BaseSpider):
         lambda _: Request(url=_,
             callback=self.bufferPost,
             errback=self.bufferPost,
-            meta={ "u": _ },
-            dont_filter=True),
+            meta={ "u": _ }),
         self.contentExtractor.getRssLinks())
 
   def bufferPost(self, response):
@@ -77,13 +76,12 @@ class RssBasedCrawler(BaseSpider):
 
     newUrls = set(ifilter(
         lambda _: _ not in self.seen and _.startswith(self.start_urls[0]), #TODO
-        extractUrls(response)))
+        extractLinks(response)))
     self.seen.update(newUrls)
     self.priorityHeuristic.feed(response.url, newUrls)
     return tuple(imap(
         lambda _: Request(
           url=_,
           callback=self.crawl,
-          priority=self.priorityHeuristic(_),
-          dont_filter=True),
+          priority=self.priorityHeuristic(_)),
         newUrls))

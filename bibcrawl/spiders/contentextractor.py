@@ -15,6 +15,7 @@ class ContentExtractor(object):
     @type  rss: scrapy.http.Response
     @param rss: the rss/atom feed
     """
+    print rss.url
     self.rssEntries = feedparser.parse(rss.body).entries
     self.rssLinks = tuple(imap(lambda _: _.link, self.rssEntries))
     self.urlZipPages = list()
@@ -77,11 +78,16 @@ class ContentExtractor(object):
     contents = (
         lambda _: _.content[0].value,
         # lambda _: _.title,
+        # updated, published_parsed, updated_parsed, links, title, author,
+        # summary_detail, summary, content, guidislink, title_detail, href,
+        # link, authors, thr_total, author_detail, id, tags, published
     )
     self.xPaths = tuple(imap(
         lambda content: _bestPath(zip(imap(content, entries), parsedPages)),
         contents))
-    print("Best XPaths are: {}.".format(self.xPaths))
+
+    print("Best XPaths are:")
+    print("\n".join(self.xPaths))
 
 def _bestPath(contentZipPages):
   """Given a list of content/page, computes the best XPath query that would
@@ -100,16 +106,33 @@ def _bestPath(contentZipPages):
   topQueries = tuple(imap(
       lambda (c, p): max(topQueriesForFirst, key=partial(ratio, c, p)),
       contentZipPages))
-  return max(set(topQueries), key=topQueries.count)
+  # DEBUG:
+  from pprint import pprint
+  from bibcrawl.spiders.stringsimilarity import _cleanTags
+  # pprint(topQueriesForFirst)
+  for q in list(topQueriesForFirst):
+    pprint(q)
+    pprint(_cleanTags(contentZipPages[0][0] or "dummy"))
+    pprint(_cleanTags(_xPathSelectFirst(contentZipPages[0][1], q)))
+    print ""
+
+  from time import sleep
+  sleep(100000)
+  # q = max(set(topQueries), key=topQueries.count)
+  # for c, p in contentZipPages:
+  #   print "..."
+  #   pprint(c)
+  #   pprint(_xPathSelectFirst(p, q))
+  # return max(set(topQueries), key=topQueries.count)
 
 def _nodeQueries(pages):
   """Compute queries to each node of the html page using per id/class global
   selection.
 
     >>> from lxml.etree import HTML
-    >>> page = HTML("<div class='main'>#1</div><div id='footer'>#2</div> [...]")
+    >>> page = HTML("<h1 class='title'>#1</h1><div id='footer'>#2</div> [...]")
     >>> tuple( _nodeQueries([page]) )
-    ("//div[@class='main']", "//div[@id='footer']")
+    ("//*[@class='title']", "//*[@id='footer']")
 
   @type  pages: collections.Iterable of lxml.etree._Element
   @param pages: the pages to process
@@ -119,9 +142,9 @@ def _nodeQueries(pages):
   for page in pages:
     for node in page.iter():
       for selector in ("id", "class"):
-        for attribute in (node.get(selector) or "").split(" "):
-          if attribute and not any(imap(lambda _: _.isdigit(), attribute)):
-            yield "//div[@{}='{}']".format(selector, attribute)
+        attribute = node.get(selector)
+        if attribute and not any(imap(lambda _: _.isdigit(), attribute)):
+          yield "//*[@{}='{}']".format(selector, attribute)
 
 def _xPathSelectFirst(page, query):
   """Executes a XPath query and return a string representation of the first
