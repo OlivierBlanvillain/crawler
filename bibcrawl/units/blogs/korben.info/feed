@@ -1,0 +1,782 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Korben</title>
+	<atom:link href="http://korben.info/feed" rel="self" type="application/rss+xml" />
+	<link>http://korben.info</link>
+	<description>Upgrade your mind</description>
+	<lastBuildDate>Mon, 02 Sep 2013 07:30:41 +0000</lastBuildDate>
+	<language>fr-FR</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.6</generator>
+		<item>
+		<title>Convertir une photo en fichier Excel</title>
+		<link>http://korben.info/convertir-une-photo-en-fichier-excel.html</link>
+		<comments>http://korben.info/convertir-une-photo-en-fichier-excel.html#comments</comments>
+		<pubDate>Mon, 02 Sep 2013 07:30:41 +0000</pubDate>
+		<dc:creator>Korben</dc:creator>
+				<category><![CDATA[Office]]></category>
+
+		<guid isPermaLink="false">http://korben.info/?p=42552</guid>
+		<description><![CDATA[Voici un truc sympa à faire avec Excel pour convertir une photo en document XLS. Le site s'appelle Pixel Spreadsheet transformera automatiquement une photo en une série de pixels Rouges Verts et Bleus (RVB), ce qui quand on zoom fait très mal aux yeux... .... mais lorsqu'on prend un peu de recul, permet de découvrir [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Voici un truc sympa à faire avec Excel pour <strong>convertir une photo en document XLS</strong>.</p>
+<p>Le site s'appelle <a href="http://think-maths.co.uk/spreadsheet">Pixel Spreadsheet</a> transformera automatiquement une photo en une série de pixels Rouges Verts et Bleus (RVB), ce qui quand on zoom fait très mal aux yeux...</p>
+<p style="text-align: center;"><a href="http://korben.info/wp-content/uploads/2013/08/pixel-spreadsheet.png"><img class="aligncenter size-full wp-image-42556" alt="pixel spreadsheet Convertir une photo en fichier Excel" src="http://korben.info/wp-content/uploads/2013/08/pixel-spreadsheet.png" width="650" height="587" title="Convertir une photo en fichier Excel" /></a></p>
+<p>.... mais lorsqu'on prend un peu de recul, permet de découvrir sa photo ;-)</p>
+<p style="text-align: center;"><a href="http://korben.info/wp-content/uploads/2013/08/pixel-spreadsheet2.png"><img alt="pixel spreadsheet2 Convertir une photo en fichier Excel" src="http://korben.info/wp-content/uploads/2013/08/pixel-spreadsheet2.png" width="618" height="719" title="Convertir une photo en fichier Excel" /></a></p>
+<p>Amusant non ?</p>
+<p>De quoi agrémenter vos bilans comptables, tableaux de prix et autres documents barbares ;-)</p>
+]]></content:encoded>
+			<wfw:commentRss>http://korben.info/convertir-une-photo-en-fichier-excel.html/feed</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+		</item>
+		<item>
+		<title>C&#8217;est la rentrée !</title>
+		<link>http://korben.info/cest-la-rentree-2.html</link>
+		<comments>http://korben.info/cest-la-rentree-2.html#comments</comments>
+		<pubDate>Mon, 02 Sep 2013 06:54:05 +0000</pubDate>
+		<dc:creator>Korben</dc:creator>
+				<category><![CDATA[Editos]]></category>
+
+		<guid isPermaLink="false">http://korben.info/?p=42611</guid>
+		<description><![CDATA[Chers amis, bonjour ! C'est enfin la rentrée ! Je suis donc de retour après un petit mois de vacances où je vous ai contraint à un régime d'un article par jour en moyenne. Apparemment, ça a plutôt bien fonctionné puisque personne ne m'a envoyé de mails d'insultes à ce sujet ;-) . Pendant ce [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Chers amis, bonjour !</p>
+<p>C'est enfin la rentrée ! Je suis donc de retour après un petit mois de vacances où je vous ai contraint à un régime d'un article par jour en moyenne. Apparemment, ça a plutôt bien fonctionné puisque personne ne m'a envoyé de mails d'insultes à ce sujet ;-) .</p>
+<p>Pendant ce temps, j'ai visité Helsinki (Finlande) et profité des plages de Normandie (Honfleur, Trouville) et du Nord-Pas-de-Calais (Berck). Détente et rattrapage de séries.</p>
+<p>Et vous ? Qu'avez-vous fait cet été ?</p>
+<p>J'ai, j'imagine comme vous, une todo list longue comme le bras pour cette semaine, mais on va essayer de s'y remettre sans stress.</p>
+<p>Sachez aussi que si vous êtes abonné à l'option "<a href="http://korben.info/register">Sans pub</a>" du site, vous avez du recevoir un email de ma part avec des accès top secret pour tester la nouvelle version du site qui arrive à grands pas. J'ai hâte de passer ça en prod (pourquoi pas un vendredi afin que tout explose dans un immense feu de joie ^^?)</p>
+<p>Bon, je vous laisse, je vais prendre mon petit-déj !</p>
+<p>Bonne rentrée à tous !</p>
+]]></content:encoded>
+			<wfw:commentRss>http://korben.info/cest-la-rentree-2.html/feed</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+		</item>
+		<item>
+		<title>Amazon vous offre 10 applications Android !</title>
+		<link>http://korben.info/app-gratuite-amazon.html</link>
+		<comments>http://korben.info/app-gratuite-amazon.html#comments</comments>
+		<pubDate>Fri, 30 Aug 2013 09:26:49 +0000</pubDate>
+		<dc:creator>Korben</dc:creator>
+				<category><![CDATA[Android]]></category>
+
+		<guid isPermaLink="false">http://korben.info/?p=42560</guid>
+		<description><![CDATA[Pour fêter la première année de son App-Shop, Amazon a eu l'excellente idée de proposer gratuitement les 10 applications (d'habitude payantes) les plus téléchargées. Pour cela, il suffit d'installer App-Shop et d'aller installer les apps suivantes : Pad a Dessin Angry Birds (Ad-Free) World of Goo Shazam Encore SwiftKey CalenGoo Sprinkle Paper Camera PAC-MAN HD [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Pour fêter la première année de son <a href="http://www.amazon.fr/gp/feature.html/?ie=UTF8&amp;camp=1642&amp;creative=19458&amp;docId=1000745303&amp;linkCode=ur2&amp;tag=amazon0d16-21" rel="nofollow">App-Shop</a>, <strong>Amazon</strong> a eu l'excellente idée de proposer gratuitement les 10 applications (d'habitude payantes) les plus téléchargées.</p>
+<p>Pour cela, il suffit d'installer App-Shop et d'aller installer les apps suivantes :</p>
+<ul>
+<li><a title="Pad a Dessin" href="http://www.amazon.fr/gp/product/B004WGGQPQ/ref=s9_al_ft_g405_ir010?pf_rd_m=A1X6FK5RDHNB96&amp;pf_rd_s=center-3&amp;pf_rd_r=18DQCRRWR57VAJS1MEMF&amp;pf_rd_t=1401&amp;pf_rd_p=424086267&amp;pf_rd_i=1000745303&tag=amazon0d16-21" rel="nofollow">Pad a Dessin </a></li>
+<li><a title="Angry Birds (Ad-Free)" href="http://www.amazon.fr/gp/product/B004SBQGHS/ref=s9_al_ft_g405_ir01?pf_rd_m=A1X6FK5RDHNB96&amp;pf_rd_s=center-3&amp;pf_rd_r=18DQCRRWR57VAJS1MEMF&amp;pf_rd_t=1401&amp;pf_rd_p=424086267&amp;pf_rd_i=1000745303&tag=amazon0d16-21" rel="nofollow">Angry Birds (Ad-Free) </a></li>
+<li><a title="World of Goo" href="http://www.amazon.fr/gp/product/B009MCRHH6/ref=s9_al_ft_g405_ir02?pf_rd_m=A1X6FK5RDHNB96&amp;pf_rd_s=center-3&amp;pf_rd_r=18DQCRRWR57VAJS1MEMF&amp;pf_rd_t=1401&amp;pf_rd_p=424086267&amp;pf_rd_i=1000745303&tag=amazon0d16-21" rel="nofollow">World of Goo </a></li>
+<li><a title="Shazam Encore" href="http://www.amazon.fr/gp/product/B004SKHJF2/ref=s9_al_ft_g405_ir03?pf_rd_m=A1X6FK5RDHNB96&amp;pf_rd_s=center-3&amp;pf_rd_r=18DQCRRWR57VAJS1MEMF&amp;pf_rd_t=1401&amp;pf_rd_p=424086267&amp;pf_rd_i=1000745303&tag=amazon0d16-21" rel="nofollow">Shazam Encore </a></li>
+<li><a title="SwiftKey" href="http://www.amazon.fr/gp/product/B005D9MUWY/ref=s9_al_ft_g405_ir04?pf_rd_m=A1X6FK5RDHNB96&amp;pf_rd_s=center-3&amp;pf_rd_r=18DQCRRWR57VAJS1MEMF&amp;pf_rd_t=1401&amp;pf_rd_p=424086267&amp;pf_rd_i=1000745303&tag=amazon0d16-21" rel="nofollow">SwiftKey </a></li>
+<li><a title="CalenGoo" href="http://www.amazon.fr/gp/product/B004T4LUPW/ref=s9_al_ft_g405_ir05?pf_rd_m=A1X6FK5RDHNB96&amp;pf_rd_s=center-3&amp;pf_rd_r=18DQCRRWR57VAJS1MEMF&amp;pf_rd_t=1401&amp;pf_rd_p=424086267&amp;pf_rd_i=1000745303&tag=amazon0d16-21" rel="nofollow">CalenGoo </a></li>
+<li><a title="Sprinkle" href="http://www.amazon.fr/gp/product/B00846WWVM/ref=s9_al_ft_g405_ir06?pf_rd_m=A1X6FK5RDHNB96&amp;pf_rd_s=center-3&amp;pf_rd_r=18DQCRRWR57VAJS1MEMF&amp;pf_rd_t=1401&amp;pf_rd_p=424086267&amp;pf_rd_i=1000745303&tag=amazon0d16-21" rel="nofollow">Sprinkle </a></li>
+<li><a title="Paper Camera" href="http://www.amazon.fr/gp/product/B005J0VPNC/ref=s9_al_ft_g405_ir07?pf_rd_m=A1X6FK5RDHNB96&amp;pf_rd_s=center-3&amp;pf_rd_r=18DQCRRWR57VAJS1MEMF&amp;pf_rd_t=1401&amp;pf_rd_p=424086267&amp;pf_rd_i=1000745303&tag=amazon0d16-21" rel="nofollow">Paper Camera </a></li>
+<li><a title="PAC-MAN HD (Kindle Tablet Edition)" href="http://www.amazon.fr/gp/product/B00A757J0W/ref=s9_al_ft_g405_ir08?pf_rd_m=A1X6FK5RDHNB96&amp;pf_rd_s=center-3&amp;pf_rd_r=18DQCRRWR57VAJS1MEMF&amp;pf_rd_t=1401&amp;pf_rd_p=424086267&amp;pf_rd_i=1000745303&tag=amazon0d16-21" rel="nofollow">PAC-MAN HD (Kindle Tablet Edition) </a></li>
+<li><a title="Jamie's 20 Minute Meals" href="http://www.amazon.fr/gp/product/B004TTZHBK/ref=s9_al_ft_g405_ir09?pf_rd_m=A1X6FK5RDHNB96&amp;pf_rd_s=center-3&amp;pf_rd_r=18DQCRRWR57VAJS1MEMF&amp;pf_rd_t=1401&amp;pf_rd_p=424086267&amp;pf_rd_i=1000745303&tag=amazon0d16-21" rel="nofollow">Jamie's 20 Minute Meals </a></li>
+</ul>
+<p>Attention, l'offre est valable uniquement aujourd'hui ! Je vous recommande surtout Swiftkey (clavier Android) que j'utilise tous les jours et qui est une tuerie.</p>
+<p>Merci à <a href="https://twitter.com/blackbankiz/status/373366900593410048">BlackBankiz</a> pour l'info !</p>
+]]></content:encoded>
+			<wfw:commentRss>http://korben.info/app-gratuite-amazon.html/feed</wfw:commentRss>
+		<slash:comments>23</slash:comments>
+		</item>
+		<item>
+		<title>Quand la recherche globale sous Thunderbird ne fonctionne plus</title>
+		<link>http://korben.info/thunderbird-recherche-globale-ne-fonctionne-plus.html</link>
+		<comments>http://korben.info/thunderbird-recherche-globale-ne-fonctionne-plus.html#comments</comments>
+		<pubDate>Fri, 30 Aug 2013 08:30:57 +0000</pubDate>
+		<dc:creator>Korben</dc:creator>
+				<category><![CDATA[Email]]></category>
+		<category><![CDATA[Linux]]></category>
+		<category><![CDATA[Mac OSX]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">http://korben.info/?p=42545</guid>
+		<description><![CDATA[J'utilise Thunderbird pour mes emails et dans ce logiciel, il y a une fonctionnalité que j'aime beaucoup nommée "Recherche globale". Il s'agit en effet du moteur de recherche d'emails qui permet en quelques secondes de retrouver une conversation. Je m'en sers chaque jour, car je suis assez bordélique et je ne classe rien du tout. [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>J'utilise <strong>Thunderbird</strong> pour mes emails et dans ce logiciel, il y a une fonctionnalité que j'aime beaucoup nommée "<strong>Recherche globale</strong>". Il s'agit en effet du moteur de recherche d'emails qui permet en quelques secondes de retrouver une conversation.</p>
+<p>Je m'en sers chaque jour, car je suis assez bordélique et je ne classe rien du tout. La fonctionnalité de recherche suffit à mon bonheur. Seulement, voilà... Depuis quelque temps, les résultats de recherche que me renvoie Thunderbird sont périmés. Il ne trouve plus mes emails récents.</p>
+<p>La faute à la <strong>base sqlite</strong> qui contient les éléments nécessaires à une recherche, qui n'est plus mise à jour (corrompue ?). Si vous rencontrez le même souci que moi, voici donc comment corriger ce problème.</p>
+<p>Tout d'abord, il faut quitter Thunderbird. Ensuite, rendez-vous dans votre répertoire de profil Thunderbird.</p>
+<p>Sous Windows c'est là :</p>
+<blockquote><p>%APPDATA%\Thunderbird\Profiles\xxxxxxxx.default\</p></blockquote>
+<p>Sous Mac OSX c'est là :</p>
+<blockquote><p>~/Library/Thunderbird/Profiles/xxxxxxxx.default/</p></blockquote>
+<p>Et sous Linux, c'est là :</p>
+<blockquote><p>~/.thunderbird/xxxxxxxx.default/</p></blockquote>
+<p>Si vous avez plusieurs répertoires de profils, sélectionnez celui qui a été le plus récemment modifié. Ou rendez-vous dans les "Paramètres des comptes" -&gt; "Paramètre serveur" et regardez le nom du dossier de stockage.</p>
+<p style="text-align: center;"><a href="http://korben.info/wp-content/uploads/2013/08/profile.jpg"><img class="aligncenter size-full wp-image-42547" alt="profile Quand la recherche globale sous Thunderbird ne fonctionne plus" src="http://korben.info/wp-content/uploads/2013/08/profile.jpg" width="650" height="242" title="Quand la recherche globale sous Thunderbird ne fonctionne plus" /></a></p>
+<p>Une fois dans ce répertoire, tout ce que vous aurez à faire, c'est <strong>supprimer le fichier global-messages-db.sqlite.</strong></p>
+<p>Ensuite, relancez Thunderbird. Celui reconstruira la base automatiquement. Pour suivre l'évolution de l'indexation, allez dans le menu "Outils" puis "Activités".</p>
+<p><a href="http://korben.info/wp-content/uploads/2013/08/lol.jpg"><img class="aligncenter size-full wp-image-42548" alt="lol Quand la recherche globale sous Thunderbird ne fonctionne plus" src="http://korben.info/wp-content/uploads/2013/08/lol.jpg" width="598" height="619" title="Quand la recherche globale sous Thunderbird ne fonctionne plus" /></a></p>
+<p>Y'a plus qu'à patienter...</p>
+]]></content:encoded>
+			<wfw:commentRss>http://korben.info/thunderbird-recherche-globale-ne-fonctionne-plus.html/feed</wfw:commentRss>
+		<slash:comments>14</slash:comments>
+		</item>
+		<item>
+		<title>Word &#8211; Ouvrir automatiquement le dernier document au lancement</title>
+		<link>http://korben.info/word-ouvrir-automatiquement-le-dernier-document-au-lancement.html</link>
+		<comments>http://korben.info/word-ouvrir-automatiquement-le-dernier-document-au-lancement.html#comments</comments>
+		<pubDate>Fri, 30 Aug 2013 07:30:34 +0000</pubDate>
+		<dc:creator>Korben</dc:creator>
+				<category><![CDATA[Infos]]></category>
+		<category><![CDATA[Office]]></category>
+
+		<guid isPermaLink="false">http://korben.info/?p=42500</guid>
+		<description><![CDATA[Si vous travaillez avec Word, voici une petite astuce qui va vous permettre d'ouvrir automatiquement au démarrage du traitement de texte, le dernier document que vous avez consulté. Cela vous évitera quelques clics pour retourner ouvrir le document qui vous intéresse. Pour cela, rien de plus simple. Créez un raccourci vers Word (Winword.exe) sur votre [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Si vous travaillez avec Word, voici une petite astuce qui va vous permettre d'ouvrir automatiquement au démarrage du traitement de texte, le dernier document que vous avez consulté.</p>
+<p>Cela vous évitera quelques clics pour retourner ouvrir le document qui vous intéresse.</p>
+<p>Pour cela, rien de plus simple. Créez un raccourci vers Word (Winword.exe) sur votre bureau ou dans la barre des tâches puis éditez ce raccourci. Chez moi, Office 365 se situe dans le répertoire suivant :</p>
+<blockquote><p>"C:\Program Files\Microsoft Office 15\root\office15\WINWORD.EXE"</p></blockquote>
+<p>Et ajoutez à la fin de la cible après les guillemets, le paramêtre /mfile1, comme ceci :</p>
+<blockquote><p>"C:\Program Files\Microsoft Office 15\root\office15\WINWORD.EXE" /mfile1</p></blockquote>
+<p style="text-align: center;"><a href="http://korben.info/wp-content/uploads/2013/08/word.png"><img class="aligncenter size-full wp-image-42501" alt="word Word   Ouvrir automatiquement le dernier document au lancement" src="http://korben.info/wp-content/uploads/2013/08/word.png" width="476" height="506" title="Word   Ouvrir automatiquement le dernier document au lancement" /></a></p>
+<p>Validez puis lancez Word ! Oh, magie, c'est bien le dernier document consulté qui sera ouvert par défaut dans Word.</p>
+<p>Si vous voulez ouvrir le dernier et l'avant dernier document, configurez le raccourci comme ceci :</p>
+<blockquote><p>"C:\Program Files\Microsoft Office 15\root\office15\WINWORD.EXE" /mfile1 /mfile2</p></blockquote>
+<p>...Et ainsi de suite...</p>
+]]></content:encoded>
+			<wfw:commentRss>http://korben.info/word-ouvrir-automatiquement-le-dernier-document-au-lancement.html/feed</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+		</item>
+		<item>
+		<title>80 bonnes pratiques SEO</title>
+		<link>http://korben.info/80-bonnes-pratiques-seo.html</link>
+		<comments>http://korben.info/80-bonnes-pratiques-seo.html#comments</comments>
+		<pubDate>Thu, 29 Aug 2013 08:30:28 +0000</pubDate>
+		<dc:creator>Korben</dc:creator>
+				<category><![CDATA[Navigateur]]></category>
+		<category><![CDATA[service web]]></category>
+
+		<guid isPermaLink="false">http://korben.info/?p=42538</guid>
+		<description><![CDATA[Si vous êtes un peu perdu avec votre référencement (SEO) et que vous cherchez en premier lieu par où commencer avec des choses "propres", la société Opquast a mis en ligne une liste contenant 80 bonnes pratiques SEO à respecter (si vous le pouvez). Cette liste est sous licence Creative Commons et est disponible aussi [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Si vous êtes un peu perdu avec votre référencement (SEO) et que vous cherchez en premier lieu par où commencer avec des choses "propres", la société Opquast a mis en ligne <a href="http://checklists.opquast.com/seo">une liste contenant 80 bonnes pratiques SEO à respecter</a> (si vous le pouvez).</p>
+<p>Cette liste est sous licence Creative Commons et est disponible aussi bien en ligne qu'en format <a title="Télécharger la liste au format xls" href="https://data.oqs-cdn.com/checklists/478/Opquast-SEO_20111116.xls">Excel</a>, <a title="Télécharger la liste au format ods" href="https://data.oqs-cdn.com/checklists/478/Opquast-SEO_20111116.ods">OpenOffice</a>, et <a title="Télécharger la liste au format pdf" href="https://data.oqs-cdn.com/checklists/478/Opquast-SEO_20111116.pdf">pdf.</a></p>
+<p>Si vous voulez aller encore plus loin dans l'optimisation de votre site, Opquast a mis aussi en ligne une <a href="https://desktop.opquast.com/fr/">extension pour Firefox</a> capable de scanner une page web et de vous indiquer des "problèmes" selon différentes checklists (SEO, Perf web, accessibilité...etc.)</p>
+<p style="text-align: center;"><a href="http://korben.info/wp-content/uploads/2013/08/harlem.jpg"><img class="aligncenter size-full wp-image-42539" alt="harlem 80 bonnes pratiques SEO" src="http://korben.info/wp-content/uploads/2013/08/harlem.jpg" width="650" height="257" title="80 bonnes pratiques SEO" /></a></p>
+<p>A tester d'urgence !</p>
+]]></content:encoded>
+			<wfw:commentRss>http://korben.info/80-bonnes-pratiques-seo.html/feed</wfw:commentRss>
+		<slash:comments>20</slash:comments>
+		</item>
+		<item>
+		<title>Sauvegarder les photos de son mobile avec BTSync</title>
+		<link>http://korben.info/sauvegarder-photos-telephone-sur-ordinateur.html</link>
+		<comments>http://korben.info/sauvegarder-photos-telephone-sur-ordinateur.html#comments</comments>
+		<pubDate>Wed, 28 Aug 2013 13:30:05 +0000</pubDate>
+		<dc:creator>Korben</dc:creator>
+				<category><![CDATA[Linux]]></category>
+		<category><![CDATA[Mac OSX]]></category>
+		<category><![CDATA[Mobile]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">http://korben.info/?p=42527</guid>
+		<description><![CDATA[J'ai une question pour vous... Comment sauvegardez vous les photos que vous prenez avec votre téléphone ? Les transférez-vous en Bluetooth régulièrement sur votre ordi ? Les synchronisez-vous avec Google Plus ou Dropbox ? Sortez-vous la carte micro SD de son emplacement pour la brancher sur votre ordinateur ? Les transférez-vous simplement avec le cable [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>J'ai une question pour vous... Comment sauvegardez vous les photos que vous prenez avec votre téléphone ?</p>
+<ul>
+<li>Les transférez-vous en Bluetooth régulièrement sur votre ordi ?</li>
+<li>Les synchronisez-vous avec Google Plus ou Dropbox ?</li>
+<li>Sortez-vous la carte micro SD de son emplacement pour la brancher sur votre ordinateur ?</li>
+<li>Les transférez-vous simplement avec le cable USB du téléphone ?</li>
+</ul>
+<p>Et comment faites-vous, lorsque vous n'êtes pas chez vous, pour avoir toujours un backup de vos précieuses photos ?</p>
+<p>Jusqu'à l'année dernière, j'utilisais Dropbox, mais voulant me recentrer sur l'auto-hébergement, je me suis installé Owncloud. Ça fonctionne, mais y'a quand même souvent des bugs avec la version mobile, du coup, mes photos n'étaient pas réellement sauvegardées. Enfin, un coup sur deux et pas dans leur intégralité.</p>
+<p>Finalement, j'ai trouvé mon salut avec <strong><a href="http://labs.bittorrent.com/experiments/sync.html">BT Sync</a></strong> dont j'ai déjà parlé abondamment sur mon site. BT Sync, c'est le soft de Bittorrent qui permet de synchroniser via P2P des répertoires entre ses différents appareils.</p>
+<p>Je vais donc vous décrire mon installation, comme ça, si ça vous branche, vous pourrez faire pareil chez vous, pour avoir un backup permanent de vos photos.</p>
+<p>Avant de se pencher sur le mobile, vous devez installer une version de BT Sync soit sur votre ordinateur (Linux, Mac, Windows), soit sur votre serveur NAS (ce qui est mon cas). Mon serveur étant un Synology, je ne me suis pas trop cassé la tête pour installé BT Sync et j'ai juste ajouté comme source de paquets dans le "Centre des paquets" (bouton Paramètres), le dépot suivant :</p>
+<blockquote><p>http://packages.synocommunity.com</p></blockquote>
+<p>Si vous êtes sous Windows, Mac ou une distrib Linux, <a href="http://labs.bittorrent.com/experiments/sync.html">c'est par ici</a>.</p>
+<p>Ensuite, je me suis rendu sur le <a href="https://play.google.com/store/apps/details?id=com.bittorrent.sync">PlayStore</a> pour installer BT Sync sur mon téléphone. Pour les iPhoniens, sachez aussi que BT Sync et maintenant <a href="https://itunes.apple.com/us/app/bittorrent-sync/id665156116?ls=1&amp;mt=8">disponible depuis hier sous iOS</a>.</p>
+<p>Dans l'app mobile, vous verrez 3 onglets.</p>
+<ul>
+<li><strong>Sync</strong> - qui permet de synchroniser dans les 2 sens des répertoires</li>
+<li><strong>Envoyer</strong> - qui permet d'envoyer rapidement à un ami un seul et unique fichier</li>
+<li><strong>Sauveg</strong>. - qui permet de faire une simple sauvegarde de vos fichiers. C'est comme la fonction synchro sauf que ça ne fonctionne que dans un sens, si vous préférez.</li>
+</ul>
+<p>Cliquez sur l'icone du petit dossier qui se trouve en haut à droite puis choisissez le dossier que vous voulez sauvegarder. En général, les photos sont stockées dans un répertoire DCIM sur la carte SD ou sur le téléphone. Allez jeter un oeil dans le dossier /storage.</p>
+<p style="text-align: center;"><a href="http://korben.info/wp-content/uploads/2013/08/Screenshot_2013-08-28-07-45-12.png"><img class="aligncenter size-full wp-image-42528" alt="Screenshot 2013 08 28 07 45 12 Sauvegarder les photos de son mobile avec BTSync" src="http://korben.info/wp-content/uploads/2013/08/Screenshot_2013-08-28-07-45-12.png" width="300" height="533" title="Sauvegarder les photos de son mobile avec BTSync" /></a></p>
+<p style="text-align: left;">Une fois que c'est fait, cliquez sur "Suivant" et vous obtiendrez un code. Ce code, vous devez le conserver, car c'est lui qui permettra à l'autre client BT Sync (sur votre PC/NAS) de trouver les fichiers et d'y accéder. Vous pouvez vous l'envoyer par email par exemple.</p>
+<p style="text-align: center;"><a href="http://korben.info/wp-content/uploads/2013/08/Screenshot_2013-08-28-07-46-07.png"><img alt="Screenshot 2013 08 28 07 46 07 Sauvegarder les photos de son mobile avec BTSync" src="http://korben.info/wp-content/uploads/2013/08/Screenshot_2013-08-28-07-46-07.png" width="300" height="533" title="Sauvegarder les photos de son mobile avec BTSync" /></a></p>
+<p style="text-align: center;"><a href="http://korben.info/wp-content/uploads/2013/08/Screenshot_2013-08-28-07-44-55.png"><img alt="Screenshot 2013 08 28 07 44 55 Sauvegarder les photos de son mobile avec BTSync" src="http://korben.info/wp-content/uploads/2013/08/Screenshot_2013-08-28-07-44-55.png" width="300" height="533" title="Sauvegarder les photos de son mobile avec BTSync" /></a></p>
+<p style="text-align: left;">Ajoutez alors un nouveau dossier à synchroniser dans votre client Desktop, entrez la clé secrète et validez ! Et vous verrez votre téléphone commencer la synchro avec votre ordinateur. Je ne l'ai pas précisé, mais pas besoin d'être sur le même réseau pour que ça synchronise.</p>
+<p style="text-align: center;"><a href="http://korben.info/wp-content/uploads/2013/08/BTSync.jpg"><img class="aligncenter size-full wp-image-42532" alt="BTSync Sauvegarder les photos de son mobile avec BTSync" src="http://korben.info/wp-content/uploads/2013/08/BTSync.jpg" width="650" height="349" title="Sauvegarder les photos de son mobile avec BTSync" /></a></p>
+<p style="text-align: left;">Sur mon serveur NAS, ça donne ça :</p>
+<p style="text-align: center;"><a href="http://korben.info/wp-content/uploads/2013/08/syno.png"><img class="aligncenter size-full wp-image-42535" alt="syno Sauvegarder les photos de son mobile avec BTSync" src="http://korben.info/wp-content/uploads/2013/08/syno.png" width="650" height="434" title="Sauvegarder les photos de son mobile avec BTSync" /></a></p>
+<p style="text-align: left;">Dans les paramètres de BT Sync, je vous recommande vivement de ne pas cocher la case "Données cellulaires" sinon, votre téléphone fera sa sauvegarde aussi bien en WiFi qu'en 3G et vous risquez d'exploser le "fair use" de votre forfait. Wifi uniquement, ça suffit largement.</p>
+<p style="text-align: center;"><a href="http://korben.info/wp-content/uploads/2013/08/Screenshot_2013-08-28-07-50-54.png"><img alt="Screenshot 2013 08 28 07 50 54 Sauvegarder les photos de son mobile avec BTSync" src="http://korben.info/wp-content/uploads/2013/08/Screenshot_2013-08-28-07-50-54.png" width="300" height="533" title="Sauvegarder les photos de son mobile avec BTSync" /></a></p>
+<p style="text-align: left;">Cochez aussi "Démarrage automatique" pour que BT Sync fonctionne toujours en tâche de fond.</p>
+<p style="text-align: left;">Et voilà ! Vos photos seront automatiquement sauvegardées sans transiter via un serveur tiers. Vive le P2P !</p>
+<p style="text-align: left;">Vous l'aurez compris, vous pouvez aussi utiliser BT Sync pour sauvegarder automatiquement des documents de votre ordinateur vers votre téléphone, ou pour synchroniser 2 téléphones (et ainsi pourquoi pas, partager vos photos avec d'autres membres de votre famille).</p>
+<p style="text-align: left;">Si vous ne l'avez pas encore essayé, je vous invite vivement à le faire, car BT Sync est vraiment application pratique, simple à utiliser et surtout qui fonctionne !</p>
+]]></content:encoded>
+			<wfw:commentRss>http://korben.info/sauvegarder-photos-telephone-sur-ordinateur.html/feed</wfw:commentRss>
+		<slash:comments>22</slash:comments>
+		</item>
+		<item>
+		<title>Cheat &#8211; Pour vous souvenir de la bonne syntaxe</title>
+		<link>http://korben.info/cheat-pour-vous-souvenir-de-la-bonne-syntaxe.html</link>
+		<comments>http://korben.info/cheat-pour-vous-souvenir-de-la-bonne-syntaxe.html#comments</comments>
+		<pubDate>Wed, 28 Aug 2013 11:30:56 +0000</pubDate>
+		<dc:creator>Korben</dc:creator>
+				<category><![CDATA[Linux]]></category>
+
+		<guid isPermaLink="false">http://korben.info/?p=42523</guid>
+		<description><![CDATA[Cheat est un soft pour Linux qui permet d'obtenir d'un seul coup d'oeil des exemples d'utilisation sur des commandes comme awk, bash, find, mysql, mount, sed, ssh, nmap, tar...etc. Pratique pour les admins Linux/Unix qui ont besoin de certaines commandes, mais qui ne les utilisent pas assez souvent pour se souvenir des bonnes syntaxes d'utilisation. [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p><strong>Cheat</strong> est un soft pour Linux qui permet d'obtenir d'un seul coup d'oeil des exemples d'utilisation sur des commandes comme awk, bash, find, mysql, mount, sed, ssh, nmap, tar...etc. Pratique pour les admins Linux/Unix qui ont besoin de certaines commandes, mais qui ne les utilisent pas assez souvent pour se souvenir des bonnes syntaxes d'utilisation.</p>
+<p>Par exemple, si vous êtes perdu avec la commande TAR, pas la peine d'aller chercher sur Google. Il suffit de taper</p>
+<blockquote><p>cheat tar</p></blockquote>
+<p>et vous obtiendrez quelque chose qui ressemblera à ceci :</p>
+<blockquote><p># To extract an uncompressed archive:<br />
+tar -xvf /path/to/foo.tar</p>
+<p># To extract a .gz archive:<br />
+tar -xzvf /path/to/foo.tgz</p>
+<p># To create a .gz archive:<br />
+tar -czvf /path/to/foo.tgz /path/to/foo/</p>
+<p># To extract a .bz2 archive:<br />
+tar -xjvf /path/to/foo.tgz</p>
+<p># To create a .bz2 archive:<br />
+tar -cjvf /path/to/foo.tgz /path/to/foo/</p></blockquote>
+<p>Ce qui vous aidera à coup sûr. Évidemment, il est possible de créer vos propres mémos si vous le désirez. La liste <a href="https://github.com/chrisallenlane/cheat/tree/master/cheatsheets">des mémos dispo est ici</a>.</p>
+<p>Je trouve ce logiciel d'intérêt public et ce serait génial qu'il soit intégré d'office dans les distribs.</p>
+<p><a href="https://github.com/chrisallenlane/cheat">Pour en savoir plus...</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://korben.info/cheat-pour-vous-souvenir-de-la-bonne-syntaxe.html/feed</wfw:commentRss>
+		<slash:comments>8</slash:comments>
+		</item>
+		<item>
+		<title>Super Parkour Bros</title>
+		<link>http://korben.info/super-parkour-bros.html</link>
+		<comments>http://korben.info/super-parkour-bros.html#comments</comments>
+		<pubDate>Wed, 28 Aug 2013 08:30:06 +0000</pubDate>
+		<dc:creator>Korben</dc:creator>
+				<category><![CDATA[Vidéo]]></category>
+
+		<guid isPermaLink="false">http://korben.info/?p=42516</guid>
+		<description><![CDATA[Quand Mario et Luigi sortent de leur jeu pour rejoindre le monde réel, il n'y vont pas à moitié ! Mario est incarné par les pro de la cascade, Christian Russell de la CBR Stunt Team et Luigi par Ronnie Shalvis.]]></description>
+				<content:encoded><![CDATA[<p>Quand Mario et Luigi sortent de leur jeu pour rejoindre le monde réel, il n'y vont pas à moitié !</p>
+<p style="text-align: center;"><iframe src="http://www.youtube.com/embed/67qqEcGDC0s?feature=player_embedded" height="360" width="640" allowfullscreen="" frameborder="0"></iframe></p>
+<p style="text-align: left;">Mario est incarné par les pro de la cascade, Christian Russell de la <a href="http://www.youtube.com/CBRstuntteam">CBR Stunt Team</a> et Luigi par <a href="http://www.youtube.com/ronniestreetstunts" target="_blank">Ronnie Shalvis.</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://korben.info/super-parkour-bros.html/feed</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+		</item>
+		<item>
+		<title>Des étoiles lors de la saisie d&#8217;un mot de passe dans le terminal</title>
+		<link>http://korben.info/des-etoiles-lors-de-la-saisie-dun-mot-de-passe-dans-le-terminal.html</link>
+		<comments>http://korben.info/des-etoiles-lors-de-la-saisie-dun-mot-de-passe-dans-le-terminal.html#comments</comments>
+		<pubDate>Wed, 28 Aug 2013 07:30:08 +0000</pubDate>
+		<dc:creator>Korben</dc:creator>
+				<category><![CDATA[Linux]]></category>
+		<category><![CDATA[Mac OSX]]></category>
+
+		<guid isPermaLink="false">http://korben.info/?p=42510</guid>
+		<description><![CDATA[En ligne de commande, aussi bien sous Linux que sous Mac OSX, lorsqu'on tape un mot de passe (lors d'un sudo par exemple), rien ne s'affiche. C'est bien ! Mais ça peut en déranger certains qui aimeraient savoir combien de lettres ils ont tapées. Alors, pourquoi ne pas faire comme sur les formulaires web et [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>En ligne de commande, aussi bien sous Linux que sous Mac OSX, lorsqu'on tape un mot de passe (lors d'un sudo par exemple), rien ne s'affiche.</p>
+<p>C'est bien !</p>
+<p>Mais ça peut en déranger certains qui aimeraient savoir combien de lettres ils ont tapées. Alors, pourquoi ne pas faire comme sur les formulaires web et afficher des étoiles lors de la saisie du mot de passe ?</p>
+<p>Pour cela, <a href="http://www.maketecheasier.com/quick-tips/show-password-asterisks-in-terminal">rien de plus simple</a>. Ouvrez un terminal et entrez la commande suivante :</p>
+<blockquote><p>sudo visudo</p></blockquote>
+<p>Localisez ensuite la ligne</p>
+<blockquote><p>Defaults                  env_reset</p></blockquote>
+<p>Et ajoutez-lui le paramètre pwfeedback comme ceci :</p>
+<blockquote><p>Defaults                  env_reset,pwfeedback</p></blockquote>
+<p><a href="http://korben.info/wp-content/uploads/2013/08/650.jpg"><img class="aligncenter size-full wp-image-42511" alt="650 Des étoiles lors de la saisie dun mot de passe dans le terminal" src="http://korben.info/wp-content/uploads/2013/08/650.jpg" width="650" height="477" title="Des étoiles lors de la saisie dun mot de passe dans le terminal" /></a>Sauvegardez, quittez et relancez le terminal. Pour tester si cela a fonctionné, lancez n'importe quel soft avec un sudo et entrez votre mot de passe. Vous devriez voir apparaitre ces chères étoiles.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://korben.info/des-etoiles-lors-de-la-saisie-dun-mot-de-passe-dans-le-terminal.html/feed</wfw:commentRss>
+		<slash:comments>8</slash:comments>
+		</item>
+		<item>
+		<title>Birdfont &#8211; Créer une police de caractère</title>
+		<link>http://korben.info/creer-police-de-caractere-birdfont.html</link>
+		<comments>http://korben.info/creer-police-de-caractere-birdfont.html#comments</comments>
+		<pubDate>Tue, 27 Aug 2013 13:30:35 +0000</pubDate>
+		<dc:creator>Korben</dc:creator>
+				<category><![CDATA[Design]]></category>
+		<category><![CDATA[Infos]]></category>
+
+		<guid isPermaLink="false">http://korben.info/?p=42483</guid>
+		<description><![CDATA[Créer "from scratch" une police de caractère n'est pas uniquement une activité réservée aux élites du design. Avec les bons outils, chacun peut le faire assez facilement. Du coup, si tel Michelange tentant de changer une ampoule dans sa baignoire, vous êtes frappé par l'inspiration divine, foncez télécharger BirdFont. Ce logiciel open source et gratuit [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Créer "from scratch" une police de caractère n'est pas uniquement une activité réservée aux élites du design. Avec les bons outils, chacun peut le faire assez facilement.</p>
+<p>Du coup, si tel Michelange tentant de changer une ampoule dans sa baignoire, vous êtes frappé par l'inspiration divine, foncez télécharger <a href="http://birdfont.org/">BirdFont</a>.</p>
+<p style="text-align: left;">Ce logiciel open source et gratuit vous donne tous les outils pour dessiner la font de vos rêves sous Windows, Linux et OSX. Une palette d'outils est à votre disposition, vous permettant de dessiner en vectoriel chacune de vos lettres. Il est même possible d'importer des images pour dessiner par dessus et ainsi pourquoi pas, réaliser une police de votre écriture manuscrite.</p>
+<p style="text-align: center;">
+<a href="http://korben.info/wp-content/uploads/2013/08/bird2.jpg"><img class="aligncenter size-full wp-image-42487" alt="bird2 Birdfont   Créer une police de caractère" src="http://korben.info/wp-content/uploads/2013/08/bird2.jpg" width="650" height="456" title="Birdfont   Créer une police de caractère" /></a></p>
+<p>Une fois terminé, vous n'aurez plus qu'à exporter votre oeuvre en TTF, EOT ou SVG.</p>
+<p><a href="http://birdfont.org/">BirdFont est téléchargeable ici</a> (contre un don optionnel) et une série de <a href="http://birdfont.org/doku/doku.php/tutorials">tutos sont dispo ici</a>. J'avoue n'avoir pas encore saisi toutes les fonctionnalités de la palette, mais même comme ça, on peut très bien s'en sortir.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://korben.info/creer-police-de-caractere-birdfont.html/feed</wfw:commentRss>
+		<slash:comments>4</slash:comments>
+		</item>
+		<item>
+		<title>Réparez votre Office 365 avec OffCat</title>
+		<link>http://korben.info/reparez-votre-office-365-avec-offcat.html</link>
+		<comments>http://korben.info/reparez-votre-office-365-avec-offcat.html#comments</comments>
+		<pubDate>Tue, 27 Aug 2013 13:24:55 +0000</pubDate>
+		<dc:creator>Korben</dc:creator>
+				<category><![CDATA[Office]]></category>
+
+		<guid isPermaLink="false">http://korben.info/?p=42491</guid>
+		<description><![CDATA[Si vous utilisez Microsoft Office 365 ou une version antérieure, et que vous rencontrez des petits soucis avec l'un de ses modules (Outlook, Word, PowerPoint, Excel...etc.), ne désespérez pas trop vite car Microsoft a pensé à tout ! Kewah ? Et bien ils ont développé un outil baptisé Office Configuration Analyzer Tool (OffCat) qui est [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Si vous utilisez <strong>Microsoft Office 365</strong> ou une version antérieure, et que vous rencontrez des petits soucis avec l'un de ses modules (Outlook, Word, PowerPoint, Excel...etc.), ne désespérez pas trop vite car Microsoft a pensé à tout !</p>
+<p>Kewah ?</p>
+<p style="text-align: left;">Et bien ils ont développé un outil baptisé <strong>Office Configuration Analyzer Tool</strong> (OffCat) qui est capable d'analyser l'intégralité de votre suite Office, de localiser les problèmes critiques ou potentiels et de vous indiquer des solutions</p>
+<p style="text-align: center;"><a href="http://korben.info/wp-content/uploads/2013/08/scan3.png"><img class="aligncenter" alt="scan3 Réparez votre Office 365 avec OffCat" src="http://korben.info/wp-content/uploads/2013/08/scan3.png" width="650" height="488" title="Réparez votre Office 365 avec OffCat" /></a></p>
+<p style="text-align: center;"><a href="http://korben.info/wp-content/uploads/2013/08/scan11.png"><img class="aligncenter size-full wp-image-42495" alt="scan11 Réparez votre Office 365 avec OffCat" src="http://korben.info/wp-content/uploads/2013/08/scan11.png" width="650" height="488" title="Réparez votre Office 365 avec OffCat" /></a></p>
+<p style="text-align: center;">
+<p style="text-align: center;"><a href="http://korben.info/wp-content/uploads/2013/08/scan21.png"><img class="aligncenter size-full wp-image-42497" alt="scan21 Réparez votre Office 365 avec OffCat" src="http://korben.info/wp-content/uploads/2013/08/scan21.png" width="650" height="488" title="Réparez votre Office 365 avec OffCat" /></a></p>
+<p> Génial quand on a un Office qui fonctionne un peu de travers et qu'on souhaite le soigner sans avoir à tout réinstaller ou pire, reformater ! Suite à chaque analyse, vous obtiendrez un rapport que vous pourrez consulter directement ou exporter.</p>
+<p>Cet outil de diagnostic est bien sûr gratuit et <a href="http://support.microsoft.com/kb/2812744#2">téléchargeable ici</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://korben.info/reparez-votre-office-365-avec-offcat.html/feed</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+		</item>
+		<item>
+		<title>Giphy &#8211; Pour trouver les GIFs animés de vos rêves</title>
+		<link>http://korben.info/trouver-gif-anime.html</link>
+		<comments>http://korben.info/trouver-gif-anime.html#comments</comments>
+		<pubDate>Tue, 27 Aug 2013 11:30:09 +0000</pubDate>
+		<dc:creator>Korben</dc:creator>
+				<category><![CDATA[Culture Internet]]></category>
+		<category><![CDATA[service web]]></category>
+
+		<guid isPermaLink="false">http://korben.info/?p=42478</guid>
+		<description><![CDATA[Si vous aimez les GIF animés, et que vous en usez et abusez pour illustrer vos propos sur les blogs, les forums ou Twitter, alors j'ai ce qu'il vous faut. Ça s'appelle Giphy et c'est tout simplement un moteur de recherche de GIF animé. Entrez le mot de votre choix, puis passez la souris sur [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Si vous aimez les GIF animés, et que vous en usez et abusez pour illustrer vos propos sur les blogs, les forums ou Twitter, alors j'ai ce qu'il vous faut.</p>
+<p>Ça s'appelle <strong><a href="http://giphy.com/">Giphy</a></strong> et c'est tout simplement un moteur de recherche de GIF animé. Entrez le mot de votre choix, puis passez la souris sur les résultats de recherche et vous verrez les images s'animer.</p>
+<p style="text-align: center;"><a href="http://korben.info/wp-content/uploads/2013/08/giphy.jpg"><img class="aligncenter size-full wp-image-42480" alt="giphy Giphy   Pour trouver les GIFs animés de vos rêves" src="http://korben.info/wp-content/uploads/2013/08/giphy.jpg" width="650" height="548" title="Giphy   Pour trouver les GIFs animés de vos rêves" /></a></p>
+<p>Les images sont classées par thématique, par expression (content, pas content, bonjour, j'aime...etc) et il y a même une page mettant en avant les "<a href="http://giphy.com/artists">artistes</a>" du GIF animé. Giphy existe aussi sous la forme d'une <a href="https://chrome.google.com/webstore/detail/search-in-a-giphy/jlleokkdhkflpmghiioglgmnminbekdi">extension pour Chrome</a> , d'un <a href="http://labs.giphy.com/screensaver/artists.html">économiseur d'écran</a> et d'une pseudo <a href="http://tv.giphy.com/">chaine de TV</a> qui vous permet de parcourir aléatoirement et en plein écran, les milliers d'images animées.</p>
+<p>Notez aussi que si vous êtes développeur et que vous souhaitez vous connecter à Giphy, <a href="https://github.com/giphy/GiphyAPI">il existe une API</a>. D'ailleurs, Giphy lance des tas de <a href="http://labs.giphy.com/">mini-projets</a> autour de cette API qu'il est intéressant de regarder.</p>
+<p>Je suis certain que vous allez bien vous amuser !</p>
+<p style="text-align: center;"><a href="http://korben.info/wp-content/uploads/2013/08/giphy.gif"><img class="aligncenter size-full wp-image-42479" alt="giphy Giphy   Pour trouver les GIFs animés de vos rêves" src="http://korben.info/wp-content/uploads/2013/08/giphy.gif" width="500" height="209" title="Giphy   Pour trouver les GIFs animés de vos rêves" /></a></p>
+<p>Merci à <a href="https://twitter.com/c4software/status/372255708227850240">Valentin</a> pour le partage.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://korben.info/trouver-gif-anime.html/feed</wfw:commentRss>
+		<slash:comments>9</slash:comments>
+		</item>
+		<item>
+		<title>Ngrok &#8211; Créer un tunnel pour vos applications locales</title>
+		<link>http://korben.info/ngrok-creer-un-tunnel-pour-vos-applications-locale.html</link>
+		<comments>http://korben.info/ngrok-creer-un-tunnel-pour-vos-applications-locale.html#comments</comments>
+		<pubDate>Tue, 27 Aug 2013 08:30:05 +0000</pubDate>
+		<dc:creator>Korben</dc:creator>
+				<category><![CDATA[Développement]]></category>
+		<category><![CDATA[service web]]></category>
+
+		<guid isPermaLink="false">http://korben.info/?p=42474</guid>
+		<description><![CDATA[Ngrok est un logiciel couplé à un service web qui va vous permettre de créer un tunnel à partir d'Internet vers un port sur votre machine en local (TCP ou UDP). L'intérêt pour un développeur est de pouvoir faire une démo publique sans avoir à déployer son projet sur un serveur. Pour cela, il suffit [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p><strong><a href="https://ngrok.com/">Ngrok</a></strong> est un logiciel couplé à un service web qui va vous permettre de créer un tunnel à partir d'Internet vers un port sur votre machine en local (TCP ou UDP). L'intérêt pour un développeur est de pouvoir faire une démo publique sans avoir à déployer son projet sur un serveur. Pour cela, il suffit d'installer Ngrok (Mac, Linux, Windows) et de communiquer aux gens que vous voulez, l'URL fournie par le service qui sera de type : http://xxxx.ngrok.com</p>
+<p>Mais Ngrok va un peu plus loin que le simple tunnel. Il capture tout le trafic HTTP qui circule dans le tunnel, à des fins d'inspection. Ainsi, vous pourrez plus facilement débugger vos entêtes HTTP, les données de formulaires, les transmissions JSON/XML...etc.. Et surtout vous pourrez rejouer chacune de ces requêtes.</p>
+<p style="text-align: center;"><a href="http://korben.info/wp-content/uploads/2013/08/ngrok.jpg"><img class="aligncenter size-full wp-image-42475" alt="ngrok Ngrok   Créer un tunnel pour vos applications locales" src="http://korben.info/wp-content/uploads/2013/08/ngrok.jpg" width="650" height="362" title="Ngrok   Créer un tunnel pour vos applications locales" /></a></p>
+<p>Ngrok fonctionne aussi en HTTPS et il est possible de mettre un mot de passe sur son sous-domaine pour éviter les intrus.</p>
+<p>Si vous voulez tester Ngrok, sachez que c'est entièrement gratuit et disponible <a href="https://ngrok.com/">à cette adresse</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://korben.info/ngrok-creer-un-tunnel-pour-vos-applications-locale.html/feed</wfw:commentRss>
+		<slash:comments>8</slash:comments>
+		</item>
+		<item>
+		<title>Comment suivre un internaute sans cookie ni javascript ?</title>
+		<link>http://korben.info/etag-tracking.html</link>
+		<comments>http://korben.info/etag-tracking.html#comments</comments>
+		<pubDate>Tue, 27 Aug 2013 07:30:46 +0000</pubDate>
+		<dc:creator>Korben</dc:creator>
+				<category><![CDATA[Développement]]></category>
+
+		<guid isPermaLink="false">http://korben.info/?p=42466</guid>
+		<description><![CDATA[Vous vous croyez protégé de toute forme de tracking car vous avez désactivé ou filtré le JavaScript, flash, les cookies...etc. ? Eh bien détrompez-vous, car même si vous avez mis en place ce plugin qui permet de brouiller les pistes face à des méthodes de tracking non traditionnelles comme Panopticlik, il est toujours possible de [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Vous vous croyez protégé de toute forme de tracking car vous avez désactivé ou filtré le JavaScript, flash, les cookies...etc. ?</p>
+<p>Eh bien détrompez-vous, car même si vous avez mis en place <a href="http://korben.info/brouiller-les-pistes-avec-firegloves.html">ce plugin</a> qui permet de brouiller les pistes face à des méthodes de tracking non traditionnelles comme Panopticlik, il est toujours possible de vous suivre.</p>
+<p>Comment ?</p>
+<p>Et bien tout simplement en détournant l'utilisation des ETag.</p>
+<p>Pour ceux qui ne seraient pas familiers avec ce concept, ETag est une fonctionnalité propre aux serveurs web type Apache, qui permet simplement d'identifier de manière unique un fichier (page web, image, CSS...Etc.).</p>
+<p>Lorsque vous-vous rendez sur une page web, votre navigateur envoie au serveur Apache, l'ETag du fichier qu'il s'apprête à lui demander (et qu'il possède dans son cache). Si le numéro d'ETag du fichier présent sur le serveur est identique, cela signifie que celui-ci n'a pas changé et qu'il n'est pas nécessaire de le télécharger à nouveau. Si au contraire, le code ETag a changé, alors le navigateur récupérera la nouvelle version à partir du serveur.</p>
+<blockquote>
+<ul>
+<li>HTTP/1.1 200 OK</li>
+<li>Date: Mon, 26 Aug 2013 15:35:26 GMT</li>
+<li>Last-Modified: Fri, 22 Aug 2013 15:21:41 GMT</li>
+<li>Etag: "b44a244a-dba-d2a52130"</li>
+</ul>
+</blockquote>
+<p style="text-align: center;"><a href="http://korben.info/wp-content/uploads/2013/08/etags4.jpg"><img class="aligncenter size-full wp-image-42471" alt="etags4 Comment suivre un internaute sans cookie ni javascript ?" src="http://korben.info/wp-content/uploads/2013/08/etags4.jpg" width="632" height="385" title="Comment suivre un internaute sans cookie ni javascript ?" /></a></p>
+<p>À partir de là, il devient alors relativement simple de tracker un internaute. Un genre de cookie sans cookie si vous préférez. Le bidouilleur Lucb1e a mis en ligne <a href="https://github.com/lucb1e/cookielesscookies">un code permettant de faire cela</a>.</p>
+<p>Pour que l'astuce fonctionne, il charge l'image qui contient le ETag, après que l'intégralité de la page soit chargée. Seule l'image contient l’ETag. Alors évidemment, toutes les infos que vous voyez apparaitre <a href="http://lucb1e.com/rp/cookielesscookies/">sur la page dans sa démo </a>(Nombre de visite, date de dernière visite, texte stocké) sont des infos déjà mises en cache dans votre navigateur. Si sa démo m'indique que j'en suis à la 5e visite, il suffit que je rafraichisse la page "(F5) pour récupérer vraiment la dernière version de la page et me rendre compte que j'en suis à 6 visites.</p>
+<p>Ce "problème" vient du fait que Lucb1e souhaite afficher les informations à l'internaute. Il aurait pu mettre à jour cette info via un JavaScript, mais il tenait vraiment à ce que tout se fasse sans JS.</p>
+<p>Évidemment, dans la vie réelle, aucun tracker ne vous affichera ces informations donc tout ceci n'est pas vraiment un problème.</p>
+<p>Alors, comment déjouer cette méthode de tracking ? La première solution qui vient à l'esprit est de désactiver tout simplement le cache. Pas de cache, pas d'ETag stocké, donc pas de tracking.</p>
+<p>Une autre méthode consiste à installer cette extension Firefox : <strong><a href="https://www.dephormation.org.uk/index.php?page=81">SecretAgent</a></strong> qui réécrit les ETag (entre autres choses) afin d'éviter tout tracking. Vous pouvez bien sûr mettre des sites en liste blanche pour leur autoriser la mise en cache des ETags.</p>
+<p>Voilà, j'espère vous avoir éclairé sur cette nouvelle technique de suivi de l'internaute qui utilise uniquement des fonctions natives du serveur web et qui est donc totalement invisible du point de vue de l'Internaute. Impossible de savoir avec cette technique, si l'on vous traque ou pas.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://korben.info/etag-tracking.html/feed</wfw:commentRss>
+		<slash:comments>15</slash:comments>
+		</item>
+		<item>
+		<title>Arnaque au blogueur</title>
+		<link>http://korben.info/arnaque-au-blogueur.html</link>
+		<comments>http://korben.info/arnaque-au-blogueur.html#comments</comments>
+		<pubDate>Mon, 26 Aug 2013 14:08:23 +0000</pubDate>
+		<dc:creator>Korben</dc:creator>
+				<category><![CDATA[Korben]]></category>
+
+		<guid isPermaLink="false">http://korben.info/?p=42462</guid>
+		<description><![CDATA[Je suis tombé sur le cul. La société LDLC vient de me contacter pour me demander si c'était bien moi qui avait demandé un prêt de matériel... "Euuh non..." C'est donc comme ça que j'ai appris qu'un escroc s'est fait passer pour moi afin de récupérer du matos (comprenez : voler du matos) à une [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Je suis tombé sur le cul. La société <a href="http://ldlc.com">LDLC</a> vient de me contacter pour me demander si c'était bien moi qui avait demandé un prêt de matériel...</p>
+<p>"Euuh non..."</p>
+<p>C'est donc comme ça que j'ai appris qu'un escroc s'est fait passer pour moi afin de récupérer du matos (comprenez : voler du matos) à une grosse boite.</p>
+<p>La technique est simple. Il contacte la société avec un email bidon : <em>dornemanuel@gmail.com</em></p>
+<blockquote><p>Bonjour,</p>
+<p>Je vous contacte, car je suis l'heureux propriétaire d'un blog qui marche très bien (Korben.info) et sur ce même blog j'ai l'ambition de me lancer dans un test de produits high tech.</p>
+<p>Vous l'avez compris, afin d'exercer ces tests je vais avoir besoin des produits, et c'est pour cela que je vous contacte, en effet si cela vous convient j'aimerais, bien entendu si vous le pouvez et voulez, exercer une entente entre Korben.info et Ldlc.com ou vous me fourniriez le produit, j'exercerais le test et bien entendu à la fin de l'article je n'oublierais pas de mettre une bannière ldlc redirigeant vers votre site afin que les intéressés puissent directement acheter le produit.</p>
+<p>J'ai décidé pour mon premier test de commencer avec un Samsung Galaxy S4 et je vous fais cette demande, car vous entendez bien que n'ai pas les moyens de débourser 600€ pour un test.</p>
+<p>Concernant Korben.info, le site engrange 27 000 visites par jour et plus de 800 000 par mois, la tranche d'âge des visiteurs se situe entre 16 et 25 ans, généralement des passionnés de nouvelles technologies.</p>
+<p>J'attends donc votre réponse avec impatience.</p>
+<p>Cordialement, Manuel Dorne.</p></blockquote>
+<p>LDLC lui a donc répondu gentiment, pensant que c'était moi, en demandant son adresse. L'escroc a donc répondu ceci :</p>
+<blockquote><p>Bonjour,</p>
+<div>
+<div>
+<p>ça me fait aussi très plaisir que tu me répondes, mieux vaut tard que jamais !</p>
+</div>
+</div>
+<div>
+<p>Oui bien sur, ma demande tiens toujours, alors voici mes coordonnées complètes :</p>
+</div>
+<p>Manuel Dorne<br />
+xx rue Fernet<br />
+Maisons-Alfort<br />
+94700</p>
+<div>
+<p>Sinon concernant la réception à mon domicile, elle se fera par Colissimo aussi ? Bien entendu je n'oublierais pas le lien SEO et les remerciements à LDLC, par contre concernant le testé et approuvé, j'y réfléchis, encore je ne promets rien pour l'instant.</p>
+</div>
+</blockquote>
+<div>
+<blockquote><p>Cordialement, Manuel Dorne.</p></blockquote>
+<p>C'est fou non ?</p>
+<p>Alors évidemment, rien de cohérent là-dedans. J'habite en Auvergne et pas à Maison Alfort, je ne réclame jamais de produits de cette manière, et surtout, le site fait beaucoup plus de trafic que ça ;-)</p>
+<p>Heureusement que la personne chez LDLC me connait un peu. L'adresse que l'escroc a donnée existe, mais je ne pense pas qu'il est assez con pour donner sa véritable adresse (quoique...). Je pense plutôt qu'il utilise cette méthode ancestrale qui consiste à attendre devant la porte de la maison que le facteur arrive en se faisant passer pour le destinataire. Ce sont les mêmes méthodes de voleur que celles qu'a connues le e-commerce dans ses belles années, mais cette fois appliquées aux blogs.</p>
+<p>Bref, si vous recevez ce genre d'email de crevard de la part d'un blogueur, méfiez-vous et prenez contact via Twitter ou Facebook ou une boite mail "officielle" avec ce blogueur pour bien vérifier que c'est lui. Et si vous m'avez envoyé du matos ailleurs que chez moi en Auvergne, alors, vous vous êtes fait couillonner et j'en suis désolé.</p>
+</div>
+]]></content:encoded>
+			<wfw:commentRss>http://korben.info/arnaque-au-blogueur.html/feed</wfw:commentRss>
+		<slash:comments>73</slash:comments>
+		</item>
+		<item>
+		<title>10 places de ciné à gagner</title>
+		<link>http://korben.info/10-places-de-cine-a-gagner.html</link>
+		<comments>http://korben.info/10-places-de-cine-a-gagner.html#comments</comments>
+		<pubDate>Mon, 26 Aug 2013 12:32:29 +0000</pubDate>
+		<dc:creator>Korben</dc:creator>
+				<category><![CDATA[Concours]]></category>
+
+		<guid isPermaLink="false">http://korben.info/?p=42455</guid>
+		<description><![CDATA[Bon, y'a quoi de bien en ce moment au cinoche ? Je vais probablement aller voir Jobs car je pense que ça va être pas mal. J'avais beaucoup aimé The Social Network, le film sur Facebook, et j'espère qu'il sera dans la même veine. Après y'a aussi Kick Ass 2, Elysium et insaisissables qui me [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Bon, y'a quoi de bien en ce moment au cinoche ?</p>
+<p>Je vais probablement aller voir <strong>Jobs</strong> car je pense que ça va être pas mal. J'avais beaucoup aimé The Social Network, le film sur Facebook, et j'espère qu'il sera dans la même veine.</p>
+<p>Après y'a aussi Kick Ass 2, Elysium et insaisissables qui me font bien envie... Et puis surtout RIPD qui m'a l'air d'être une copie de Men In Black avec des gens décédés à la place des aliens. C'est surement très très con, mais ça doit détendre...</p>
+<p>Surtout, mercredi y'a "Le dernier pub avant la fin du monde" avec Simon Pegg et Nick Frost qui sort et qui m'a l'air bien délire... Y'a aussi Red2 et bien que je conserve ma virginité pour Bruce Willis, le premier RED était tellement décevant que je m'abstiendrai d'aller voir la suite.</p>
+<p>Ah et pour les excité(e)s, y'a aussi "<em>One Direction, le film</em>" qui sort... looool</p>
+<p>Bref, tout ça pour dire qu'aujourd'hui, j'ai <strong>10 places de cinéma</strong> à vous faire gagner grâce à <a href="https://maplacedecine.com/?partner=KORBEN">MaPlaceDeCine.com,</a> un excellent site réalisé par des amis, qui permet d'acheter ses places de cinéma moins cher. Pour participer au jeu, il suffit d'entrer votre email dans le <a href="http://kontestapp.com">widget Kontest</a> ci-dessous :</p>
+<div style="width: 640px;"><iframe src="http://contest-z6a04m.xg1.li/widget" height="500" width="640" frameborder="0"></iframe></div>
+<p>Tirage au sort, mardi soir à minuit. On prendra contact avec vous et vous pourrez choper votre place.</p>
+<p>Si vous n'avez pas la patience d'attendre et que votre cinéma est un PATHÉ GAUMONT, <a href="https://maplacedecine.com/cinemas?partner=KORBEN">vous pouvez aller sur le site</a> et choisir votre ville et votre cinéma pour connaitre le prix auquel vous pouvez obtenir vos places. Si vous utilisez le code KORBEN, c'est de 3 à 15% moins cher et ils vont prochainement étendre la couverture à d'autres cinémas que ceux de Pathé Gaumont.</p>
+<p>Le cinéma étant devenu un luxe, grappiller quelques euros par-ci, par-là, grâce à MaPlaceDeCine.com, c'est plutôt malin !</p>
+<p>Bonne chance à tous !</p>
+]]></content:encoded>
+			<wfw:commentRss>http://korben.info/10-places-de-cine-a-gagner.html/feed</wfw:commentRss>
+		<slash:comments>17</slash:comments>
+		</item>
+		<item>
+		<title>Windroy &#8211; Android sur votre PC Windows</title>
+		<link>http://korben.info/windroy-android-sur-votre-pc-windows.html</link>
+		<comments>http://korben.info/windroy-android-sur-votre-pc-windows.html#comments</comments>
+		<pubDate>Mon, 26 Aug 2013 07:54:37 +0000</pubDate>
+		<dc:creator>Korben</dc:creator>
+				<category><![CDATA[Android]]></category>
+		<category><![CDATA[Infos]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">http://korben.info/?p=42445</guid>
+		<description><![CDATA[Pour les déçus de Bluestack, sachez qu'il existe un autre portage d'Android sous Windows baptisé Windroy plutôt pas mal. Je viens de le tester et il s'agit ni plus ni moins d'un portage complet d'Android 4.0.3 optimisé pour Windows (pas de machine virtuelle ici). Il supporte tous types de résolution jusqu'à 1920x1080, gère l'accélération matérielle, [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Pour les déçus de <a href="http://korben.info/bluestacks-passe-en-beta.html">Bluestack</a>, sachez qu'il existe un autre portage d'Android sous Windows baptisé <a href="http://www.socketeq.com/">Windroy</a> plutôt pas mal. Je viens de le tester et il s'agit ni plus ni moins d'un <a href="http://www.makeuseof.com/tag/emulate-android-on-your-desktop-using-windroy/">portage complet d'Android 4.0.3</a> optimisé pour Windows (pas de machine virtuelle ici).</p>
+<p>Il supporte tous types de résolution jusqu'à 1920x1080, gère l'accélération matérielle, supporte le cache Dalvik, le clavier et la souris et tourne sans accroc sous Vista, 7 et 8.</p>
+<p style="text-align: center;"><iframe src="http://www.youtube.com/embed/VfCiAZy1mUQ?feature=player_detailpage" height="360" width="640" allowfullscreen="" frameborder="0"></iframe></p>
+<p>Il s'agit d'une version identique à celle qu'on trouve sur les tablettes. Malheureusement, pas de Play Store sur cette version, vous devrez donc installer à la main vos APK. Pensez à autoriser l'installation d'application d'origine inconnue dans les paramètres puis rendez-vous sur le site <a href="http://www.androiddrawer.com/">AndroidDrawer</a> pour installer les softs de votre choix.</p>
+<p>Autre truc à savoir, Windroy se lance en plein écran, ce qui peut être vite relou. Pour le lancer en mode fenêtré, vous devrez vous rendre dans les variables d'environnement (Panneau de config -&gt; Système et Sécurité -&gt; Système -&gt; modifier les Paramêtres -&gt; Paramètres système avancés -&gt; Variables d'environnement)</p>
+<p style="text-align: center;"><a href="http://korben.info/wp-content/uploads/2013/08/varaccess.png"><img class="aligncenter size-full wp-image-42446" alt="varaccess Windroy   Android sur votre PC Windows" src="http://korben.info/wp-content/uploads/2013/08/varaccess.png" width="650" height="512" title="Windroy   Android sur votre PC Windows" /></a></p>
+<p style="text-align: left;">Puis créez une nouvelle variable que vous appellerez <strong>WINDROY_RESOLUTION</strong> et donnez-lui comme valeur la taille de fenêtre désirée. Ici j'ai mis 1024x768.</p>
+<p style="text-align: center;"><a href="http://korben.info/wp-content/uploads/2013/08/var.png"><img class="aligncenter size-full wp-image-42447" alt="var Windroy   Android sur votre PC Windows" src="http://korben.info/wp-content/uploads/2013/08/var.png" width="384" height="427" title="Windroy   Android sur votre PC Windows" /></a></p>
+<p>Puis relancez Windroy !</p>
+<p style="text-align: center;"><a href="http://korben.info/wp-content/uploads/2013/08/menu.png"><img class="aligncenter size-full wp-image-42448" alt="menu Windroy   Android sur votre PC Windows" src="http://korben.info/wp-content/uploads/2013/08/menu.png" width="650" height="503" title="Windroy   Android sur votre PC Windows" /></a></p>
+<p> Cette application vous permettra de tester des logiciels Android sans dégainer votre téléphone et surtout de jouer à des jeux en plein écran avec tout le confort qu'un clavier et une souris peuvent apporter.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://korben.info/windroy-android-sur-votre-pc-windows.html/feed</wfw:commentRss>
+		<slash:comments>42</slash:comments>
+		</item>
+		<item>
+		<title>Viber débarque sous Linux</title>
+		<link>http://korben.info/viber-linux.html</link>
+		<comments>http://korben.info/viber-linux.html#comments</comments>
+		<pubDate>Mon, 26 Aug 2013 07:30:27 +0000</pubDate>
+		<dc:creator>Korben</dc:creator>
+				<category><![CDATA[Linux]]></category>
+
+		<guid isPermaLink="false">http://korben.info/?p=42437</guid>
+		<description><![CDATA[Vous connaissez surement Viber mais pour ceux qui auraient dormi pendant ces dernières années, je vais quand même vous re-expliquer ce que c'est. Viber est un logiciel qui fonctionne sous Android, iPhone, Balckberry, Nokia, Bada, Windows et Mac et qui permet d'envoyer des SMS et de passer des appels gratuitement à ses amis pour peu [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Vous connaissez surement Viber mais pour ceux qui auraient dormi pendant ces dernières années, je vais quand même vous re-expliquer ce que c'est. Viber est un logiciel qui fonctionne sous Android, iPhone, Balckberry, Nokia, Bada, Windows et Mac et qui permet d'envoyer des SMS et de passer des appels gratuitement à ses amis pour peu que ces derniers aient aussi installé Viber.</p>
+<p>C'est de la VoIP gratuite similaire à Skype qui avait un gros intérêt à l'époque où nos appels et nos SMS sur mobile n'étaient pas illimités. Maintenant, ça a perdu un peu de son charme, sauf si vos amis sont tous à l'étranger.</p>
+<p>Bref, tout ça pour vous dire que Viber vient d'annoncer une version <a href="http://www.phoronix.com/scan.php?page=news_item&amp;px=MTQ0NTU">native pour Linux</a> qui une fois que vos contacts sont synchronisés, permet de passer des appels visio, d'envoyer des SMS ou des photos (MMS like) ou de transférer des appels entre vos appareils.</p>
+<p style="text-align: center;"><iframe src="http://www.youtube.com/embed/NEqS5W-KfRw?feature=player_embedded" height="360" width="640" allowfullscreen="" frameborder="0"></iframe></p>
+<p>Pas besoin de vous créer un compte avec Viber, il vous "enregistre" uniquement grâce à votre numéro de mobile. <a href="http://viber.com/products/linux/">Bref, à tester si ça vous manquait sous Linux...</a> Pour info, cette version a été testée uniquement sur Ubuntu, Mint, Zorin OS et Fedora.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://korben.info/viber-linux.html/feed</wfw:commentRss>
+		<slash:comments>27</slash:comments>
+		</item>
+		<item>
+		<title>Orbit Downloader &#8211; Désinstallez vite cette merde !</title>
+		<link>http://korben.info/orbit-downloader.html</link>
+		<comments>http://korben.info/orbit-downloader.html#comments</comments>
+		<pubDate>Mon, 26 Aug 2013 05:57:50 +0000</pubDate>
+		<dc:creator>Korben</dc:creator>
+				<category><![CDATA[Sécurité]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">http://korben.info/?p=42441</guid>
+		<description><![CDATA[Petite question ce matin : Utilisez-vous Orbit Downloader pour télécharger des vidéos en streaming sur votre ordinateur Windows ? Si la réponse est oui, alors lisez cet article, car cela va surement vous intéresser. Des chercheurs en sécurité de ESET ont examiné le code du logiciel et il s'avère que depuis janvier de cette année, [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Petite question ce matin : Utilisez<strong>-</strong>vous<strong> Orbit Downloader</strong> pour télécharger des vidéos en streaming sur votre ordinateur Windows ?</p>
+<p>Si la réponse est oui, alors lisez cet article, car cela va surement vous intéresser. <a href="http://www.welivesecurity.com/2013/08/21/orbital-decay-the-dark-side-of-a-popular-file-downloading-tool/">Des chercheurs en sécurité de ESET</a> ont examiné le code du logiciel et il s'avère que depuis janvier de cette année, un module permettant de lancer des attaques Ddos a été ajouté dans Orbit Downloader.</p>
+<p>En gros, ce module contacte le serveur Orbitdownloader.com et y récupère une DLL portable Win32 ainsi qu'un fichier de config contenant une liste d'URL et d'adresses IP à attaquer.</p>
+<p>Orbit peut alors lancer 2 types d'attaques... Si WinPcap est présent sur la machine, Orbit envoie des paquets TCP SYN forgés spécialement pour l'occasion sur le port 80 des machines cibles et masque la source de l'attaque avec une adresse IP aléatoire. Si WinPcap n'est pas présent, Orbit balance une grosse quantité de connexions HTTP sur les ports 80 (en TCP) et 53 (en UDP) des cibles.</p>
+<p>D'après les experts d'ESET, ces attaques sont basiques, mais puissantes. Un de leur test a débouché sur une quantité de 140 000 paquets envoyés par seconde vers une cible avec une IP masquée indiquant que le pays d'origine de l'attaque était le Vietnam. En analysant les versions précédents d'Orbit, ils ont aussi remarqué que la fonctionnalité DDos apparaissait et disparaissait régulièrement depuis 2008 du logiciel.</p>
+<p style="text-align: center;"><a href="http://korben.info/wp-content/uploads/2013/08/orbit.png"><img class="aligncenter size-full wp-image-42443" alt="orbit Orbit Downloader   Désinstallez vite cette merde !" src="http://korben.info/wp-content/uploads/2013/08/orbit.png" width="650" height="480" title="Orbit Downloader   Désinstallez vite cette merde !" /></a></p>
+<p>Orbit Downloader est donc maintenant reconnu comme une menace par les antivirus du marché et ESET recommande à tous de désinstaller cette merde.</p>
+<p>Je dois dire que même si le soft remplissait son rôle initial, la quantité d'adware, de toolbars et de softs annexes qu'il proposait à l'install était déjà moche et n'inspirait pas confiance... Alors, là, le coup du Ddos, c'est la cerise sur le gâteau. Les gens (vous ?) qui ont installé ce truc participent en masse et depuis longtemps à des attaques contre des serveurs sans même le savoir.</p>
+<p>Voilà de quoi encore donner de sérieux arguments aux défenseurs de l'open source que nous sommes. Si vous avez installé Orbit Downloader, vous savez maintenant ce qu'il vous reste à faire...</p>
+]]></content:encoded>
+			<wfw:commentRss>http://korben.info/orbit-downloader.html/feed</wfw:commentRss>
+		<slash:comments>107</slash:comments>
+		</item>
+		<item>
+		<title>Forever and ever</title>
+		<link>http://korben.info/forever-and-ever.html</link>
+		<comments>http://korben.info/forever-and-ever.html#comments</comments>
+		<pubDate>Fri, 23 Aug 2013 08:00:14 +0000</pubDate>
+		<dc:creator>Korben</dc:creator>
+				<category><![CDATA[Administration Systeme Réseau]]></category>
+		<category><![CDATA[Développement]]></category>
+		<category><![CDATA[Infos]]></category>
+
+		<guid isPermaLink="false">http://korben.info/?p=42245</guid>
+		<description><![CDATA[Forever est un script GNU/Linux qui n'a qu'un seul but : Vous assurez qu'un script tourne indéfiniment... Pour cela, vous n'avez qu'à passer le script en paramètre et celui-ci sera monitoré pour tourner en continu jusqu'à la fin des temps... Pour l'installer, faites un petit npm install forever -g (Node Package Manager) Forever peut aussi [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p><a href="https://github.com/nodejitsu/forever/"><strong>Forever</strong></a> est un script GNU/Linux qui n'a qu'un seul but : Vous assurez qu'un script tourne indéfiniment...</p>
+<p>Pour cela, vous n'avez qu'à passer le script en paramètre et celui-ci sera monitoré pour tourner en continu jusqu'à la fin des temps...</p>
+<p>Pour l'installer, faites un petit</p>
+<blockquote>
+<p style="text-align: left;">npm install forever -g</p>
+</blockquote>
+<p>(<a href="https://npmjs.org/">Node Package Manager</a>)</p>
+<p>Forever peut aussi être intégré dans vos propres scripts, mais pour cela, vous devrez installer <a href="https://github.com/nodejitsu/forever-monitor">forever-monitor</a> en plus.</p>
+<p>Voilààààààà</p>
+]]></content:encoded>
+			<wfw:commentRss>http://korben.info/forever-and-ever.html/feed</wfw:commentRss>
+		<slash:comments>10</slash:comments>
+		</item>
+		<item>
+		<title>Defcon &#8211; Le documentaire</title>
+		<link>http://korben.info/defcon-le-documentaire.html</link>
+		<comments>http://korben.info/defcon-le-documentaire.html#comments</comments>
+		<pubDate>Fri, 23 Aug 2013 07:30:28 +0000</pubDate>
+		<dc:creator>Korben</dc:creator>
+				<category><![CDATA[Sécurité]]></category>
+		<category><![CDATA[Vidéo]]></category>
+
+		<guid isPermaLink="false">http://korben.info/?p=42428</guid>
+		<description><![CDATA[On l'attendait depuis un moment, et le voici, le voilà ! Jason Scott a réalisé un super documentaire sur la Defcon 20 et sur son créateur, Jeff Moss, connu sous le pseudo de The Dark Tangent. Ça me fait plaisir de voir ces images puisque c'est à cette Defcon des 20 ans que j'ai assisté. [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>On l'attendait depuis un moment, et le voici, le voilà ! Jason Scott a réalisé un super documentaire sur la Defcon 20 et sur son créateur, Jeff Moss, connu sous le pseudo de The Dark Tangent.</p>
+<p>Ça me fait plaisir de voir ces images puisque c'est à cette <a href="http://korben.info/defcon-xx-mon-petit-compte-rendu.html">Defcon des 20 ans</a> que j'ai assisté. La reportage est sous titré en français, donc vous pouvez y aller.</p>
+<p style="text-align: center;"><iframe src="http://www.youtube.com/embed/SUhyeY0Fsvw?feature=player_detailpage" height="360" width="640" allowfullscreen="" frameborder="0"></iframe></p>
+<p style="text-align: left;">Et pour ceux qui veulent, <a href="https://www.defcon.org/html/torrent/DEF%20CON%2020%20documentary%20720p.torrent">le torrent est là</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://korben.info/defcon-le-documentaire.html/feed</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+		</item>
+		<item>
+		<title>Game of Thrones Saison 3 &#8211; Les effets spéciaux</title>
+		<link>http://korben.info/game-of-thrones-saison-3-les-effets-speciaux.html</link>
+		<comments>http://korben.info/game-of-thrones-saison-3-les-effets-speciaux.html#comments</comments>
+		<pubDate>Thu, 22 Aug 2013 11:30:56 +0000</pubDate>
+		<dc:creator>Korben</dc:creator>
+				<category><![CDATA[Série]]></category>
+
+		<guid isPermaLink="false">http://korben.info/?p=42425</guid>
+		<description><![CDATA[Si comme moi, vous n'avez pas encore attaqué la saison 3 de Game of Thrones, alors je vous recommande de passer votre chemin à cause des spoiler. Pour les autres, voici une vidéo mise en ligne par le studio d'effets spéciaux canadien Spin VFX qui montre quelques effets plutôt sympas sur cette saison 3.]]></description>
+				<content:encoded><![CDATA[<p>Si comme moi, vous n'avez pas encore attaqué la saison 3 de Game of Thrones, alors je vous recommande de passer votre chemin à cause des spoiler.</p>
+<p>Pour les autres, voici une vidéo mise en ligne par le studio d'effets spéciaux canadien <a href="http://www.spinvfx.com/">Spin VFX </a>qui montre quelques effets plutôt sympas sur cette saison 3.</p>
+<p style="text-align: center;"><iframe src="http://www.youtube.com/embed/fG3ehn4i3zk?feature=player_detailpage" height="360" width="640" allowfullscreen="" frameborder="0"></iframe></p>
+]]></content:encoded>
+			<wfw:commentRss>http://korben.info/game-of-thrones-saison-3-les-effets-speciaux.html/feed</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+		</item>
+		<item>
+		<title>Faire tourner Silverlight sous Linux</title>
+		<link>http://korben.info/installer-silverlight-sous-linux.html</link>
+		<comments>http://korben.info/installer-silverlight-sous-linux.html#comments</comments>
+		<pubDate>Thu, 22 Aug 2013 08:30:06 +0000</pubDate>
+		<dc:creator>Korben</dc:creator>
+				<category><![CDATA[Linux]]></category>
+
+		<guid isPermaLink="false">http://korben.info/?p=42422</guid>
+		<description><![CDATA[Certains sites (mal conçus ?) utilisent comme technologie uniquement Silverlight de Microsoft (un concurrent de Flash). Le hic, c'est que Silverlight ne fonctionne pas sous Linux. Du coup, les utilisateurs du manchot se voit privés de certains sites comme Netflix aux États-Unis. Pour remédier à cela, la FDS Team a mis au point Pipelight, un [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Certains sites (mal conçus ?) utilisent comme technologie uniquement Silverlight de Microsoft (un concurrent de Flash). Le hic, c'est que Silverlight ne fonctionne pas sous Linux. Du coup, les utilisateurs du manchot se voit privés de certains sites comme Netflix aux États-Unis.</p>
+<p>Pour remédier à cela, la <a href="http://fds-team.de/cms/index.html">FDS Team</a> a mis au point <a href="https://launchpad.net/pipelight"><strong>Pipelight</strong></a>, un outil qui permet de faire tourner des applications Silverlight directement dans un navigateur sous Linux. Pipelight est un plugin qui tourne dans n'importe quel navigateur supportant les API Netscape Plugin (Donc Firefox, ça fonctionne), accompagné d'un soft pluginloader.exe qui tourne dans Wine (+ quelques patchs Wine notamment pour être compatible avec certains DRM).</p>
+<p>Ce binaire simule un navigateur qui charge les DLL Silverlight et qui communique avec l'extension, formant ainsi un pont permettant une communication entre Silverlight et votre navigateur sous Linux. Contrairement à ce qu'on pourrait penser, la lecture de la vidéo dans le cas de VOD n'est pas dégradée puisque seuls les paramètres d'initialisation transitent via ce pont. La vidéo et le son passent eux en direct.</p>
+<p>Le tout est bien sûr transparent pour l'utilisateur. Excellent non ?</p>
+<p>Le plus beau, c'est que n'ayant pas de sites VOD Silverlight sous la main, j'ai testé Pipelight avec <a href="http://nokola.com">ce site de démo</a> qui permet de jouer avec pleins de trucs en Silverlight et tout fonctionne à merveille ! A terme, les développeurs souhaitent faire fonctionner sous Linux tout type de plugin 100% Windows grâce à PipeLight.</p>
+<p>Pour tester la chose sous Ubuntu, il faut avant tout fermer votre navigateur. Ensuite, lancez un terminal et entrez les commandes suivants :<br />
+<blockquote>sudo apt-add-repository ppa:ehoover/compholio</p>
+<p>sudo apt-add-repository ppa:mqchael/pipelight</p>
+<p>sudo apt-get update</p>
+<p>sudo apt-get install pipelight</p></blockquote>
+<p>Pour Arch et une compilation à la mano, <a href="http://fds-team.de/cms/articles/2013-08/pipelight-using-silverlight-in-linux-browsers.html">voir ici</a>.</p>
+<p>Je suis toujours impressionné par ce genre de bidouille indépendante qui "corrige" les mauvais choix faits par des entreprises privées qui pour de simples raisons technologiques se privent de tout une partie des internautes.</p>
+<p>Bien joué en tout cas !</p>
+]]></content:encoded>
+			<wfw:commentRss>http://korben.info/installer-silverlight-sous-linux.html/feed</wfw:commentRss>
+		<slash:comments>79</slash:comments>
+		</item>
+		<item>
+		<title>Détecter la présence d&#8217;une partition chiffrée</title>
+		<link>http://korben.info/trouver-partition-chiffree.html</link>
+		<comments>http://korben.info/trouver-partition-chiffree.html#comments</comments>
+		<pubDate>Thu, 22 Aug 2013 08:00:36 +0000</pubDate>
+		<dc:creator>Korben</dc:creator>
+				<category><![CDATA[Infos]]></category>
+		<category><![CDATA[Sécurité]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">http://korben.info/?p=42237</guid>
+		<description><![CDATA[Si vous vous intéressez un peu à tout ce qui est forensics, vous connaissez probablement TCHunt qui permet de localiser des partitions et conteneurs Truecrypt sur un disque dur. Il existe un outil similaire qui s'appelle EDD (Encrypted Disk Detector) et qui contrairement à TCHunt détecte uniquement les partitions chiffrées (et pas les conteneurs) mais [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Si vous vous intéressez un peu à tout ce qui est forensics, vous connaissez probablement <a href="http://korben.info/tchunt-detecter-la-presence-de-conteneurs-truecrypt.html">TCHunt</a> qui permet de localiser des partitions et conteneurs Truecrypt sur un disque dur.</p>
+<p>Il existe <a href="http://www.ghacks.net/2013/07/27/encrypted-disk-detector-finds-encrypted-partitions-on-pcs/">un outil similaire</a> qui s'appelle <strong>EDD</strong> (Encrypted Disk Detector) et qui contrairement à TCHunt détecte uniquement les partitions chiffrées (et pas les conteneurs) mais qui dispose d'un spectre de reconnaissance plus large puisqu'il détecte les partitions de type TrueCrypt, PGP, Safeboot et Bitlocker.</p>
+<p>L'outil se lance sous Windows en ligne de commande et analyse le MBR (Master Boot Record) du disque à la recherche de signatures et de noms de volumes. Les volumes chiffrés détectés seront alors marqués en jaune.</p>
+<p style="text-align: center;"><a href="http://korben.info/wp-content/uploads/2013/08/Picture1.jpg"><img class="size-full wp-image-42289 aligncenter" alt="Picture1 Détecter la présence dune partition chiffrée" src="http://korben.info/wp-content/uploads/2013/08/Picture1.jpg" width="574" height="304" title="Détecter la présence dune partition chiffrée" /></a></p>
+<p> Dommage qu'il ne permette pas de trouver des conteneurs, cela aurait été parfait. Autre truc qui peut être dérangeant pour certaines âmes sensibles, <a href="http://info.magnetforensics.com/encrypted-disk-detector">il faut vous enregistrer sur le site suivant pour recevoir un lien de téléchargement par email.</a></p>
+<p><a href="http://wallbase.cc/wallpaper/874268">Photo</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://korben.info/trouver-partition-chiffree.html/feed</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Au delà&#8230;</title>
+		<link>http://korben.info/beyond.html</link>
+		<comments>http://korben.info/beyond.html#comments</comments>
+		<pubDate>Wed, 21 Aug 2013 15:30:30 +0000</pubDate>
+		<dc:creator>Korben</dc:creator>
+				<category><![CDATA[Vidéo]]></category>
+
+		<guid isPermaLink="false">http://korben.info/?p=42417</guid>
+		<description><![CDATA[Arya est la dernière de sa lignée qui dispose d'un code génétique lui permettant de survivre à des sauts spatio-temporels. Vous l'aurez compris, Arya peut se téléporter... Du coup, son job est d'explorer de nouvelles planètes afin de découvrir de nouvelles civilisations. Mais Arya est aussi à la recherche de quelque chose d'autre... Quelque chose [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Arya est la dernière de sa lignée qui dispose d'un code génétique lui permettant de survivre à des sauts spatio-temporels.</p>
+<p>Vous l'aurez compris, Arya peut se téléporter... Du coup, son job est d'explorer de nouvelles planètes afin de découvrir de nouvelles civilisations. Mais Arya est aussi à la recherche de quelque chose d'autre...</p>
+<p>Quelque chose qui lui permettra de comprendre qui elle est et d'où elle vient.</p>
+<p style="text-align: center;"><iframe src="http://player.vimeo.com/video/72632269" height="360" width="640" allowfullscreen="" frameborder="0"></iframe></p>
+]]></content:encoded>
+			<wfw:commentRss>http://korben.info/beyond.html/feed</wfw:commentRss>
+		<slash:comments>11</slash:comments>
+		</item>
+		<item>
+		<title>Embrouillez ceux qui surveillent vos habitudes de surf</title>
+		<link>http://korben.info/embrouillez-ceux-qui-surveillent-vos-habitudes-de-surf.html</link>
+		<comments>http://korben.info/embrouillez-ceux-qui-surveillent-vos-habitudes-de-surf.html#comments</comments>
+		<pubDate>Wed, 21 Aug 2013 13:30:00 +0000</pubDate>
+		<dc:creator>Korben</dc:creator>
+				<category><![CDATA[Navigateur]]></category>
+
+		<guid isPermaLink="false">http://korben.info/?p=42408</guid>
+		<description><![CDATA[Inspirée d'une idée de Cory Doctorow qui dans son livre Little Brother imaginait un logiciel capable d'embrouiller ceux qui nous traquent sur le net, voici une extension pour Chrome qui devrait vous plaire. Cela s'appelle Paranoid Browsing et c'est développé par Ben West. Cette extension ouvrira de manière totalement aléatoire dans un onglet, des pages [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Inspirée d'une idée de Cory Doctorow qui dans son livre <strong><a href="http://craphound.com/littlebrother/download/">Little Brother</a></strong> imaginait un logiciel capable d'embrouiller ceux qui nous traquent sur le net, voici une extension pour Chrome qui devrait vous plaire.</p>
+<p>Cela s'appelle <strong>Paranoid Browsing</strong> et c'est développé par Ben West. Cette extension ouvrira de manière totalement aléatoire dans un onglet, des pages appartenant à des sites web définis dans une liste afin de semer la zizanie dans votre historique de navigation. Les sociétés qui traquent vos habitudes de navigations auront alors des données totalement erronées sur votre compte. À défaut d'être invisible à leurs yeux, vous serez imprévisible.</p>
+<p style="text-align: center;"><a href="http://korben.info/wp-content/uploads/2013/08/paranoid.jpg"><img class="aligncenter size-full wp-image-42409" alt="paranoid Embrouillez ceux qui surveillent vos habitudes de surf" src="http://korben.info/wp-content/uploads/2013/08/paranoid.jpg" width="616" height="436" title="Embrouillez ceux qui surveillent vos habitudes de surf" /></a></p>
+<p>La liste de sites n'est pas assez exhaustive et diversifiée pour être vraiment "perturbante" mais je fais confiance à votre imagination pour en ajouter tout plein ! Par contre, faut aimer se faire ouvrir des onglets à tire-larigot. D'ailleurs, Guillaume, un lecteur de Korben m'a donné cette url <a href="http://www.randomwebsite.com/cgi-bin/random.pl">http://www.randomwebsite.com/cgi-bin/random.pl</a>  à ajouter pour obtenir un site aléatoirement.</p>
+<p>Pour installer Paranoid Browsing, rendez-vous sur Github. Télécharger le zip de l'ensemble des fichiers, décompressez-le puis dans le menu des extensions Chrome, cochez la case "Développeur" puis cliquez sur le bouton "Charger l'extension non empaquetée" pour sélectionner le répertoire où vous avez décompressé les fichiers.</p>
+<p style="text-align: center;"><a href="http://korben.info/wp-content/uploads/2013/08/paranoid-browsing.jpg"><img class="aligncenter size-full wp-image-42410" alt="paranoid browsing Embrouillez ceux qui surveillent vos habitudes de surf" src="http://korben.info/wp-content/uploads/2013/08/paranoid-browsing.jpg" width="650" height="247" title="Embrouillez ceux qui surveillent vos habitudes de surf" /></a></p>
+<p>Pas con comme idée !</p>
+]]></content:encoded>
+			<wfw:commentRss>http://korben.info/embrouillez-ceux-qui-surveillent-vos-habitudes-de-surf.html/feed</wfw:commentRss>
+		<slash:comments>10</slash:comments>
+		</item>
+		<item>
+		<title>Windows RT &#8211; Lancer des applications non validées par Microsoft</title>
+		<link>http://korben.info/rooter-windows-rt.html</link>
+		<comments>http://korben.info/rooter-windows-rt.html#comments</comments>
+		<pubDate>Wed, 21 Aug 2013 11:30:38 +0000</pubDate>
+		<dc:creator>Korben</dc:creator>
+				<category><![CDATA[Mobile]]></category>
+		<category><![CDATA[Windows]]></category>
+
+		<guid isPermaLink="false">http://korben.info/?p=42402</guid>
+		<description><![CDATA[Le souci avec les tablettes Windows RT, c'est qu'elles sont incapables de faire tourner les logiciels classiques que vous utilisez tous les jours sur votre ordinateur. Alors bien sûr, pour certaines applications comme le bloc note, paint, Internet Explorer ou la suite Office, Microsoft a fait l'effort de les rendre dispo sur RT. Mais pour [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Le souci avec les tablettes Windows RT, c'est qu'elles sont incapables de faire tourner les logiciels classiques que vous utilisez tous les jours sur votre ordinateur. Alors bien sûr, pour certaines applications comme le bloc note, paint, Internet Explorer ou la suite Office, Microsoft a fait l'effort de les rendre dispo sur RT.</p>
+<p>Mais pour le reste, <a href="http://www.makeuseof.com/tag/how-to-jailbreak-your-windows-rt-device-and-run-unapproved-desktop-software/">que faire</a> ? Et bien il existe 2 solutions qui avant tout nécessite que vous rootiez votre tablette. Pour cela, il existe un outil baptisé <strong><a href="http://forum.xda-developers.com/showthread.php?t=2092158">RT Jailbreak Tool</a></strong> qui vous permettra de lancer des applications "non approuvées" par Microsoft sur votre tablette RT.</p>
+<p>Notez qu'en aucun cas, rooter votre tablette Windows RT ne vous permettra de lancer des applications x86. Les apps devront être compilées pour ARM.</p>
+<p>Décompressez RT Jailbreak Tool sur votre tablette, puis lancez le fichier runExploit.bat. Il vous proposera alors soit de lancer le root systématiquement au démarrage (ce n'est pas persistant), soit de le désinstaller, soit de le lancer une fois seulement (et au prochain reboot, vous retrouverez votre tablette comme elle était avant.). Rien de plus simple !</p>
+<p>Faire cela vous permettra tout simplement de lancer ensuite des applications ARM non signées par Microsoft (par contre, pas de drivers non signés).</p>
+<p>Une fois que c'est fait, pour vous procurer des applications non signées, vous avez 2 options :</p>
+<p>Première option : Dégoter des softs compilés spécifiquement pour Windows RT. Par exemple, sur ce site (post #2), vous trouverez <strong><a href="http://forum.xda-developers.com/showthread.php?t=2092348">une liste de logiciels compilés spécifiquement pour RT</a></strong>. Notepad++, 7-Zip, Quake 2, ScummVM, Filezilla, Subersion, Audacity...etc. Suivez les liens et installez ce qui vous fait plaisir !</p>
+<p>Seconde option : Installer l'émulateur Win86emu qui permet de lancer des applications x86 sur des tablettes Windows RT (ARM). La plupart des applications fonctionnent sauf quand elles bouffent trop de CPU, ou qu'elles appellent des fonctionnalités un peu complexes à base de DirectX9, de .NET ou d'OpenGL, ou qu'elles demandent des drivers spécifiques. Les applications x86 Metro ne sont pas non plus supportées et si vous avez des apps 64 bits, vous pouvez oublier. <strong><a href="http://forum.xda-developers.com/showthread.php?t=2095934">Win86emu</a></strong> est encore en beta mais ça vaut le coup d'y jeter un oeil.</p>
+<p>Voilà pour la bidouille ! Amusez-vous bien !</p>
+]]></content:encoded>
+			<wfw:commentRss>http://korben.info/rooter-windows-rt.html/feed</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+		</item>
+		<item>
+		<title>La terre vue du drone</title>
+		<link>http://korben.info/dronestagram.html</link>
+		<comments>http://korben.info/dronestagram.html#comments</comments>
+		<pubDate>Wed, 21 Aug 2013 08:00:48 +0000</pubDate>
+		<dc:creator>Korben</dc:creator>
+				<category><![CDATA[Aéronautique]]></category>
+		<category><![CDATA[Infos]]></category>
+		<category><![CDATA[service web]]></category>
+
+		<guid isPermaLink="false">http://korben.info/?p=42219</guid>
+		<description><![CDATA[Les drones, ça ne sert pas qu'à balancer des bombes sur des barbus ou filmer la voisine qui se fait bronzer la raie dans son jardin. Non, les drones civils permettent aussi et surtout de faire des prises de vues uniques (et souvent magnifiques) d'endroits aussi bien reculés que très familiers, leur donnant un aspect [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Les drones, ça ne sert pas qu'à balancer des bombes sur des barbus ou filmer la voisine qui se fait bronzer la raie dans son jardin. Non, les drones civils permettent aussi et surtout de faire des prises de vues uniques (et souvent magnifiques) d'endroits aussi bien reculés que très familiers, leur donnant un aspect tout à fait inédit.</p>
+<p>L'ami Éric de Presse-Citron a eu l'excellente idée de créer un site baptisé <a href="http://www.dronestagr.am/">Dronestagram</a> sur lequel les passionnés et pilotes de drones civils partagent leurs meilleures prises de vue. Et le résultat est plutôt génial. On ne se lasse pas de découvrir cette terre vue du ciel où les Yann Arthus sont légion.</p>
+<p style="text-align: center;"><a href="http://korben.info/wp-content/uploads/2013/08/dronestagram.png"><img class="aligncenter size-full wp-image-42284" alt="dronestagram La terre vue du drone" src="http://korben.info/wp-content/uploads/2013/08/dronestagram.png" width="650" height="408" title="La terre vue du drone" /></a></p>
+<p>Régalez-vous, <a href="http://www.dronestagr.am/">c'est par là !</a></p>
+<p>Et si vous avez un drone, n'hésitez pas à y poster vos photos.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://korben.info/dronestagram.html/feed</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+		</item>
+		<item>
+		<title>Un documentaire à ne pas manquer sur les bio hackers</title>
+		<link>http://korben.info/un-documentaire-a-ne-pas-manquer-sur-les-bio-hackers.html</link>
+		<comments>http://korben.info/un-documentaire-a-ne-pas-manquer-sur-les-bio-hackers.html#comments</comments>
+		<pubDate>Wed, 21 Aug 2013 07:30:38 +0000</pubDate>
+		<dc:creator>Korben</dc:creator>
+				<category><![CDATA[Science]]></category>
+
+		<guid isPermaLink="false">http://korben.info/?p=42394</guid>
+		<description><![CDATA[J'étais passé à côté, mais Le Monde a réalisé une série de documentaires interactifs très intéressants au sujet des biohackers, ces bidouilleurs du vivant, qui dans leur labo fait-maison bricolent de l'ADN toute la journée. Voici le teaser : Leurs façons de faire et leur esprit sont assez proches des premiers hackers et j'ai trouvé [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>J'étais passé à côté, mais Le Monde a réalisé <a href="http://www.lemonde.fr/technologies/visuel/2013/07/07/biohackers-les-bricoleurs-d-adn_3441946_651865.html">une série de documentaires interactifs</a> très intéressants au sujet des biohackers, ces bidouilleurs du vivant, qui dans leur labo fait-maison bricolent de l'ADN toute la journée.</p>
+<p>Voici le teaser :</p>
+<p style="text-align: center;"><iframe src="http://www.dailymotion.com/embed/video/x11iv6u" height="360" width="640" frameborder="0"></iframe></p>
+<p>Leurs façons de faire et leur esprit sont assez proches des premiers hackers et j'ai trouvé ça passionnant ! Évidemment, on ne peut s'empêcher de penser à ce que pourraient faire les bio black hat hackers mais je pense que tout comme les logiciels libres et le hacking, le biohacking est un accès vers notre autonomie face aux géants qui brevètent à tour de bras le vivant pour nous déposséder de ce que la nature offre à tous.</p>
+<p>Je vous invite à aller mater ce documentaire <strong><a href="http://www.lemonde.fr/technologies/visuel/2013/07/07/biohackers-les-bricoleurs-d-adn_3441946_651865.html">disponible ici</a></strong>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://korben.info/un-documentaire-a-ne-pas-manquer-sur-les-bio-hackers.html/feed</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+		</item>
+	</channel>
+</rss>
