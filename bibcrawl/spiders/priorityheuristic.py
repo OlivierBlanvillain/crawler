@@ -1,4 +1,5 @@
 """Score predictor."""
+from bibcrawl.spiders.utils import ascii
 from heapq import nlargest
 from itertools import imap, ifilter
 from Levenshtein import ratio as stringSimilarity
@@ -12,9 +13,11 @@ class PriorityHeuristic(object):
   This predictor can be used as an active machine learning algorithm by
   feeding it little by little with new url/score as they are discovered.
 
-    >>> pp = PriorityHeuristic(lambda _: _[0].isdigit())
+    >>> pp = PriorityHeuristic(highScore=lambda _: _[0].isdigit())
     >>> pp("anything")
     0
+    >>> pp("1/high score page!") == maxint
+    True
     >>> pp.feed("/category/infos/societe", ["1/", "2/", "a/", "b/"])
     >>> pp.feed("/tag/pirate", ["c/", "d/"])
     >>> pp.feed("/category/infos/windows", ["3/", "2/"])
@@ -31,7 +34,7 @@ class PriorityHeuristic(object):
     @type  highScore: function of string => boolean
     @param highScore: filter for url that should be given a very high score
     """
-    self.urlsZscore = [("", 0)]
+    self.urlsZscore = [(u"", 0)]
     self.highScore = highScore
 
   def __call__(self, url):
@@ -48,7 +51,7 @@ class PriorityHeuristic(object):
       k = min(5, int(ceil(len(self.urlsZscore) / 2.0)))
       first = lambda _: _[0] # For the lulz.
       ratioZscore = imap(
-          lambda (i, s): (stringSimilarity(url, i), s),
+          lambda (i, s): (stringSimilarity(ascii(url), ascii(i)), s),
           self.urlsZscore)
       knearestRatioZscore = nlargest(k, ratioZscore, first)
       sumRatios = sum(imap(first, knearestRatioZscore))

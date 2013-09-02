@@ -7,16 +7,35 @@ from lxml import etree # http://lxml.de/index.html#documentation
 import feedparser # http://pythonhosted.org/feedparser/
 
 class ContentExtractor(object):
-  """Extracts the content of blog posts using a rss feed."""
+  """Extracts the content of blog posts using a rss feed. Usage:
+
+  >>> from urllib2 import urlopen
+  >>> from bibcrawl.units.mockserver import MockServer
+  >>> pages = ("korben.info/80-bonnes-pratiques-seo.html", "korben.info/app-"
+  ... "gratuite-amazon.html", "korben.info/cest-la-rentree-2.html",
+  ... "korben.info/super-parkour-bros.html")
+  >>> with MockServer():
+  ...   dl = lambda _: urlopen("http://localhost:8000/{}".format(_)).read()
+  ...   extractor = ContentExtractor(dl("korben.info/feed"))
+  ...   extractor.feed(dl(pages[0]), "http://{}".format(pages[0]))
+  ...   extractor.feed(dl(pages[1]), "http://{}".format(pages[1]))
+  ...   extractor.feed(dl(pages[2]), "http://{}".format(pages[2]))
+  ...   content = extractor(dl(pages[3]))
+  Best XPaths are:
+  //*[@class='post-content']
+  >>> len(extractor.getRssLinks())
+  30
+  >>> len(content[0])
+  6100
+  """
 
   def __init__(self, rss):
     """Instantiates a content extractor for a given rss feed.
 
-    @type  rss: scrapy.http.Response
+    @type  rss: string
     @param rss: the rss/atom feed
     """
-    print rss.url
-    self.rssEntries = feedparser.parse(rss.body).entries
+    self.rssEntries = feedparser.parse(rss).entries
     self.rssLinks = tuple(imap(lambda _: _.link, self.rssEntries))
     self.urlZipPages = list()
     self.xPaths = None
@@ -108,22 +127,25 @@ def _bestPath(contentZipPages):
       contentZipPages))
   # DEBUG:
   from pprint import pprint
-  from bibcrawl.spiders.stringsimilarity import _cleanTags
-  # pprint(topQueriesForFirst)
-  for q in list(topQueriesForFirst):
+  for q in topQueriesForFirst:
     pprint(q)
-    pprint(_cleanTags(contentZipPages[0][0] or "dummy"))
-    pprint(_cleanTags(_xPathSelectFirst(contentZipPages[0][1], q)))
-    print ""
+    pprint(ratio(contentZipPages[0][0], contentZipPages[0][1], q))
+  # from bibcrawl.spiders.stringsimilarity import _cleanTags
+  # # pprint(topQueriesForFirst)
+  # for q in list(topQueriesForFirst):
+  #   pprint(q)
+  #   pprint(_cleanTags(contentZipPages[0][0] or "dummy"))
+  #   pprint(_cleanTags(_xPathSelectFirst(contentZipPages[0][1], q)))
+  #   print ""
 
-  from time import sleep
-  sleep(100000)
   # q = max(set(topQueries), key=topQueries.count)
   # for c, p in contentZipPages:
   #   print "..."
   #   pprint(c)
   #   pprint(_xPathSelectFirst(p, q))
-  # return max(set(topQueries), key=topQueries.count)
+  from time import sleep
+  sleep(100000)
+  return max(set(topQueries), key=topQueries.count)
 
 def _nodeQueries(pages):
   """Compute queries to each node of the html page using per id/class global

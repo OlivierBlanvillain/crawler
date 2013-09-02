@@ -2,8 +2,8 @@
 
   >>> from urllib2 import urlopen
   >>> with MockServer():
-  ...   len(urlopen("http://localhost:8000/").read())
-  532
+  ...   len(urlopen("http://localhost:8000/example.com").read())
+  1344
 """
 from os import chdir
 from os.path import abspath, dirname, join
@@ -20,7 +20,7 @@ class MockServer(object):
   def __enter__(self):
     """Starts a MockServer listening for port 8000 on a new process."""
     self.proc = Popen(
-        [sys.executable, '-u', '-m', 'bibcrawl.units.mockserver'],
+        [sys.executable, "-u", "-m", "bibcrawl.units.mockserver"],
         stdout=PIPE)
     self.proc.stdout.readline()
 
@@ -31,7 +31,7 @@ class MockServer(object):
     time.sleep(0.2)
 
 def _run():
-  """Serves """
+  """ Serves"""
   chdir(join(abspath(dirname(__file__)), "blogs"))
   TCPServer.allow_reuse_address = True
   httpd = TCPServer(("", 8000), SimpleHTTPRequestHandler)

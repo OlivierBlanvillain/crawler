@@ -1,34 +1,50 @@
+# -*- coding: utf-8 -*-
+
 """Utility functions for the RssBasedCrawler spider."""
 import re
-import sgmllib
-from itertools import imap, chain
-from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
-from scrapy.selector import HtmlXPathSelector
+from itertools import imap, ifilter, chain
+from lxml import etree
+from unicodedata import normalize
 from urlparse import urlsplit, urljoin
 
-def extractLinks(response):
+def extractLinks(page):
   """Extracts all href links of a page.
 
-  @type  response: scrapy.http.Response
-  @param response: the html page to process
+    >>> from urllib2 import urlopen
+    >>> from bibcrawl.units.mockserver import MockServer
+    >>> dl = lambda _: urlopen("http://localhost:8000/{}".format(_)).read()
+    >>> with MockServer():
+    ...   list(extractLinks( dl("example.com") ))
+    ['http://www.iana.org/domains/example']
+
+  @type  page: string
+  @param page: the html page to process
   @rtype: collections.Iterable of strings
   @return: all the href links of the page
   """
-  try:
-    return imap(lambda _: _.url, SgmlLinkExtractor().extract_links(response))
-  except sgmllib.SGMLParseError:
-    return list()
+  return ifilter(
+      lambda _: _.startswith("http"),
+      etree.HTML(page).xpath("//a/@href"))
 
-
-def extractRssLink(response):
+def extractRssLink(page, url):
   """Extracts all the RSS and ATOM feed links of a page.
 
-  @type  response: scrapy.http.Response
-  @param response: the html page to process
+  >>> from urllib2 import urlopen
+  >>> from bibcrawl.units.mockserver import MockServer
+  >>> with MockServer():
+  ...   list(extractRssLink(
+  ...       urlopen("http://localhost:8000/korben.info").read(),
+  ...       "http://korben.info/"))[:-1]
+  ['http://korben.info/feed/atom', 'http://korben.info/feed']
+
+  @type  page: string
+  @param page: the html page to process
+  @type  url: string
+  @param url: the page url, used to build absolute urls
   @rtype: collections. Iterable of strings
   @return: all the feed links of the page
   """
-  parser = HtmlXPathSelector(response)
+  parser = etree.HTML(page)
   paths = imap(lambda _: "//link[@type='{}']/@href".format(_), (
       "application/atom+xml",
       "application/atom",
@@ -44,13 +60,12 @@ def extractRssLink(response):
       "text/rdf",
       "text/xml",
       "application/xml"))
-  results = chain(*imap(lambda _: parser.select(_).extract(), paths))
-  absoluts = imap(lambda _: urljoin(response.url, _), results)
-  return absoluts
+  results = chain(*imap(lambda _: parser.xpath(_), paths))
+  return imap(lambda _: urljoin(url, _), results)
 
 def buildUrlFilter(urls, debug=False):
   """Given a tuple of urls with similar pattern, computes a filtering function
-  that accepts similar urls the and reject others. Here are a few
+  that accepts similar urls the and reject others.
 
     >>> times = buildUrlFilter([
     ... "http://www.thetimes.co.uk/tto/news/world/europe/article3844546.ece",
@@ -100,3 +115,18 @@ def buildUrlFilter(urls, debug=False):
   if debug:
     print("Url regex: {}".format(_bestRegex("^").replace("/" + eol, "")))
   return beginsWith(_bestRegex("^"))
+
+def ascii(string):
+  r"""Force convert a string to ascii.
+
+  >>> ascii(u"École Polytechnique Fédérale de Lausanne")
+  'cole Polytechnique Fdrale de Lausanne'
+  >>> ascii("Et voilà.")
+  'Et voil\xc3\xa0.'
+  >>> ascii("problem solved")
+  'problem solved'
+  """
+  if isinstance(string, str):
+    return string
+  else:
+    return normalize('NFKC', string).encode('ascii','ignore')

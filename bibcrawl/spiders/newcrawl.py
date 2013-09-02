@@ -28,13 +28,16 @@ class RssBasedCrawler(BaseSpider):
   def parse(self, response):
     """ Step 1: Find the rss feed from the website entry point. """
     try:
-      return Request(extractRssLink(response).next(), self.parseRss)
+      return Request(extractRssLink(
+          response.body, response.url).next(),
+          self.parseRss)
     except StopIteration:
       raise NotImplementedError("There is no rss. Fallback to page/diff? TODO")
 
   def parseRss(self, response):
     """ Step 2: Extract the desired informations on the first rss entry. """
-    self.contentExtractor = ContentExtractor(response)
+    print response.url
+    self.contentExtractor = ContentExtractor(response.body)
     self.isBlogPost = buildUrlFilter(self.contentExtractor.getRssLinks(), True)
     self.priorityHeuristic = PriorityHeuristic(self.isBlogPost)
     return imap(
@@ -73,10 +76,12 @@ class RssBasedCrawler(BaseSpider):
       self.downloadsSoFar += 1
       self.contentExtractor(response.body)
       print "p    " + response.url
+    else:
+      print "g<<<<" + response.url
 
     newUrls = set(ifilter(
-        lambda _: _ not in self.seen and _.startswith(self.start_urls[0]), #TODO
-        extractLinks(response)))
+        lambda _: _ not in self.seen, #TODO
+        extractLinks(response.body)))
     self.seen.update(newUrls)
     self.priorityHeuristic.feed(response.url, newUrls)
     return tuple(imap(

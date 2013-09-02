@@ -9,8 +9,8 @@ def _bigrams(string):
     >>> _bigrams("scala")
     set(['sc', 'ca', 'al', 'la'])
 
-  @type  page: string
-  @param page: the string to process
+  @type  string: string
+  @param string: the string to process
   @rtype: set of string of size two
   @return: the set of bigrams
    """
@@ -22,8 +22,8 @@ def _cleanTags(string):
     >>> _cleanTags("<html><head><title>Hello</title><body>Test</body></html>")
     '<div>HelloTest</div>'
 
-  @type  page: string
-  @param page: the string to clean
+  @type  string: string
+  @param string: the string to clean
   @rtype: string
   @return: the cleaned up string
   """
@@ -48,6 +48,10 @@ def stringSimilarity(string1, string2):
   @rtype: float in [0;1]
   @return: the similarity of the inputs
   """
+  from difflib import SequenceMatcher
+  return max(
+    SequenceMatcher(None, _cleanTags(string1), _cleanTags(string2)).get_matching_blocks(),
+    key=lambda _: _.size).size
   bigrams1 = _bigrams(_cleanTags(string1))
   bigrams2 = _bigrams(_cleanTags(string2))
   intersection = bigrams1.intersection(bigrams2)
