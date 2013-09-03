@@ -10,12 +10,11 @@ class ContentExtractor(object):
   """Extracts the content of blog posts using a rss feed. Usage:
 
   >>> from urllib2 import urlopen
-  >>> from bibcrawl.units.mockserver import MockServer
+  >>> from bibcrawl.units.mockserver import MockServer, dl
   >>> pages = ("korben.info/80-bonnes-pratiques-seo.html", "korben.info/app-"
   ... "gratuite-amazon.html", "korben.info/cest-la-rentree-2.html",
   ... "korben.info/super-parkour-bros.html")
   >>> with MockServer():
-  ...   dl = lambda _: urlopen("http://localhost:8000/{}".format(_)).read()
   ...   extractor = ContentExtractor(dl("korben.info/feed"))
   ...   extractor.feed(dl(pages[0]), "http://{}".format(pages[0]))
   ...   extractor.feed(dl(pages[1]), "http://{}".format(pages[1]))
@@ -126,25 +125,28 @@ def _bestPath(contentZipPages):
       lambda (c, p): max(topQueriesForFirst, key=partial(ratio, c, p)),
       contentZipPages))
   # DEBUG:
-  from pprint import pprint
-  for q in topQueriesForFirst:
-    pprint(q)
-    pprint(ratio(contentZipPages[0][0], contentZipPages[0][1], q))
-  # from bibcrawl.spiders.stringsimilarity import _cleanTags
-  # # pprint(topQueriesForFirst)
-  # for q in list(topQueriesForFirst):
+  # from pprint import pprint
+  # for q in topQueriesForFirst:
   #   pprint(q)
-  #   pprint(_cleanTags(contentZipPages[0][0] or "dummy"))
-  #   pprint(_cleanTags(_xPathSelectFirst(contentZipPages[0][1], q)))
-  #   print ""
+  #   pprint(ratio(contentZipPages[0][0], contentZipPages[0][1], q))
+  # from bibcrawl.spiders.stringsimilarity import _cleanTags
+  # pprint((_cleanTags(contentZipPages[0][0])))
+  # pprint(len(_cleanTags(contentZipPages[0][0])))
+  # # from bibcrawl.spiders.stringsimilarity import _cleanTags
+  # # # pprint(topQueriesForFirst)
+  # # for q in list(topQueriesForFirst):
+  # #   pprint(q)
+  # #   pprint(_cleanTags(contentZipPages[0][0] or "dummy"))
+  # #   pprint(_cleanTags(_xPathSelectFirst(contentZipPages[0][1], q)))
+  # #   print ""
 
-  # q = max(set(topQueries), key=topQueries.count)
-  # for c, p in contentZipPages:
-  #   print "..."
-  #   pprint(c)
-  #   pprint(_xPathSelectFirst(p, q))
-  from time import sleep
-  sleep(100000)
+  # # q = max(set(topQueries), key=topQueries.count)
+  # # for c, p in contentZipPages:
+  # #   print "..."
+  # #   pprint(c)
+  # #   pprint(_xPathSelectFirst(p, q))
+  # from time import sleep
+  # sleep(100000)
   return max(set(topQueries), key=topQueries.count)
 
 def _nodeQueries(pages):

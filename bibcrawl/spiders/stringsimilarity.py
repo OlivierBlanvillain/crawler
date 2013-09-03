@@ -1,6 +1,8 @@
-"""Implements Dice's coefficient string similarity."""
+"""Implements string similarities."""
 
 from lxml.html.clean import Cleaner
+from diff_match_patch import diff_match_patch
+from difflib import SequenceMatcher
 import re
 
 def _bigrams(string):
@@ -27,19 +29,16 @@ def _cleanTags(string):
   @rtype: string
   @return: the cleaned up string
   """
-  cleanHtml = lambda _: Cleaner(
-      allow_tags=[''], remove_unknown_tags=False).clean_html(_ or u"dummy")
-  trimSpace = lambda _: re.sub(r"\s\s+" , " ", _)
-  return trimSpace(cleanHtml(string or u"dummy"))
+  htmlCleaned = Cleaner(allow_tags=[''], remove_unknown_tags=False
+      ).clean_html(string or u"dummy")
+  return re.sub(r"\s\s+" , " ", htmlCleaned)
 
-def stringSimilarity(string1, string2):
+def dicesCoeffSimilarity(string1, string2):
   """Computes the dice's coefficient similarity between two strings.
 
-    >>> round(stringSimilarity("Robert", "Richard"), 2)
-    0.52
-    >>> round(stringSimilarity("Robert", "Amy Robertson and co"), 2)
-    0.55
-    >>> from Levenshtein import ratio
+    >>> richard = round(stringSimilarity("Robert", "Richard"), 2)
+    >>> richard < round(stringSimilarity("Robert", "Amy Robertson and co"), 2)
+    True
 
   @type  string1: string
   @param string1: the string to clean
@@ -48,11 +47,26 @@ def stringSimilarity(string1, string2):
   @rtype: float in [0;1]
   @return: the similarity of the inputs
   """
-  from difflib import SequenceMatcher
-  return max(
-    SequenceMatcher(None, _cleanTags(string1), _cleanTags(string2)).get_matching_blocks(),
-    key=lambda _: _.size).size
+  # from Levenshtein import ratio
+  # return ratio(_cleanTags(string1), _cleanTags(string2))
   bigrams1 = _bigrams(_cleanTags(string1))
   bigrams2 = _bigrams(_cleanTags(string2))
   intersection = bigrams1.intersection(bigrams2)
   return (2.0 * len(intersection)) / (len(bigrams1) + len(bigrams2))
+
+def stringSimilarity(string1, string2):
+  ## Google DMP:
+  # dmp = diff_match_patch()
+  # dmp.Diff_Timeout = 0.1
+  # diffs = dmp.diff_main(_cleanTags(string1), _cleanTags(string2))
+  # dmp.diff_cleanupEfficiency(diffs)
+  # return dmp.diff_levenshtein(diffs)
+
+  ## Dice's coefficient similarity
+  return dicesCoeffSimilarity(string1, string2)
+
+  ## SequenceMatcher
+  sm = SequenceMatcher(_cleanTags(string1), _cleanTags(string2))
+  blocks = sm.get_matching_blocks()
+  score = sum(imap(lambda _: _.size * _.size, blocks))
+  return score

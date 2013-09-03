@@ -11,8 +11,7 @@ def extractLinks(page):
   """Extracts all href links of a page.
 
     >>> from urllib2 import urlopen
-    >>> from bibcrawl.units.mockserver import MockServer
-    >>> dl = lambda _: urlopen("http://localhost:8000/{}".format(_)).read()
+    >>> from bibcrawl.units.mockserver import MockServer, dl
     >>> with MockServer():
     ...   list(extractLinks( dl("example.com") ))
     ['http://www.iana.org/domains/example']

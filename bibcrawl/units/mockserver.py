@@ -10,6 +10,7 @@ from os.path import abspath, dirname, join
 from SimpleHTTPServer import SimpleHTTPRequestHandler
 from SocketServer import TCPServer
 from subprocess import Popen, PIPE
+from urllib2 import urlopen
 import sys, time
 
 class MockServer(object):
@@ -30,13 +31,23 @@ class MockServer(object):
     self.proc.wait()
     time.sleep(0.2)
 
+class NullDevice():
+  def write(self, s):
+    pass
+
 def _run():
   """ Serves"""
   chdir(join(abspath(dirname(__file__)), "blogs"))
   TCPServer.allow_reuse_address = True
   httpd = TCPServer(("", 8000), SimpleHTTPRequestHandler)
   print "I am here to serve you."
+  sys.stdout = NullDevice()
+  sys.stderr = NullDevice()
   httpd.serve_forever()
+
+def dl(url):
+  """Donwload a page from the MockServer."""
+  return urlopen("http://localhost:8000/{}".format(url)).read()
 
 if __name__ == "__main__":
   _run()
