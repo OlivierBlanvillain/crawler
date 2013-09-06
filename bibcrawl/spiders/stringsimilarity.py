@@ -3,6 +3,7 @@
 from lxml.html.clean import Cleaner
 from diff_match_patch import diff_match_patch
 from difflib import SequenceMatcher
+from itertools import imap, ifilter
 import re
 
 def _bigrams(string):
@@ -36,8 +37,8 @@ def _cleanTags(string):
 def dicesCoeffSimilarity(string1, string2):
   """Computes the dice's coefficient similarity between two strings.
 
-    >>> richard = round(stringSimilarity("Robert", "Richard"), 2)
-    >>> richard < round(stringSimilarity("Robert", "Amy Robertson and co"), 2)
+    >>> r = round(dicesCoeffSimilarity("Robert", "Richard"), 2)
+    >>> r < round(dicesCoeffSimilarity("Robert", "Amy Robertson and co"), 2)
     True
 
   @type  string1: string
@@ -47,6 +48,7 @@ def dicesCoeffSimilarity(string1, string2):
   @rtype: float in [0;1]
   @return: the similarity of the inputs
   """
+  # Slower alternative:
   # from Levenshtein import ratio
   # return ratio(_cleanTags(string1), _cleanTags(string2))
   bigrams1 = _bigrams(_cleanTags(string1))
@@ -66,7 +68,7 @@ def stringSimilarity(string1, string2):
   return dicesCoeffSimilarity(string1, string2)
 
   ## SequenceMatcher
-  sm = SequenceMatcher(_cleanTags(string1), _cleanTags(string2))
-  blocks = sm.get_matching_blocks()
-  score = sum(imap(lambda _: _.size * _.size, blocks))
-  return score
+  # sm = SequenceMatcher(_cleanTags(string1), _cleanTags(string2))
+  # blocks = sm.get_matching_blocks()
+  # score = sum(imap(lambda _: _.size * _.size, blocks))
+  # return score

@@ -28,13 +28,13 @@ def extractLinks(page):
 def extractRssLink(page, url):
   """Extracts all the RSS and ATOM feed links of a page.
 
-  >>> from urllib2 import urlopen
-  >>> from bibcrawl.units.mockserver import MockServer
-  >>> with MockServer():
-  ...   list(extractRssLink(
-  ...       urlopen("http://localhost:8000/korben.info").read(),
-  ...       "http://korben.info/"))[:-1]
-  ['http://korben.info/feed/atom', 'http://korben.info/feed']
+    >>> from urllib2 import urlopen
+    >>> from bibcrawl.units.mockserver import MockServer
+    >>> with MockServer():
+    ...   list(extractRssLink(
+    ...       urlopen("http://localhost:8000/korben.info").read(),
+    ...       "http://korben.info/"))[:-1]
+    ['http://korben.info/feed/atom', 'http://korben.info/feed']
 
   @type  page: string
   @param page: the html page to process

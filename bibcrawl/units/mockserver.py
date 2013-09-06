@@ -47,6 +47,7 @@ def _run():
 
 def dl(url):
   """Donwload a page from the MockServer."""
+  # print "http://localhost:8000/{}".format(url)
   return urlopen("http://localhost:8000/{}".format(url)).read()
 
 if __name__ == "__main__":

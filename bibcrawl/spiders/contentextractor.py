@@ -34,6 +34,9 @@ class ContentExtractor(object):
     @type  rss: string
     @param rss: the rss/atom feed
     """
+    # feedparser.PARSE_MICROFORMATS = 0
+    # feedparser._HTMLSanitizer.acceptable_elements.add("object")
+    # feedparser._HTMLSanitizer.acceptable_elements.add("embed")
     self.rssEntries = feedparser.parse(rss).entries
     self.rssLinks = tuple(imap(lambda _: _.link, self.rssEntries))
     self.urlZipPages = list()
@@ -95,7 +98,7 @@ class ContentExtractor(object):
           key=lambda (url, _): url)))
     contents = (
         lambda _: _.content[0].value,
-        # lambda _: _.title,
+        lambda _: _.title,
         # updated, published_parsed, updated_parsed, links, title, author,
         # summary_detail, summary, content, guidislink, title_detail, href,
         # link, authors, thr_total, author_detail, id, tags, published
@@ -169,6 +172,18 @@ def _nodeQueries(pages):
         attribute = node.get(selector)
         if attribute and not any(imap(lambda _: _.isdigit(), attribute)):
           yield "//*[@{}='{}']".format(selector, attribute)
+  >>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>><<<<<<<<<<<
+    >>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>><<<<<<<<<<<
+      >>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>><<<<<<<<<<<
+    >>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>><<<<<<<<<<<
+  >>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>><<<<<<<<<<<
+    >>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>><<<<<<<<<<<
+      >>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>><<<<<<<<<<<
+    >>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>><<<<<<<<<<<
+  >>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>><<<<<<<<<<<
+    >>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>><<<<<<<<<<<
+      >>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>><<<<<<<<<<<
+        >>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>><<<<<<<<<<<
 
 def _xPathSelectFirst(page, query):
   """Executes a XPath query and return a string representation of the first
@@ -190,3 +205,4 @@ def _xPathSelectFirst(page, query):
   # page.xpath(query).headOption.map(etree.tostring(_)).getOrElse("")
   results = page.xpath(query)
   return unicode(etree.tostring(results[0])) if(results) else u""
+
