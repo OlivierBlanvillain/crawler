@@ -186,114 +186,60 @@ class ContentExtractorTests(unittest.TestCase):
     self._hp("raymond-j-learsy/frances-cri-de-guerre_b_3854648")
   def testHuffingtonPost65(self):
     self._hp("chris-weigant/congress-labor-daze_b_3857465")
-  def testHuffingtonPost72(self):
-    self._hp("jim-sleeper/hidden-truths-about-ameri_b_3853172")
-
   def _de(self, post):
     self._checkContentXPath(
         "digital-examples.blogspot.com/feed",
         "digital-examples.blogspot.com/{}.html".format(post),
         "//*[@class='post-body entry-content']")
 
-  def testAADigitalPostIon(self):
+  def testDigitalPostAir(self):
+    self._de("2013/08/general-electrics-6secondscience-fair")
+  def testDigitalPostBum(self):
+    self._de("2013/07/katy-perry-knows-how-to-sell-album")
+  def testDigitalPostDeo(self):
+    self._de("2013/09/dizzie-rascals-gif-video")
+  def testDigitalPostDer(self):
+    self._de("2013/07/the-daily-mails-femail-fashion-finder")
+  def testDigitalPostEbo(self):
+    self._de("2013/08/relaunching-bebo")
+  def testDigitalPostEct(self):
+    self._de("2013/08/end-marmite-neglect")
+  def testDigitalPostErs(self):
+    self._de("2013/08/personalised-coca-cola-posters")
+  def testDigitalPostGue(self):
+    self._de("2013/08/augmented-reality-with-ikea-catalogue")
+  def testDigitalPostGue(self):
+    self._de("2013/08/augmented-reality-with-ikea-catalogue")
+  def testDigitalPostHat(self):
+    self._de("2013/07/acura-on-snapchat")
+  def testDigitalPostIes(self):
+    self._de("2013/07/local-deliveries")
+  def testDigitalPostIne(self):
+    self._de("2013/07/video-poster-for-wolverine")
+  def testDigitalPostIne(self):
+    self._de("2013/08/natwestss-student-tips-on-vine")
+  def testDigitalPostIon(self):
+    self._de("2013/08/airbnbs-hollywood-vine-competition")
+  def testDigitalPostIon(self):
     self._de("2013/09/using-twitter-for-data-collection")
-
-  # def testDigitalPostOok(self):
-  #   self._de("2013/09/volvos-hook")
-  # def testDigitalPostDeo(self):
-  #   self._de("2013/09/dizzie-rascals-gif-video")
-  # def testDigitalPostIon(self):
-  #   self._de("2013/08/airbnbs-hollywood-vine-competition")
-  # def testDigitalPostErs(self):
-  #   self._de("2013/08/personalised-coca-cola-posters")
-  # def testDigitalPostIne(self):
-  #   self._de("2013/08/natwestss-student-tips-on-vine")
-  # def testDigitalPostUse(self):
-  #   self._de("2013/08/im-13-and-none-of-my-friends-use")
-  # def testDigitalPostTer(self):
-  #   self._de("2013/08/how-videos-go-viral-on-twitter")
-  # def testDigitalPostUbe(self):
-  #   self._de("2013/08/best-vines-fast-show-for-youtube")
-  # def testDigitalPostEbo(self):
-  #   self._de("2013/08/relaunching-bebo")
-  # def testDigitalPostAir(self):
-  #   self._de("2013/08/general-electrics-6secondscience-fair")
-  # def testDigitalPostEct(self):
-  #   self._de("2013/08/end-marmite-neglect")
-  # def testDigitalPostOst(self):
-  #   self._de("2013/08/jeff-bezos-and-washington-post")
-  # def testDigitalPostGue(self):
-  #   self._de("2013/08/augmented-reality-with-ikea-catalogue")
-  # def testDigitalPostHat(self):
-  #   self._de("2013/07/acura-on-snapchat")
-  # def testDigitalPostBum(self):
-  #   self._de("2013/07/katy-perry-knows-how-to-sell-album")
-  # def testDigitalPostGeo(self):
-  #   self._de("2013/07/toyota-rav4-x-nat-geo")
-  # def testDigitalPostDer(self):
-  #   self._de("2013/07/the-daily-mails-femail-fashion-finder")
-  # def testDigitalPostUly(self):
-  #   self._de("2013/07/next-generation-media-quarterly-july")
-  # def testDigitalPostMer(self):
-  #   self._de("2013/07/barbours-100-days-of-summer")
-  # def testDigitalPostIne(self):
-  #   self._de("2013/07/video-poster-for-wolverine")
-  # def testDigitalPostNse(self):
-  #   self._de("2013/07/honda-uses-rebecca-black-in-response")
-  # def testDigitalPostIes(self):
-  #   self._de("2013/07/local-deliveries")
-  # def testDigitalPostRam(self):
-  #   self._de("2013/07/selling-on-instagram")
-  # def testDigitalPostTer(self):
-  #   self._de("2013/07/brands-playing-around-on-twitter")
-  # def testDigitalPostIon(self):
-  #   self._de("2013/09/using-twitter-for-data-collection")
-  # def testDigitalPostOok(self):
-  #   self._de("2013/09/volvos-hook")
-  # def testDigitalPostDeo(self):
-  #   self._de("2013/09/dizzie-rascals-gif-video")
-  # def testDigitalPostIon(self):
-  #   self._de("2013/08/airbnbs-hollywood-vine-competition")
-  # def testDigitalPostErs(self):
-  #   self._de("2013/08/personalised-coca-cola-posters")
-  # def testDigitalPostIne(self):
-  #   self._de("2013/08/natwestss-student-tips-on-vine")
-  # def testDigitalPostUse(self):
-  #   self._de("2013/08/im-13-and-none-of-my-friends-use")
-  # def testDigitalPostTer(self):
-  #   self._de("2013/08/how-videos-go-viral-on-twitter")
-  # def testDigitalPostUbe(self):
-  #   self._de("2013/08/best-vines-fast-show-for-youtube")
-  # def testDigitalPostEbo(self):
-  #   self._de("2013/08/relaunching-bebo")
-  # def testDigitalPostAir(self):
-  #   self._de("2013/08/general-electrics-6secondscience-fair")
-  # def testDigitalPostEct(self):
-  #   self._de("2013/08/end-marmite-neglect")
-  # def testDigitalPostOst(self):
-  #   self._de("2013/08/jeff-bezos-and-washington-post")
-  # def testDigitalPostGue(self):
-  #   self._de("2013/08/augmented-reality-with-ikea-catalogue")
-  # def testDigitalPostHat(self):
-  #   self._de("2013/07/acura-on-snapchat")
-  # def testDigitalPostBum(self):
-  #   self._de("2013/07/katy-perry-knows-how-to-sell-album")
-  # def testDigitalPostGeo(self):
-  #   self._de("2013/07/toyota-rav4-x-nat-geo")
-  # def testDigitalPostDer(self):
-  #   self._de("2013/07/the-daily-mails-femail-fashion-finder")
-  # def testDigitalPostUly(self):
-  #   self._de("2013/07/next-generation-media-quarterly-july")
-  # def testDigitalPostMer(self):
-  #   self._de("2013/07/barbours-100-days-of-summer")
-  # def testDigitalPostIne(self):
-  #   self._de("2013/07/video-poster-for-wolverine")
-  # def testDigitalPostNse(self):
-  #   self._de("2013/07/honda-uses-rebecca-black-in-response")
-  # def testDigitalPostIes(self):
-  #   self._de("2013/07/local-deliveries")
-  # def testDigitalPostRam(self):
-  #   self._de("2013/07/selling-on-instagram")
-  # def testDigitalPostTer(self):
-  #   self._de("2013/07/brands-playing-around-on-twitter")
+  def testDigitalPostMer(self):
+    self._de("2013/07/barbours-100-days-of-summer")
+  def testDigitalPostNse(self):
+    self._de("2013/07/honda-uses-rebecca-black-in-response")
+  def testDigitalPostOok(self):
+    self._de("2013/09/volvos-hook")
+  def testDigitalPostOst(self):
+    self._de("2013/08/jeff-bezos-and-washington-post")
+  def testDigitalPostRam(self):
+    self._de("2013/07/selling-on-instagram")
+  def testDigitalPostTer(self):
+    self._de("2013/07/brands-playing-around-on-twitter")
+  def testDigitalPostTer(self):
+    self._de("2013/08/how-videos-go-viral-on-twitter")
+  def testDigitalPostUbe(self):
+    self._de("2013/08/best-vines-fast-show-for-youtube")
+  def testDigitalPostUly(self):
+    self._de("2013/07/next-generation-media-quarterly-july")
+  def testDigitalPostUse(self):
+    self._de("2013/08/im-13-and-none-of-my-friends-use")
 

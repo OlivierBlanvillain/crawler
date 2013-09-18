@@ -3,9 +3,10 @@
 """Utility functions for the RssBasedCrawler spider."""
 import re
 from itertools import imap, ifilter, chain
-from lxml import etree
 from unicodedata import normalize
 from urlparse import urlsplit, urljoin
+from lxml import etree, html
+from lxml.html import soupparser
 
 def extractLinks(page):
   """Extracts all href links of a page.
@@ -25,13 +26,13 @@ def extractLinks(page):
       lambda _: _.startswith("http"),
       etree.HTML(page).xpath("//a/@href"))
 
-def extractRssLink(page, url):
+def extractRssLinks(page, url, parsedPage=None):
   """Extracts all the RSS and ATOM feed links of a page.
 
     >>> from urllib2 import urlopen
     >>> from bibcrawl.units.mockserver import MockServer
     >>> with MockServer():
-    ...   list(extractRssLink(
+    ...   list(extractRssLinks(
     ...       urlopen("http://localhost:8000/korben.info").read(),
     ...       "http://korben.info/"))[:-1]
     ['http://korben.info/feed/atom', 'http://korben.info/feed']
@@ -40,10 +41,13 @@ def extractRssLink(page, url):
   @param page: the html page to process
   @type  url: string
   @param url: the page url, used to build absolute urls
+  @type  parsedPage: lxml.etree._Element
+  @param parsedPage: the parsed page, computed for the default value None
   @rtype: collections. Iterable of strings
   @return: all the feed links of the page
   """
-  parser = etree.HTML(page)
+  if not parsedPage:
+    parsedPage = parseHTML(page)
   paths = imap(lambda _: "//link[@type='{}']/@href".format(_), (
       "application/atom+xml",
       "application/atom",
@@ -59,8 +63,33 @@ def extractRssLink(page, url):
       "text/rdf",
       "text/xml",
       "application/xml"))
-  results = chain(*imap(lambda _: parser.xpath(_), paths))
+  results = chain(*imap(lambda _: parsedPage.xpath(_), paths))
   return imap(lambda _: urljoin(url, _), results)
+
+
+def extractImageLinks(page, url, parsedPage=None):
+  """Extracts all the images links of a page.
+
+    >>> from urllib2 import urlopen
+    >>> from bibcrawl.units.mockserver import MockServer
+    >>> with MockServer():
+    ...   list(extractImageLinks(
+    ...       urlopen("http://localhost:8000/korben.info/viber-linux.html").
+    ...           read(), "http://korben.info/viber-linux.html"))[0]
+    'http://korben.info/wp-content/themes/korben-steaw/hab/logo.png'
+
+  @type  page: string
+  @param page: the html page to process
+  @type  url: string
+  @param url: the page url, used to build absolute urls
+  @type  parsedPage: lxml.etree._Element
+  @param parsedPage: the parsed page, computed for the default value None
+  @rtype: collections. Iterable of strings
+  @return: all the image links of the page
+  """
+  if not parsedPage:
+    parsedPage = parseHTML(page)
+  return imap(lambda _: urljoin(url, _), parsedPage.xpath("//img/@src"))
 
 def buildUrlFilter(urls, debug=False):
   """Given a tuple of urls with similar pattern, computes a filtering function
@@ -129,3 +158,25 @@ def ascii(string):
     return string
   else:
     return normalize('NFKC', string).encode('ascii','ignore')
+
+
+def parseHTML(page):
+  """Parses a html page with lxml. In case of errors, falls back to
+  beautifulsoup.
+
+    >>> # etree fails with an empty string:
+    ... try: etree.fromstring("")
+    ... except: pass
+    ... else: fail
+    >>> etree.tostring(parseHTML(""))
+    '<html/>'
+
+  @type  page: string
+  @param page: the page to parse
+  @rtype: lxml.etree._Element
+  @return: the parsed page
+  """
+  try:
+    return html.fromstring(page)
+  except etree.XMLSyntaxError:
+    return soupparser.fromstring(page)

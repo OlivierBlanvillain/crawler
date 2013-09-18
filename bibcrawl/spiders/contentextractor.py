@@ -1,5 +1,6 @@
 """Content Extractor."""
 from bibcrawl.spiders.stringsimilarity import stringSimilarity
+from bibcrawl.spiders.utils import parseHTML
 from functools import partial
 from heapq import nlargest
 from itertools import imap, ifilter
@@ -22,6 +23,7 @@ class ContentExtractor(object):
   ...   content = extractor(dl(pages[3]))
   Best XPaths are:
   //*[@class='post-content']
+  //*[@class='post-title']
   >>> len(extractor.getRssLinks())
   30
   >>> len(content[0])
@@ -62,17 +64,20 @@ class ContentExtractor(object):
     self.needsRefresh = True
     self.urlZipPages.append((url, page))
 
-  def __call__(self, page):
+  def __call__(self, page, parsedPage=None):
     """Extracts content from a page.
 
     @type  page: string
     @param page: the html page to process
+    @type  parsedPage: lxml.etree._Element
+    @param parsedPage: the parsed page, computed for the default value None
     @rtype: 1-tuple of strings
     @return: the extracted (content, )
     """
     if self.needsRefresh:
       self._refresh()
-    parsedPage = etree.HTML(page)
+    if not parsedPage:
+      parsedPage = parseHTML(page)
     return tuple(imap(lambda _: _xPathSelectFirst(parsedPage, _), self.xPaths))
 
   def _refresh(self):
@@ -86,13 +91,13 @@ class ContentExtractor(object):
     # val pageUrls = urlZipPages.map(_.url)
     # val entries = rssEntries.filter(pageUrls contains _.link).sortBy(_.link)
     # val parsedPages = urlZipPages.filter(rssLinks contains _.url)
-    #   .sortBy(_.url).map(etree.HTML(_.page))
+    #   .sortBy(_.url).map(parseHTML(_.page))
     pageUrls = tuple(imap(lambda (url, _): url, self.urlZipPages))
     entries = sorted(
         ifilter(lambda _: _.link in pageUrls, self.rssEntries),
         key=lambda _: _.link)
     parsedPages = tuple(imap(
-        lambda (_, page): etree.HTML(page),
+        lambda (_, page): parseHTML(page),
         sorted(
           ifilter(lambda (url, _): url in self.rssLinks, self.urlZipPages),
           key=lambda (url, _): url)))
@@ -172,18 +177,6 @@ def _nodeQueries(pages):
         attribute = node.get(selector)
         if attribute and not any(imap(lambda _: _.isdigit(), attribute)):
           yield "//*[@{}='{}']".format(selector, attribute)
-  >>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>><<<<<<<<<<<
-    >>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>><<<<<<<<<<<
-      >>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>><<<<<<<<<<<
-    >>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>><<<<<<<<<<<
-  >>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>><<<<<<<<<<<
-    >>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>><<<<<<<<<<<
-      >>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>><<<<<<<<<<<
-    >>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>><<<<<<<<<<<
-  >>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>><<<<<<<<<<<
-    >>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>><<<<<<<<<<<
-      >>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>><<<<<<<<<<<
-        >>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>><<<<<<<<<<<
 
 def _xPathSelectFirst(page, query):
   """Executes a XPath query and return a string representation of the first
@@ -201,8 +194,5 @@ def _xPathSelectFirst(page, query):
   @rtype: string
   @return: the first result of the query, empty string if no result
   """
-  # Fuck semantics. In Scala:
-  # page.xpath(query).headOption.map(etree.tostring(_)).getOrElse("")
   results = page.xpath(query)
   return unicode(etree.tostring(results[0])) if(results) else u""
-

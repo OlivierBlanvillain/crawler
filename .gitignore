@@ -29,11 +29,6 @@ nosetests.xml
 # Translations
 *.mo
 
-# Mr Developer
-.mr.developer.cfg
-.project
-.pydevproject
-
 # Guard files
 Gemfile
 Gemfile.lock
@@ -42,3 +37,6 @@ Guardfile
 # Cache
 .scrapy
 out.txt
+
+# Output
+img

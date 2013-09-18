@@ -2,7 +2,8 @@
 from bibcrawl.spiders.contentextractor import ContentExtractor
 from bibcrawl.spiders.priorityheuristic import PriorityHeuristic
 from bibcrawl.spiders.utils import buildUrlFilter
-from bibcrawl.spiders.utils import extractLinks, extractRssLink
+from bibcrawl.spiders.utils import extractLinks, extractRssLinks
+from bibcrawl.pipelines.postitem import PostItem
 from itertools import ifilter, imap, chain
 from scrapy.http import Request, Response
 from scrapy.spider import BaseSpider # https://scrapy.readthedocs.org/
@@ -12,11 +13,11 @@ class RssBasedCrawler(BaseSpider):
   """I am spiderman:"""
   name = "man"
 
-  def __init__(self, blogUrl, maxDownloads, *args, **kwargs):
+  def __init__(self, url, maxDownloads, *args, **kwargs):
     """TODO"""
     super(RssBasedCrawler, self).__init__(*args, **kwargs)
-    self.allowed_domains = [ blogUrl ]
-    self.start_urls = [ "http://{}/".format(blogUrl) ]
+    self.allowed_domains = [ url ]
+    self.start_urls = [ "http://{}/".format(url) ]
     self.maxDownloads = maxDownloads
     self.downloadsSoFar = 0
     self.seen = set()
@@ -28,7 +29,7 @@ class RssBasedCrawler(BaseSpider):
   def parse(self, response):
     """ Step 1: Find the rss feed from the website entry point. """
     try:
-      return Request(extractRssLink(
+      return Request(extractRssLinks(
           response.body, response.url).next(),
           self.parseRss)
     except StopIteration:
@@ -70,23 +71,24 @@ class RssBasedCrawler(BaseSpider):
   def crawl(self, response):
     """ Step 4: Recursively download all the blog and extract relevant data.
     """
+    url = response.url
+    body = response.body
     if self.downloadsSoFar > self.maxDownloads:
       reactor.stop()
-    elif self.isBlogPost(response.url):
+    elif self.isBlogPost(url):
       self.downloadsSoFar += 1
-      self.contentExtractor(response.body)
-      print "p    " + response.url
-    else:
-      print "g<<<<" + response.url
+      self.contentExtractor(body)
+      yield PostItem(url=url, body=body)
+    # else:
+    #   print "g<<<<" + url
 
     newUrls = set(ifilter(
-        lambda _: _ not in self.seen, #TODO
-        extractLinks(response.body)))
+        lambda _: _ not in self.seen,
+        extractLinks(body)))
     self.seen.update(newUrls)
-    self.priorityHeuristic.feed(response.url, newUrls)
-    return tuple(imap(
-        lambda _: Request(
-          url=_,
+    self.priorityHeuristic.feed(url, newUrls)
+    for newUrl in newUrls:
+      yield Request(
+          url=newUrl,
           callback=self.crawl,
-          priority=self.priorityHeuristic(_)),
-        newUrls))
+          priority=self.priorityHeuristic(newUrl))
