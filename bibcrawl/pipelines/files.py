@@ -1,8 +1,8 @@
 """
 Files Pipeline
 
-In the near future, FilesPipeline will be part of Scrapy. In the meantime,
-here it is, copy pasted from scrapy/master.
+In the near future, this file will be part of the main Scrapy distribution. In
+the meantime, here it is, copy pasted from scrapy/master.
 https://github.com/scrapy/scrapy/blob/master/scrapy/contrib/pipeline/files.py
 """
 

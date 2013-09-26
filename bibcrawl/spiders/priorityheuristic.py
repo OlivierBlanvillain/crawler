@@ -46,10 +46,12 @@ class PriorityHeuristic(object):
     @return: the predicted score
     """
     if self.highScore(url):
-      return maxint
+      # maxint made Scrapy go out of int range because of
+      # REDIRECT_PRIORITY_ADJUST = +2, / 2 solves the issue.
+      return maxint / 2
     else:
       k = min(5, int(ceil(len(self.urlsZscore) / 2.0)))
-      first = lambda _: _[0] # For the lulz.
+      first = lambda _: _[0]
       ratioZscore = imap(
           lambda (i, s): (stringSimilarity(ascii(url), ascii(i)), s),
           self.urlsZscore)

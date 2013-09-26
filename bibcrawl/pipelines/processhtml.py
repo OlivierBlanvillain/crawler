@@ -3,10 +3,11 @@ from scrapy.exceptions import DropItem
 
 class ProcessHtml(object):
   def process_item(self, item, spider):
-    (post, title) = spider.contentExtractor(item["body"])
-    if not (post and title):
+    (item["post"], item["title"]) = spider.contentExtractor(item["body"])
+    # More to come.
+    if not (item["post"]):
       print "Dropped!"
       raise DropItem
     else:
-      item["file_urls"] = extractImageLinks(post, item["url"])
+      item["file_urls"] = extractImageLinks(item["post"], item["url"])
       return item

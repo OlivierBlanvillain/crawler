@@ -24,7 +24,7 @@ def extractLinks(page):
   """
   return ifilter(
       lambda _: _.startswith("http"),
-      etree.HTML(page).xpath("//a/@href"))
+      parseHTML(page).xpath("//a/@href"))
 
 def extractRssLinks(page, url, parsedPage=None):
   """Extracts all the RSS and ATOM feed links of a page.
@@ -178,5 +178,8 @@ def parseHTML(page):
   """
   try:
     return html.fromstring(page)
-  except etree.XMLSyntaxError:
-    return soupparser.fromstring(page)
+  except (etree.XMLSyntaxError, etree.ParserError):
+    try:
+      return soupparser.fromstring(page)
+    except:
+      return None

@@ -14,7 +14,6 @@ class RssBasedCrawler(BaseSpider):
   name = "man"
 
   def __init__(self, url, maxDownloads, *args, **kwargs):
-    """TODO"""
     super(RssBasedCrawler, self).__init__(*args, **kwargs)
     self.allowed_domains = [ url ]
     self.start_urls = [ "http://{}/".format(url) ]
@@ -45,6 +44,8 @@ class RssBasedCrawler(BaseSpider):
         lambda _: Request(url=_,
             callback=self.bufferPost,
             errback=self.bufferPost,
+            # meta={ "u": _ } is here to keep a "safe" copy of the source url.
+            # I don't trust response.url == (what was passed as Request url).
             meta={ "u": _ }),
         self.contentExtractor.getRssLinks())
 
@@ -58,14 +59,7 @@ class RssBasedCrawler(BaseSpider):
           lambda _: isinstance(_, Response),
           self.bufferedPosts))
       for post in posts:
-        self.contentExtractor.feed(post.body, post.url)
-      # meta={ "u": _ } is here to keep a "safe" copy of the source url.
-      # I don't trust response.url == (what was passed as Request url).
-      for post in posts:
-        if post.meta["u"] != post.url:
-          raise NotImplementedError("This meta was indeed needed."
-              "(TODO: remove post.meta[u] if this never appends.)")
-
+        self.contentExtractor.feed(post.body, response.meta["u"])
       return tuple(chain.from_iterable(imap(lambda _: self.crawl(_), posts)))
 
   def crawl(self, response):
@@ -88,7 +82,10 @@ class RssBasedCrawler(BaseSpider):
     self.seen.update(newUrls)
     self.priorityHeuristic.feed(url, newUrls)
     for newUrl in newUrls:
+      pp = self.priorityHeuristic(newUrl)
+      if not isinstance(pp, int):
+        print "WAHT DE F?"
       yield Request(
           url=newUrl,
           callback=self.crawl,
-          priority=self.priorityHeuristic(newUrl))
+          priority=pp)

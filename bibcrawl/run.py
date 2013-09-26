@@ -13,29 +13,31 @@ def stop_reactor():
 def main():
   """Crawler entry point."""
   settings = Settings({
-      "CONCURRENT_ITEMS": 4,
       "ITEM_PIPELINES": [
           'bibcrawl.pipelines.debugprint.DebugPrint',
           'bibcrawl.pipelines.processhtml.ProcessHtml',
           'bibcrawl.pipelines.files.FilesPipeline',
-          'bibcrawl.pipelines.staticcomments.StaticComments',
           'bibcrawl.pipelines.renderjavascript.RenderJavascript',
+          'bibcrawl.pipelines.staticcomments.StaticComments',
           'bibcrawl.pipelines.backendpropagate.BackendPropagate',
       ],
-      "HTTPCACHE_POLICY": "scrapy.contrib.httpcache.DummyPolicy",
+      # "HTTPCACHE_POLICY": "scrapy.contrib.httpcache.DummyPolicy",
       "HTTPCACHE_STORAGE": "scrapy.contrib.httpcache.FilesystemCacheStorage",
       "HTTPCACHE_ENABLED": True,
-      "FILES_STORE": "img"
+      "FILES_STORE": "img",
 
+      # "CONCURRENT_ITEMS": 1,
       # "CONCURRENT_REQUESTS": 1,
       # "CONCURRENT_REQUESTS_PER_DOMAIN": 1,
       # "CONCURRENT_REQUESTS_PER_IP": 1
   })
 
-  spider = newcrawl.RssBasedCrawler(url="korben.info", maxDownloads=500)
+  # letitcrash.com
+  spider = newcrawl.RssBasedCrawler(url="korben.info", maxDownloads=5000)
   crawler = Crawler(settings)
 
   crawler.signals.connect(reactor.stop, signal=signals.spider_closed)
+  crawler.signals.connect(reactor.getThreadPool().stop, signal=signals.spider_closed)
   crawler.configure()
   crawler.crawl(spider)
   crawler.start()
