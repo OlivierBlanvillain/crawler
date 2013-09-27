@@ -1,4 +1,8 @@
-"""Content Extractor."""
+"""Content Extractor.
+
+TODO: Use readability as a fallback
+TODO: generate XPath for divs without class/id
+"""
 from bibcrawl.spiders.stringsimilarity import stringSimilarity
 from bibcrawl.spiders.utils import parseHTML
 from functools import partial
@@ -54,7 +58,8 @@ class ContentExtractor(object):
     return self.rssLinks
 
   def feed(self, page, url):
-    """Feeds the extractor with a new page.
+    """Feeds the extractor with a new page. Careful, the urls feeded here must
+    match one url found in the rss feed provided in the constructor.
 
     @type  page: string
     @param page: the html page feeded
@@ -101,8 +106,8 @@ class ContentExtractor(object):
         sorted(
           ifilter(lambda (url, _): url in self.rssLinks, self.urlZipPages),
           key=lambda (url, _): url)))
-    contents = (
-        lambda _: _.content[0].value,
+    extractors = (
+        extractContent,
         lambda _: _.title,
         # updated, published_parsed, updated_parsed, links, title, author,
         # summary_detail, summary, content, guidislink, title_detail, href,
@@ -110,10 +115,16 @@ class ContentExtractor(object):
     )
     self.xPaths = tuple(imap(
         lambda content: _bestPath(zip(imap(content, entries), parsedPages)),
-        contents))
+        extractors))
 
     print("Best XPaths are:")
     print("\n".join(self.xPaths))
+
+def extractContent(feed):
+  try:
+    return feed.content[0].value
+  except AttributeError:
+    return feed.description
 
 def _bestPath(contentZipPages):
   """Given a list of content/page, computes the best XPath query that would

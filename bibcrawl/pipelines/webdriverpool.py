@@ -1,5 +1,6 @@
 from Queue import Queue, Empty
 from selenium import webdriver
+from itertools import imap
 
 class WebdriverPool(object):
   def __init__(self):
@@ -25,5 +26,8 @@ class WebdriverPool(object):
 
   def stop(self):
     # self.stopped = True
-    for driver in self.all:
-      driver.quit()
+    try:
+      for driver in self.all:
+        driver.quit()
+    except TypeError: # iteration over non-sequence is apparently a TypeError
+      pass

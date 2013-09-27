@@ -91,14 +91,14 @@ def extractImageLinks(page, url, parsedPage=None):
     parsedPage = parseHTML(page)
   return imap(lambda _: urljoin(url, _), parsedPage.xpath("//img/@src"))
 
-def buildUrlFilter(urls, debug=False):
+def buildUrlFilter(urls, debug=True):
   """Given a tuple of urls with similar pattern, computes a filtering function
   that accepts similar urls the and reject others.
 
     >>> times = buildUrlFilter([
     ... "http://www.thetimes.co.uk/tto/news/world/europe/article3844546.ece",
     ... "http://www.thetimes.co.uk/tto/business/industries/leisure/"
-    ... "article3843571.ece" ], True)
+    ... "article3843571.ece" ])
     Url regex: ^http://www.thetimes.co.uk/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+$
     >>> times(u"http://www.thetimes.co.uk/tto/opinion/columnists/"
     ... "philipcollins/article3844110.ece")
@@ -108,8 +108,7 @@ def buildUrlFilter(urls, debug=False):
 
     >>> engadget = buildUrlFilter([
     ... "http://www.engadget.com/2013/08/14/back-to-school-guide-tablets/",
-    ... "http://www.engadget.com/2013/08/15/we-can-do-this-hyperloop/" ],
-    ... True)
+    ... "http://www.engadget.com/2013/08/15/we-can-do-this-hyperloop/" ])
     Url regex: ^http://www.engadget.com/\\d+/\\d+/\\d+/[^/]+/$
     >>> engadget(u"http://www.engadget.com/2013/08/15/yahoo-weather-android-"
     ... "redesign/")
@@ -117,7 +116,7 @@ def buildUrlFilter(urls, debug=False):
     >>> engadget(u"http://www.engadget.com/THATSNAN/08/15/title/")
     False
 
-  @type  urls: tuple of strings
+  @type  urls: collections.Iterable of strings
   @param urls: urls with a similar pattern
   @type  debug: boolean
   @param debug: enable regex print, default=False
@@ -125,9 +124,10 @@ def buildUrlFilter(urls, debug=False):
   @return: the function filtering blog posts
   """
   eol = "#"
+  urlsTuple = tuple(urls)
   beginsWith = lambda regex: (
       lambda str: bool(re.match(regex, str + "/" + eol)))
-  (scheme, netloc, _, _, _) = urlsplit(urls[0])
+  (scheme, netloc, _, _, _) = urlsplit(urlsTuple[0])
   # Note that something like "[a-zA-Z]" would not be safe as it could append
   # that only one article out of many contains a digit in the title. Also if
   # we try to match more precisely the urls we might find a temporary pattern
@@ -136,7 +136,7 @@ def buildUrlFilter(urls, debug=False):
   def _bestRegex(current):
     """Recursively compute the best regex."""
     for pattern in patterns:
-      if all(imap(beginsWith(current + pattern), urls)):
+      if all(imap(beginsWith(current + pattern), urlsTuple)):
         return _bestRegex(current + pattern)
     return current
 

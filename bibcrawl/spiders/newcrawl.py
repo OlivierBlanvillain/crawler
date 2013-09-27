@@ -38,8 +38,6 @@ class RssBasedCrawler(BaseSpider):
     """ Step 2: Extract the desired informations on the first rss entry. """
     print response.url
     self.contentExtractor = ContentExtractor(response.body)
-    self.isBlogPost = buildUrlFilter(self.contentExtractor.getRssLinks(), True)
-    self.priorityHeuristic = PriorityHeuristic(self.isBlogPost)
     return imap(
         lambda _: Request(url=_,
             callback=self.bufferPost,
@@ -58,6 +56,8 @@ class RssBasedCrawler(BaseSpider):
       posts = tuple(ifilter(
           lambda _: isinstance(_, Response),
           self.bufferedPosts))
+      self.isBlogPost = buildUrlFilter(imap(lambda _: _.url, posts))
+      self.priorityHeuristic = PriorityHeuristic(self.isBlogPost)
       for post in posts:
         self.contentExtractor.feed(post.body, response.meta["u"])
       return tuple(chain.from_iterable(imap(lambda _: self.crawl(_), posts)))
@@ -66,6 +66,7 @@ class RssBasedCrawler(BaseSpider):
     """ Step 4: Recursively download all the blog and extract relevant data.
     """
     url = response.url
+    print "crawled {}".format(url)
     body = response.body
     if self.downloadsSoFar > self.maxDownloads:
       reactor.stop()
@@ -73,8 +74,6 @@ class RssBasedCrawler(BaseSpider):
       self.downloadsSoFar += 1
       self.contentExtractor(body)
       yield PostItem(url=url, body=body)
-    # else:
-    #   print "g<<<<" + url
 
     newUrls = set(ifilter(
         lambda _: _ not in self.seen,
