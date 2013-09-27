@@ -2,5 +2,8 @@ from scrapy.exceptions import DropItem
 
 class BackendPropagate(object):
   def process_item(self, item, spider):
-    print item["comments"]
+    try:
+      print item.comments
+    except:
+      print "No comments."
     return item

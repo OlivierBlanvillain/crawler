@@ -17,3 +17,12 @@ class PostItem(Item):
 
   screenshot = Field()
 
+  def __setattr__(self, key, value):
+    if key in self.fields:
+      super(PostItem, self).__setitem__(key, value)
+    else:
+      super(PostItem, self).__setattr__(key, value)
+
+  def __getattr__(self, key):
+    # This is enough because __getattr__ is a fallback...
+    return self[key]

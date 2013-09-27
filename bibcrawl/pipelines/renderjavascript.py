@@ -46,7 +46,7 @@ class RenderJavascript(object):
     driver = webdriver.PhantomJS("./lib/phantomjs/bin/phantomjs")
     # driver = webdriver.Firefox()
     driver = self.webdrivers.acquire()
-    driver.get(item["url"])
+    driver.get(item.url)
     self.disqusComments(driver)
     self.livefyreComments(driver)
     self.saveScreenshot(item, driver)
@@ -78,8 +78,8 @@ class RenderJavascript(object):
     pass
 
   def saveScreenshot(self, item, driver):
-    uid = sha1(item["url"]).hexdigest()
+    uid = sha1(item.url).hexdigest()
     png = StringIO(driver.get_screenshot_as_png())
     key = 'screen/{}.png'.format(uid)
     self.store.persist_file(key, png, None)
-    item["screenshot"] = key
+    item.screenshot = key
