@@ -65,7 +65,8 @@ class RenderJavascript(object):
           sleep(0.2)
           driver.find_element_by_xpath(loadMoarXPath).click()
       except ElementNotVisibleException:
-        print "disqus!"
+        pass
+      print "disqus!"
     except NoSuchElementException:
       pass
     driver.switch_to_default_content()
