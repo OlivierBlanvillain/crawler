@@ -1,10 +1,11 @@
 """RssBasedCrawler """
 from bibcrawl.spiders.contentextractor import ContentExtractor
 from bibcrawl.spiders.priorityheuristic import PriorityHeuristic
-from bibcrawl.spiders.utils import buildUrlFilter
+from bibcrawl.spiders.utils import buildUrlFilter, parseHTML
 from bibcrawl.spiders.utils import extractLinks, extractRssLinks
 from bibcrawl.pipelines.postitem import PostItem
 from itertools import ifilter, imap, chain
+from scrapy.exceptions import CloseSpider
 from scrapy.http import Request, Response
 from scrapy.spider import BaseSpider # https://scrapy.readthedocs.org/
 from twisted.internet import reactor
@@ -32,7 +33,7 @@ class RssBasedCrawler(BaseSpider):
           response.body, response.url).next(),
           self.parseRss)
     except StopIteration:
-      raise NotImplementedError("There is no rss. Fallback to page/diff? TODO")
+      raise CloseSpider("There is no rss. Fallback to page/diff? TODO")
 
   def parseRss(self, response):
     """ Step 2: Extract the desired informations on the first rss entry. """
@@ -65,26 +66,21 @@ class RssBasedCrawler(BaseSpider):
   def crawl(self, response):
     """ Step 4: Recursively download all the blog and extract relevant data.
     """
-    url = response.url
-    print "crawled {}".format(url)
-    body = response.body
+    parsedBody = parseHTML(response.body)
     if self.downloadsSoFar > self.maxDownloads:
       reactor.stop()
-    elif self.isBlogPost(url):
+    elif self.isBlogPost(response.url):
       self.downloadsSoFar += 1
-      self.contentExtractor(body)
-      yield PostItem(url=url, body=body)
+      self.contentExtractor(parsedBody)
+      yield PostItem(url=response.url, parsedBody=parsedBody)
 
     newUrls = set(ifilter(
         lambda _: _ not in self.seen,
-        extractLinks(body)))
+        extractLinks(parsedBody)))
     self.seen.update(newUrls)
-    self.priorityHeuristic.feed(url, newUrls)
+    self.priorityHeuristic.feed(response.url, newUrls)
     for newUrl in newUrls:
-      pp = self.priorityHeuristic(newUrl)
-      if not isinstance(pp, int):
-        print "WAHT DE F?"
       yield Request(
           url=newUrl,
           callback=self.crawl,
-          priority=pp)
+          priority=self.priorityHeuristic(newUrl))

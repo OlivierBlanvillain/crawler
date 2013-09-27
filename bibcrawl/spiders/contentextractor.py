@@ -9,12 +9,14 @@ from functools import partial
 from heapq import nlargest
 from itertools import imap, ifilter
 from lxml import etree # http://lxml.de/index.html#documentation
+from scrapy.exceptions import CloseSpider
 import feedparser # http://pythonhosted.org/feedparser/
 
 class ContentExtractor(object):
   """Extracts the content of blog posts using a rss feed. Usage:
 
   >>> from urllib2 import urlopen
+  >>> from bibcrawl.spiders.utils import parseHTML
   >>> from bibcrawl.units.mockserver import MockServer, dl
   >>> pages = ("korben.info/80-bonnes-pratiques-seo.html", "korben.info/app-"
   ... "gratuite-amazon.html", "korben.info/cest-la-rentree-2.html",
@@ -24,7 +26,7 @@ class ContentExtractor(object):
   ...   extractor.feed(dl(pages[0]), "http://{}".format(pages[0]))
   ...   extractor.feed(dl(pages[1]), "http://{}".format(pages[1]))
   ...   extractor.feed(dl(pages[2]), "http://{}".format(pages[2]))
-  ...   content = extractor(dl(pages[3]))
+  ...   content = extractor(parseHTML(dl(pages[3])))
   Best XPaths are:
   //*[@class='post-content']
   //*[@class='post-title']
@@ -40,9 +42,6 @@ class ContentExtractor(object):
     @type  rss: string
     @param rss: the rss/atom feed
     """
-    # feedparser.PARSE_MICROFORMATS = 0
-    # feedparser._HTMLSanitizer.acceptable_elements.add("object")
-    # feedparser._HTMLSanitizer.acceptable_elements.add("embed")
     self.rssEntries = feedparser.parse(rss).entries
     self.rssLinks = tuple(imap(lambda _: _.link, self.rssEntries))
     self.urlZipPages = list()
@@ -69,11 +68,9 @@ class ContentExtractor(object):
     self.needsRefresh = True
     self.urlZipPages.append((url, page))
 
-  def __call__(self, page, parsedPage=None):
+  def __call__(self, parsedPage):
     """Extracts content from a page.
 
-    @type  page: string
-    @param page: the html page to process
     @type  parsedPage: lxml.etree._Element
     @param parsedPage: the parsed page, computed for the default value None
     @rtype: 1-tuple of strings
@@ -81,8 +78,6 @@ class ContentExtractor(object):
     """
     if self.needsRefresh:
       self._refresh()
-    if not parsedPage:
-      parsedPage = parseHTML(page)
     return tuple(imap(lambda _: _xPathSelectFirst(parsedPage, _), self.xPaths))
 
   def _refresh(self):
@@ -124,7 +119,12 @@ def extractContent(feed):
   try:
     return feed.content[0].value
   except AttributeError:
-    return feed.description
+    try:
+      return feed.description
+    except AttributeError:
+      # TODO: fallback
+      raise CloseSpider("Feed entry has no content and no description")
+
 
 def _bestPath(contentZipPages):
   """Given a list of content/page, computes the best XPath query that would

@@ -8,25 +8,26 @@ from urlparse import urlsplit, urljoin
 from lxml import etree, html
 from lxml.html import soupparser
 
-def extractLinks(page):
+def extractLinks(parsedPage):
   """Extracts all href links of a page.
 
     >>> from urllib2 import urlopen
+    >>> from bibcrawl.spiders.utils import parseHTML
     >>> from bibcrawl.units.mockserver import MockServer, dl
     >>> with MockServer():
-    ...   list(extractLinks( dl("example.com") ))
+    ...   list(extractLinks( parseHTML(dl("example.com")) ))
     ['http://www.iana.org/domains/example']
 
-  @type  page: string
-  @param page: the html page to process
+  @type  parsedPage: lxml.etree._Element
+  @param parsedPage: the html page to process
   @rtype: collections.Iterable of strings
   @return: all the href links of the page
   """
   return ifilter(
       lambda _: _.startswith("http"),
-      parseHTML(page).xpath("//a/@href"))
+      parsedPage.xpath("//a/@href"))
 
-def extractRssLinks(page, url, parsedPage=None):
+def extractRssLinks(page, url):
   """Extracts all the RSS and ATOM feed links of a page.
 
     >>> from urllib2 import urlopen
@@ -41,13 +42,10 @@ def extractRssLinks(page, url, parsedPage=None):
   @param page: the html page to process
   @type  url: string
   @param url: the page url, used to build absolute urls
-  @type  parsedPage: lxml.etree._Element
-  @param parsedPage: the parsed page, computed for the default value None
   @rtype: collections. Iterable of strings
   @return: all the feed links of the page
   """
-  if not parsedPage:
-    parsedPage = parseHTML(page)
+  parsedPage = parseHTML(page)
   paths = imap(lambda _: "//link[@type='{}']/@href".format(_), (
       "application/atom+xml",
       "application/atom",
@@ -67,7 +65,7 @@ def extractRssLinks(page, url, parsedPage=None):
   return imap(lambda _: urljoin(url, _), results)
 
 
-def extractImageLinks(page, url, parsedPage=None):
+def extractImageLinks(page, url):
   """Extracts all the images links of a page.
 
     >>> from urllib2 import urlopen
@@ -82,13 +80,10 @@ def extractImageLinks(page, url, parsedPage=None):
   @param page: the html page to process
   @type  url: string
   @param url: the page url, used to build absolute urls
-  @type  parsedPage: lxml.etree._Element
-  @param parsedPage: the parsed page, computed for the default value None
   @rtype: collections. Iterable of strings
   @return: all the image links of the page
   """
-  if not parsedPage:
-    parsedPage = parseHTML(page)
+  parsedPage = parseHTML(page)
   return imap(lambda _: urljoin(url, _), parsedPage.xpath("//img/@src"))
 
 def buildUrlFilter(urls, debug=True):
@@ -182,4 +177,5 @@ def parseHTML(page):
     try:
       return soupparser.fromstring(page)
     except:
+      # TODO: better? + add test case where both lxml and beautifulsoup fail.
       return None

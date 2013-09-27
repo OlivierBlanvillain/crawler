@@ -2,7 +2,7 @@ from scrapy.item import Item, Field
 
 class PostItem(Item):
   url = Field()
-  body = Field()
+  parsedBody = Field()
 
   post = Field()
   title = Field()
