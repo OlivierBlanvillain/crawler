@@ -7,7 +7,7 @@ from bibcrawl.pipelines.postitem import PostItem
 from itertools import ifilter, imap, chain
 from scrapy.exceptions import CloseSpider
 from scrapy.http import Request, Response
-from scrapy.spider import BaseSpider # https://scrapy.readthedocs.org/
+from scrapy.spider import BaseSpider
 from twisted.internet import reactor
 
 class RssBasedCrawler(BaseSpider):
@@ -64,7 +64,7 @@ class RssBasedCrawler(BaseSpider):
       return tuple(chain.from_iterable(imap(lambda _: self.crawl(_), posts)))
 
   def crawl(self, response):
-    """ Step 4: Recursively download all the blog and extract relevant data.
+    """ Step 4: Recursively download all posts and extract relevant data.
     """
     parsedBody = parseHTML(response.body)
     if self.downloadsSoFar > self.maxDownloads:
