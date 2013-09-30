@@ -78,11 +78,11 @@ class ContentExtractor(object):
     """
     if self.needsRefresh:
       self._refresh()
-    return tuple(imap(lambda _: _xPathSelectFirst(parsedPage, _), self.xPaths))
+    return tuple(imap(lambda _: _xPathSelect(parsedPage, _), self.xPaths))
 
   def _refresh(self):
     """Refreshes the XPaths with the current pages. Called internally once per
-    (feed+, __call__) sequence."""
+    feed+ __call__ sequence."""
     self.needsRefresh = False
 
     # Python is so bad at this... Here is (for documentation purpose) how it
@@ -109,7 +109,7 @@ class ContentExtractor(object):
         # link, authors, thr_total, author_detail, id, tags, published
     )
     self.xPaths = tuple(imap(
-        lambda content: _bestPath(zip(imap(content, entries), parsedPages)),
+        lambda extractr: _bestPath(zip(imap(extractr, entries), parsedPages)),
         extractors))
 
     print("Best XPaths are:")
@@ -137,35 +137,45 @@ def _bestPath(contentZipPages):
   """
   nodeQueries = set(_nodeQueries(imap(lambda _: _[1], contentZipPages)))
   ratio = lambda content, page, query: (
-      stringSimilarity(content, _xPathSelectFirst(page, query)))
+      stringSimilarity(content, _xPathSelect(page, query)))
   topQueriesForFirst = nlargest(6, nodeQueries, key=
       partial(ratio, *contentZipPages[0]))
   topQueries = tuple(imap(
       lambda (c, p): max(topQueriesForFirst, key=partial(ratio, c, p)),
       contentZipPages))
-  # DEBUG:
+
+  # # DEBUG:
   # from pprint import pprint
   # for q in topQueriesForFirst:
   #   pprint(q)
   #   pprint(ratio(contentZipPages[0][0], contentZipPages[0][1], q))
   # from bibcrawl.spiders.stringsimilarity import _cleanTags
+
+  # for q in topQueriesForFirst:
+  #   print ""
+  #   pprint(q)
+  #   pprint(_cleanTags(_xPathSelect(contentZipPages[0][1], q)))
+
+  # print ""
+  # print ""
   # pprint((_cleanTags(contentZipPages[0][0])))
-  # pprint(len(_cleanTags(contentZipPages[0][0])))
   # # from bibcrawl.spiders.stringsimilarity import _cleanTags
   # # # pprint(topQueriesForFirst)
   # # for q in list(topQueriesForFirst):
   # #   pprint(q)
   # #   pprint(_cleanTags(contentZipPages[0][0] or "dummy"))
-  # #   pprint(_cleanTags(_xPathSelectFirst(contentZipPages[0][1], q)))
+  # #   pprint(_cleanTags(_xPathSelect(contentZipPages[0][1], q)))
   # #   print ""
 
   # # q = max(set(topQueries), key=topQueries.count)
   # # for c, p in contentZipPages:
   # #   print "..."
   # #   pprint(c)
-  # #   pprint(_xPathSelectFirst(p, q))
+  # #   pprint(_xPathSelect(p, q))
   # from time import sleep
   # sleep(100000)
+  # # DEBUG..
+
   return max(set(topQueries), key=topQueries.count)
 
 def _nodeQueries(pages):
@@ -189,13 +199,15 @@ def _nodeQueries(pages):
         if attribute and not any(imap(lambda _: _.isdigit(), attribute)):
           yield "//*[@{}='{}']".format(selector, attribute)
 
-def _xPathSelectFirst(page, query):
+# End with //text(), re test, use other string metric.
+
+def _xPathSelect(page, query):
   """Executes a XPath query and return a string representation of the first
   result. Example:
 
     >>> from lxml.etree import HTML
     >>> page = HTML("<html><body><div>#1</div><div>#2<div><p>nested") # [...]
-    >>> _xPathSelectFirst(page, '/html/body/div[2]/div/p')
+    >>> _xPathSelect(page, '/html/body/div[2]/div/p')
     u'<p>nested</p>'
 
   @type  page: lxml.etree._Element

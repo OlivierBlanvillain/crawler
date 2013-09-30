@@ -60,7 +60,7 @@ class RssBasedCrawler(BaseSpider):
       self.isBlogPost = buildUrlFilter(imap(lambda _: _.url, posts))
       self.priorityHeuristic = PriorityHeuristic(self.isBlogPost)
       for post in posts:
-        self.contentExtractor.feed(post.body, response.meta["u"])
+        self.contentExtractor.feed(post.body, post.meta["u"])
       return tuple(chain.from_iterable(imap(lambda _: self.crawl(_), posts)))
 
   def crawl(self, response):
