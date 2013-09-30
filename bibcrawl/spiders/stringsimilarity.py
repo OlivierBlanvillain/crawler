@@ -1,7 +1,6 @@
 """Implements string similarities."""
 
 from lxml.html.clean import Cleaner
-from diff_match_patch import diff_match_patch
 from difflib import SequenceMatcher
 from itertools import imap, ifilter
 import re
@@ -58,6 +57,7 @@ def dicesCoeffSimilarity(string1, string2):
 
 def stringSimilarity(string1, string2):
   ## Google DMP:
+  # from diff_match_patch import diff_match_patch
   # dmp = diff_match_patch()
   # dmp.Diff_Timeout = 0.1
   # diffs = dmp.diff_main(_cleanTags(string1), _cleanTags(string2))
