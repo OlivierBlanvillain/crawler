@@ -26,27 +26,31 @@ class RssBasedCrawler(BaseSpider):
     self.priorityHeuristic = None
     self.bufferedPosts = list()
 
+  # except StopIteration:
+  #   raise CloseSpider("No usable rss feed.")
   def parse(self, response):
     """ Step 1: Find the rss feed from the website entry point. """
-    try:
-      return Request(extractRssLinks(
-          response.body, response.url).next(),
-          self.parseRss)
-    except StopIteration:
-      raise CloseSpider("There is no rss. Fallback to page/diff? TODO")
+    rssLinks = extractRssLinks(response.body, response.url)
+    nextRequest = lambda: Request(
+        url=rssLinks.next(),
+        callback=self.parseRss,
+        errback=nextRequest,
+        dont_filter=True)
+    return nextRequest()
 
   def parseRss(self, response):
     """ Step 2: Extract the desired informations on the first rss entry. """
     print response.url
     self.contentExtractor = ContentExtractor(response.body)
-    return imap(
-        lambda _: Request(url=_,
-            callback=self.bufferPost,
-            errback=self.bufferPost,
-            # meta={ "u": _ } is here to keep a "safe" copy of the source url.
-            # I don't trust response.url == (what was passed as Request url).
-            meta={ "u": _ }),
-        self.contentExtractor.getRssLinks())
+    for postUrl in self.contentExtractor.getRssLinks():
+      yield Request(
+          url=postUrl,
+          callback=self.bufferPost,
+          errback=self.bufferPost,
+          dont_filter=True,
+          # meta={ "u": _ } is here to keep a "safe" copy of the source url.
+          # I don't trust response.url == (what was passed as Request url).
+          meta={ "u": postUrl })
 
   def bufferPost(self, response):
     """ Step 3: Back to the website, compute the best XPath queries to extract
@@ -61,7 +65,10 @@ class RssBasedCrawler(BaseSpider):
       self.priorityHeuristic = PriorityHeuristic(self.isBlogPost)
       for post in posts:
         self.contentExtractor.feed(post.body, post.meta["u"])
-      return tuple(chain.from_iterable(imap(lambda _: self.crawl(_), posts)))
+      for post in posts:
+        for request in self.crawl(post):
+          yield request
+      # aka tuple(chain.from_iterable(imap(lambda _: self.crawl(_), posts)))
 
   def crawl(self, response):
     """ Step 4: Recursively download all posts and extract relevant data.

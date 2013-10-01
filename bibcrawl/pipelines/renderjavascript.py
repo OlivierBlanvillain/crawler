@@ -45,38 +45,14 @@ class RenderJavascript(object):
   def phantomJSProcess(self, item):
     driver = webdriver.PhantomJS("./lib/phantomjs/bin/phantomjs")
     # driver = webdriver.Firefox()
+
     driver = self.webdrivers.acquire()
     driver.get(item.url)
-    self.disqusComments(driver)
-    self.livefyreComments(driver)
+    _disqusComments(driver, item)
+    _livefyreComments(driver, item)
     self.saveScreenshot(item, driver)
     self.webdrivers.release(driver)
     return item
-
-  def disqusComments(self, driver):
-    iframeXPath = "//iframe[@id='dsq2']"
-    loadMoarXPath = "//div[@class='load-more']/a"
-    try:
-      frame = driver.find_element_by_xpath(iframeXPath)
-      driver.switch_to_frame(frame)
-      timeout = time() + 5
-      try:
-        while time() < timeout:
-          sleep(0.2)
-          driver.find_element_by_xpath(loadMoarXPath).click()
-      except ElementNotVisibleException:
-        pass
-      print "disqus!"
-    except NoSuchElementException:
-      pass
-    driver.switch_to_default_content()
-
-  def livefyreComments(self, driver):
-    # iframeXPath, loadMoarXPath = (
-    #   None,
-    #   "//div[@class='fyre-stream-more']"
-    # )
-    pass
 
   def saveScreenshot(self, item, driver):
     uid = sha1(item.url).hexdigest()
@@ -84,3 +60,29 @@ class RenderJavascript(object):
     key = 'screen/{}.png'.format(uid)
     self.store.persist_file(key, png, None)
     item.screenshot = key
+
+def _disqusComments(driver, item):
+  iframeXPath = "//iframe[@id='dsq2']"
+  loadMoarXPath = "//div[@class='load-more']/a"
+  try:
+    frame = driver.find_element_by_xpath(iframeXPath)
+    driver.switch_to_frame(frame)
+    timeout = time() + 5
+    try:
+      while time() < timeout:
+        sleep(0.2)
+        driver.find_element_by_xpath(loadMoarXPath).click()
+    except ElementNotVisibleException:
+      pass
+    # elem.getAttribute("innerHTML");
+    print "disqus!"
+  except NoSuchElementException:
+    pass
+  driver.switch_to_default_content()
+
+def _livefyreComments(driver, item):
+  # iframeXPath, loadMoarXPath = (
+  #   None,
+  #   "//div[@class='fyre-stream-more']"
+  # )
+  pass

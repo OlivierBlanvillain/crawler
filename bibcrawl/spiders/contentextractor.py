@@ -138,6 +138,7 @@ def _bestPath(contentZipPages):
   nodeQueries = set(_nodeQueries(imap(lambda _: _[1], contentZipPages)))
   ratio = lambda content, page, query: (
       stringSimilarity(content, _xPathSelect(page, query)))
+  # TODO: breaks if last post is a youtube video or a common short title..
   topQueriesForFirst = nlargest(6, nodeQueries, key=
       partial(ratio, *contentZipPages[0]))
   topQueries = tuple(imap(

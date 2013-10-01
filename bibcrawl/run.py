@@ -32,7 +32,8 @@ def main():
       # "CONCURRENT_REQUESTS_PER_IP": 1
   })
 
-  spider = newcrawl.RssBasedCrawler(url="letitcrash.com", maxDownloads=5000)
+  # Need test cases for this one: letitcrash.com
+  spider = newcrawl.RssBasedCrawler(url="techcrunch.com", maxDownloads=5000)
   crawler = Crawler(settings)
 
   crawler.signals.connect(reactor.stop, signal=signals.spider_closed)

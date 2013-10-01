@@ -13,9 +13,9 @@ class WebdriverPool(object):
     try:
       return self.available.get_nowait()
     except Empty:
-      return self.createWebdriver()
+      return self._createWebdriver()
 
-  def createWebdriver(self):
+  def _createWebdriver(self):
     # TODO try selenium.common.exceptions.WebDriverException
     driver = webdriver.PhantomJS("./lib/phantomjs/bin/phantomjs")
     self.all.put_nowait(driver)
@@ -29,5 +29,5 @@ class WebdriverPool(object):
     try:
       for driver in self.all:
         driver.quit()
-    except TypeError: # iteration over non-sequence is apparently a TypeError
+    except TypeError: # iteration over non-sequence is apparently a TypeError...
       pass

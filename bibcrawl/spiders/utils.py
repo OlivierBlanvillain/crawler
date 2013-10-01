@@ -61,8 +61,14 @@ def extractRssLinks(page, url):
       "text/rdf",
       "text/xml",
       "application/xml"))
-  results = chain(*imap(lambda _: parsedPage.xpath(_), paths))
-  return imap(lambda _: urljoin(url, _), results)
+  links = chain(*imap(lambda _: parsedPage.xpath(_), paths))
+  fullLinks = tuple(imap(lambda _: urljoin(url, _), links))
+  # Reorder the links with a simple heuristic: favor the one from on the same
+  # netloc that the page.
+  (_, netloc, _, _, _) = urlsplit(url)
+  return chain(
+    ifilter(lambda _: netloc in _, fullLinks),
+    ifilter(lambda _: netloc not in _, fullLinks))
 
 
 def extractImageLinks(page, url):
@@ -174,8 +180,8 @@ def parseHTML(page):
   try:
     return html.fromstring(page)
   except (etree.XMLSyntaxError, etree.ParserError):
-    try:
+    # try:
       return soupparser.fromstring(page)
-    except:
-      # TODO: better? + add test case where both lxml and beautifulsoup fail.
-      return None
+    # except:
+    #   # TODO: better? + add test case where both lxml and beautifulsoup fail.
+    #   return None
