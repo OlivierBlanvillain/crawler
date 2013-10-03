@@ -7,6 +7,7 @@ from selenium import webdriver
 from selenium.common.exceptions import ElementNotVisibleException
 from selenium.common.exceptions import NoSuchElementException
 from twisted.internet.threads import deferToThread
+from itertools import imap
 from time import sleep, time
 
 class RenderJavascript(object):
@@ -43,13 +44,10 @@ class RenderJavascript(object):
     return defered
 
   def phantomJSProcess(self, item):
-    driver = webdriver.PhantomJS("./lib/phantomjs/bin/phantomjs")
-    # driver = webdriver.Firefox()
-
     driver = self.webdrivers.acquire()
     driver.get(item.url)
-    _disqusComments(driver, item)
-    _livefyreComments(driver, item)
+    _disqusComments(item, driver)
+    _livefyreComments(item, driver)
     self.saveScreenshot(item, driver)
     self.webdrivers.release(driver)
     return item
@@ -61,26 +59,33 @@ class RenderJavascript(object):
     self.store.persist_file(key, png, None)
     item.screenshot = key
 
-def _disqusComments(driver, item):
-  iframeXPath = "//iframe[@id='dsq2']"
+def _disqusComments(item, driver):
+  iframeXPath = "//*[@id='dsq2']"
+  # iframeXPath = "//iframe[@id='dsq2']"
   loadMoarXPath = "//div[@class='load-more']/a"
+  commentsBody = "//div[@class='post-body']"
   try:
     frame = driver.find_element_by_xpath(iframeXPath)
+    print "disqus!"
     driver.switch_to_frame(frame)
     timeout = time() + 5
     try:
       while time() < timeout:
         sleep(0.2)
         driver.find_element_by_xpath(loadMoarXPath).click()
+        print "clicked"
     except ElementNotVisibleException:
       pass
+    cmts = driver.find_elements_by_xpath(commentsBody)
+    item.comments = tuple(imap(lambda _: _.get_attribute("innerHTML"), cmts))
     # elem.getAttribute("innerHTML");
-    print "disqus!"
   except NoSuchElementException:
+    print "no disqus :/"
     pass
-  driver.switch_to_default_content()
+  finally:
+    driver.switch_to_default_content()
 
-def _livefyreComments(driver, item):
+def _livefyreComments(item, driver):
   # iframeXPath, loadMoarXPath = (
   #   None,
   #   "//div[@class='fyre-stream-more']"

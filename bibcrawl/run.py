@@ -33,7 +33,8 @@ def main():
   })
 
   # Need test cases for this one: letitcrash.com
-  spider = newcrawl.RssBasedCrawler(url="techcrunch.com", maxDownloads=5000)
+  # spider = newcrawl.RssBasedCrawler(url="techcrunch.com", maxDownloads=5000)
+  spider = newcrawl.RssBasedCrawler(url="korben.info", maxDownloads=5000)
   crawler = Crawler(settings)
 
   crawler.signals.connect(reactor.stop, signal=signals.spider_closed)
