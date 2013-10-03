@@ -1,5 +1,5 @@
 """Score predictor."""
-from bibcrawl.spiders.utils import ascii
+from bibcrawl.spiders.parseUtils import ascii
 from heapq import nlargest
 from itertools import imap, ifilter
 from Levenshtein import ratio as stringSimilarity
@@ -16,7 +16,7 @@ class PriorityHeuristic(object):
     >>> pp = PriorityHeuristic(highScore=lambda _: _[0].isdigit())
     >>> pp("anything")
     0
-    >>> pp("1/high score page!") == maxint
+    >>> pp("1/high score page!") == maxint / 2
     True
     >>> pp.feed("/category/infos/societe", ["1/", "2/", "a/", "b/"])
     >>> pp.feed("/tag/pirate", ["c/", "d/"])

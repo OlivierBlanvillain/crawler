@@ -12,7 +12,7 @@ def extractLinks(parsedPage):
   """Extracts all href links of a page.
 
     >>> from urllib2 import urlopen
-    >>> from bibcrawl.spiders.utils import parseHTML
+    >>> from bibcrawl.spiders.parseUtils import parseHTML
     >>> from bibcrawl.units.mockserver import MockServer, dl
     >>> with MockServer():
     ...   list(extractLinks( parseHTML(dl("example.com")) ))

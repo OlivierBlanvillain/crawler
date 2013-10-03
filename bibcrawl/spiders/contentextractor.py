@@ -4,7 +4,7 @@ TODO: Use readability as a fallback
 TODO: generate XPath for divs without class/id
 """
 from bibcrawl.spiders.stringsimilarity import stringSimilarity
-from bibcrawl.spiders.utils import parseHTML
+from bibcrawl.spiders.parseUtils import parseHTML
 from functools import partial
 from heapq import nlargest
 from itertools import imap, ifilter
@@ -16,7 +16,7 @@ class ContentExtractor(object):
   """Extracts the content of blog posts using a rss feed. Usage:
 
   >>> from urllib2 import urlopen
-  >>> from bibcrawl.spiders.utils import parseHTML
+  >>> from bibcrawl.spiders.parseUtils import parseHTML
   >>> from bibcrawl.units.mockserver import MockServer, dl
   >>> pages = ("korben.info/80-bonnes-pratiques-seo.html", "korben.info/app-"
   ... "gratuite-amazon.html", "korben.info/cest-la-rentree-2.html",
