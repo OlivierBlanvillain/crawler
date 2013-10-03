@@ -60,30 +60,39 @@ class RenderJavascript(object):
     item.screenshot = key
 
 def _disqusComments(item, driver):
-  iframeXPath = "//*[@id='dsq2']"
-  # iframeXPath = "//iframe[@id='dsq2']"
-  loadMoarXPath = "//div[@class='load-more']/a"
-  commentsBody = "//div[@class='post-body']"
+  xPathWithClass = lambda _: (
+      "//*[contains(concat(' ', normalize-space(@class), ' '), ' {} ')]"
+      .format(_))
   try:
-    frame = driver.find_element_by_xpath(iframeXPath)
-    print "disqus!"
-    driver.switch_to_frame(frame)
-    timeout = time() + 5
-    try:
-      while time() < timeout:
-        sleep(0.2)
-        driver.find_element_by_xpath(loadMoarXPath).click()
-        print "clicked"
-    except ElementNotVisibleException:
-      pass
-    cmts = driver.find_elements_by_xpath(commentsBody)
-    item.comments = tuple(imap(lambda _: _.get_attribute("innerHTML"), cmts))
-    # elem.getAttribute("innerHTML");
+    iframe = driver.find_element_by_xpath("//*[@id='dsq2']")
+    driver.switch_to_frame(iframe)
+    _clickWhileVisible(driver, xPathWithClass("load-more") + "/a")
+    # page = driver.find_element_by_xpath("//body").get_attribute("innerHTML")
+    _extractComments(item, driver,
+      commentNodesXPath=xPathWithClass("post"),
+      contentXPath=xPathWithClass("post-message"),
+      authorXPath=xPathWithClass("author"),
+      dateXPath=xPathWithClass("post-meta") + "/a/@title",
+      avatarUrlXPath=xPathWithClass("user") + "/img/@src"
+    )
   except NoSuchElementException:
-    print "no disqus :/"
     pass
   finally:
     driver.switch_to_default_content()
+
+def _clickWhileVisible(driver, xPath):
+  try:
+    timeout = time() + 5
+    while time() < timeout:
+      sleep(0.2)
+      driver.find_element_by_xpath(xPath).click()
+      print "clicked"
+  except ElementNotVisibleException:
+    pass
+
+def _extractComments(item, driver, commentNodesXPath,
+    contentXPath, authorXPath, dateXPath, avatarUrlXPath):
+  pass
 
 def _livefyreComments(item, driver):
   # iframeXPath, loadMoarXPath = (

@@ -16,8 +16,8 @@ def main():
       "ITEM_PIPELINES": [
           'bibcrawl.pipelines.debugprint.DebugPrint',
           'bibcrawl.pipelines.processhtml.ProcessHtml',
-          'bibcrawl.pipelines.files.FilesPipeline',
           'bibcrawl.pipelines.renderjavascript.RenderJavascript',
+          'bibcrawl.pipelines.files.FilesPipeline',
           'bibcrawl.pipelines.staticcomments.StaticComments',
           'bibcrawl.pipelines.backendpropagate.BackendPropagate',
       ],
