@@ -1,5 +1,8 @@
 from bibcrawl.pipelines.files import FSFilesStore
 from bibcrawl.pipelines.webdriverpool import WebdriverPool
+from bibcrawl.model.commentitem import CommentItem
+from bibcrawl.spiders.parseUtils import xPathWithClass, xPathFirst
+from collections import OrderedDict
 from cStringIO import StringIO
 from hashlib import sha1
 from scrapy.exceptions import NotConfigured
@@ -7,7 +10,7 @@ from selenium import webdriver
 from selenium.common.exceptions import ElementNotVisibleException
 from selenium.common.exceptions import NoSuchElementException
 from twisted.internet.threads import deferToThread
-from itertools import imap
+from itertools import imap, ifilter
 from time import sleep, time
 
 class RenderJavascript(object):
@@ -46,8 +49,8 @@ class RenderJavascript(object):
   def phantomJSProcess(self, item):
     driver = self.webdrivers.acquire()
     driver.get(item.url)
-    _disqusComments(item, driver)
-    _livefyreComments(item, driver)
+    item.comments = disqusComments(driver)
+    # livefyreComments(driver)
     self.saveScreenshot(item, driver)
     self.webdrivers.release(driver)
     return item
@@ -59,28 +62,24 @@ class RenderJavascript(object):
     self.store.persist_file(key, png, None)
     item.screenshot = key
 
-def _disqusComments(item, driver):
-  xPathWithClass = lambda _: (
-      "//*[contains(concat(' ', normalize-space(@class), ' '), ' {} ')]"
-      .format(_))
+def disqusComments(driver):
   try:
     iframe = driver.find_element_by_xpath("//*[@id='dsq2']")
     driver.switch_to_frame(iframe)
-    _clickWhileVisible(driver, xPathWithClass("load-more") + "/a")
+    # clickWhileVisible(driver, xPathWithClass("load-more") + "/a")
     # page = driver.find_element_by_xpath("//body").get_attribute("innerHTML")
-    _extractComments(item, driver,
+    return tuple(extractComments(driver,
       commentNodesXPath=xPathWithClass("post"),
-      contentXPath=xPathWithClass("post-message"),
-      authorXPath=xPathWithClass("author"),
-      dateXPath=xPathWithClass("post-meta") + "/a/@title",
-      avatarUrlXPath=xPathWithClass("user") + "/img/@src"
-    )
+      contentXPath="." + xPathWithClass("post-message"),
+      authorXPath="." + xPathWithClass("author"),
+      dateXPath="." + xPathWithClass("post-meta") + "/a/@title",
+      avatarUrlXPath="." + xPathWithClass("user") + "/img/@src"))
   except NoSuchElementException:
-    pass
+    return list()
   finally:
     driver.switch_to_default_content()
 
-def _clickWhileVisible(driver, xPath):
+def clickWhileVisible(driver, xPath):
   try:
     timeout = time() + 5
     while time() < timeout:
@@ -90,13 +89,35 @@ def _clickWhileVisible(driver, xPath):
   except ElementNotVisibleException:
     pass
 
-def _extractComments(item, driver, commentNodesXPath,
+def extractComments(driver, commentNodesXPath,
     contentXPath, authorXPath, dateXPath, avatarUrlXPath):
-  pass
+  parentNodeXPath = xPathFirst("./ancestor::{}".format(commentNodesXPath))
+  def x(node, path):
+    try:
+      return node.find_element_by_xpath(path)
+    except NoSuchElementException:
+      return None
+  nodesMapComments = OrderedDict(imap(
+      lambda node: (node, CommentItem(
+          content=x(node, contentXPath),
+          author=x(node, authorXPath),
+          date=x(node, dateXPath),
+          avatarUrl=x(node, avatarUrlXPath),
+          parent=x(node, parentNodeXPath))),
+      driver.find_elements_by_xpath(commentNodesXPath)))
+  for comment in nodesMapComments.values():
+    if comment.parent:
+      comment.parent = nodesMapComments[comment.parent]
+    yield comment
 
-def _livefyreComments(item, driver):
-  # iframeXPath, loadMoarXPath = (
-  #   None,
-  #   "//div[@class='fyre-stream-more']"
-  # )
-  pass
+def livefyreComments(driver):
+  try:
+    clickWhileVisible(driver, xPathWithClass("fyre-stream-more"))
+    return tuple(extractComments(driver,
+      commentNodesXPath=xPathWithClass("post"), # TODO...
+      contentXPath="." + xPathWithClass("post-message"),
+      authorXPath="." + xPathWithClass("author"),
+      dateXPath="." + xPathWithClass("post-meta") + "/a/@title",
+      avatarUrlXPath="." + xPathWithClass("user") + "/img/@src"))
+  except NoSuchElementException:
+    return list()

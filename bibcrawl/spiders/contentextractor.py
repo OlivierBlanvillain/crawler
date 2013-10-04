@@ -4,7 +4,7 @@ TODO: Use readability as a fallback
 TODO: generate XPath for divs without class/id
 """
 from bibcrawl.spiders.stringsimilarity import stringSimilarity
-from bibcrawl.spiders.parseUtils import parseHTML
+from bibcrawl.spiders.parseUtils import parseHTML, xPathFirst
 from functools import partial
 from heapq import nlargest
 from itertools import imap, ifilter
@@ -218,5 +218,5 @@ def _xPathSelect(page, query):
   @rtype: string
   @return: the first result of the query, empty string if no result
   """
-  results = page.xpath(query)
-  return unicode(etree.tostring(results[0])) if(results) else u""
+  result = page.xpath(xPathFirst(query))
+  return unicode(etree.tostring(result[0])) if(result) else u""

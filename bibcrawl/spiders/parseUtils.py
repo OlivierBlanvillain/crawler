@@ -185,3 +185,31 @@ def parseHTML(page):
     # except:
     #   # TODO: better? + add test case where both lxml and beautifulsoup fail.
     #   return None
+
+def xPathWithClass(cls):
+  """Builds a XPath expression to select all elements of a page that have a
+  given css class.
+
+    >>> xPathWithClass("content")
+    "//*[contains(concat(' ', normalize-space(@class), ' '), ' content ')]"
+
+  @type  cls: string
+  @param cls: the css class
+  @rtype: string
+  @return: the XPath expression selecting on this class
+  """
+  return ("//*[contains(concat(' ', normalize-space(@class), ' '), ' {} ')]"
+      .format(cls))
+
+def xPathFirst(path):
+  """Extends a XPath query to return the first result.
+
+    >>> xPathFirst("//*[@class='test']")
+    "(//*[@class='test'])[1]"
+
+  @type  path: string
+  @param path: the initial XPath
+  @rtype: string
+  @return: the XPath with first result selection
+  """
+  return "({})[1]".format(path)
