@@ -26,7 +26,7 @@ def main():
       "HTTPCACHE_ENABLED": True,
       "FILES_STORE": "img",
 
-      # "CONCURRENT_ITEMS": 1,
+      "CONCURRENT_ITEMS": 10,
       # "CONCURRENT_REQUESTS": 1,
       # "CONCURRENT_REQUESTS_PER_DOMAIN": 1,
       # "CONCURRENT_REQUESTS_PER_IP": 1

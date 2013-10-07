@@ -92,6 +92,46 @@ def extractImageLinks(page, url):
   parsedPage = parseHTML(page)
   return imap(lambda _: urljoin(url, _), parsedPage.xpath("//img/@src"))
 
+def extractFirst(page, query):
+  """Executes a XPath query and return a string representation of the first
+  result. Example:
+
+    >>> from lxml.etree import HTML
+    >>> page = HTML("<html><body><div>#1</div><div>#2<div><p>nested")
+    >>> extractFirst(page, '/html/body/div[2]/div/p')
+    u'<p>nested</p>'
+
+  @type  page: lxml.etree._Element
+  @param page: the parsed page to process
+  @type  query: string
+  @param query: the XPath query to execute
+  @rtype: string
+  @return: the first result of the query, empty string if no result
+  """
+  result = (page.xpath(query) + [""])[0]
+  return unicode(result if isinstance(result, (str, unicode))
+      else etree.tostring(result, with_tail=False))
+  # result = page.xpath(query)
+  # if not result:
+  #   return u""
+  # elif isinstance(result[0], (str, unicode)):
+  #   return unicode(result[0])
+  # else:
+  #   return unicode(etree.tostring(result[0], with_tail=False))
+
+def xPathFirst(path):
+  """Extends a XPath query to return the first result.
+
+    >>> xPathFirst("//*[@class='test']")
+    "(//*[@class='test'])[1]"
+
+  @type  path: string
+  @param path: the initial XPath
+  @rtype: string
+  @return: the XPath with first result selection
+  """
+  return "({})[1]".format(path)
+
 def buildUrlFilter(urls, debug=True):
   """Given a tuple of urls with similar pattern, computes a filtering function
   that accepts similar urls the and reject others.
@@ -134,16 +174,16 @@ def buildUrlFilter(urls, debug=True):
   # we try to match more precisely the urls we might find a temporary pattern
   # like /2013/.
   patterns = ("{}://".format(scheme), netloc, eol + "$", "/", "\\d+/", "[^/]+/")
-  def _bestRegex(current):
+  def bestRegex(current):
     """Recursively compute the best regex."""
     for pattern in patterns:
       if all(imap(beginsWith(current + pattern), urlsTuple)):
-        return _bestRegex(current + pattern)
+        return bestRegex(current + pattern)
     return current
 
   if debug:
-    print("Url regex: {}".format(_bestRegex("^").replace("/" + eol, "")))
-  return beginsWith(_bestRegex("^"))
+    print("Url regex: {}".format(bestRegex("^").replace("/" + eol, "")))
+  return beginsWith(bestRegex("^"))
 
 def ascii(string):
   r"""Force convert a string to ascii.
@@ -200,16 +240,3 @@ def xPathWithClass(cls):
   """
   return ("//*[contains(concat(' ', normalize-space(@class), ' '), ' {} ')]"
       .format(cls))
-
-def xPathFirst(path):
-  """Extends a XPath query to return the first result.
-
-    >>> xPathFirst("//*[@class='test']")
-    "(//*[@class='test'])[1]"
-
-  @type  path: string
-  @param path: the initial XPath
-  @rtype: string
-  @return: the XPath with first result selection
-  """
-  return "({})[1]".format(path)

@@ -6,17 +6,17 @@ class WebdriverPool(object):
   def __init__(self):
     self.all = Queue()
     self.available = Queue()
-    # self.stopped = False
+    self.stopped = False
 
   def acquire(self):
-    # if not self.stoped:
-    try:
-      return self.available.get_nowait()
-    except Empty:
-      return self._createWebdriver()
+    if not self.stopped:
+      try:
+        return self.available.get_nowait()
+      except Empty:
+        return self._createWebdriver()
 
   def _createWebdriver(self):
-    # TODO try selenium.common.exceptions.WebDriverException
+    # TODO try: except selenium.common.exceptions.WebDriverException:
     driver = webdriver.PhantomJS("./lib/phantomjs/bin/phantomjs")
     self.all.put_nowait(driver)
     return driver
@@ -25,9 +25,7 @@ class WebdriverPool(object):
     self.available.put_nowait(driver)
 
   def stop(self):
-    # self.stopped = True
-    try:
+    self.stopped = True
+    if not self.all.empty():
       for driver in self.all:
         driver.quit()
-    except TypeError: # iteration over non-sequence is apparently a TypeError...
-      pass

@@ -1,7 +1,8 @@
 from bibcrawl.pipelines.files import FSFilesStore
 from bibcrawl.pipelines.webdriverpool import WebdriverPool
 from bibcrawl.model.commentitem import CommentItem
-from bibcrawl.spiders.parseUtils import xPathWithClass, xPathFirst
+from bibcrawl.spiders.parseUtils import xPathWithClass, parseHTML
+from bibcrawl.spiders.parseUtils import xPathFirst, extractFirst
 from collections import OrderedDict
 from cStringIO import StringIO
 from hashlib import sha1
@@ -12,6 +13,7 @@ from selenium.common.exceptions import NoSuchElementException
 from twisted.internet.threads import deferToThread
 from itertools import imap, ifilter
 from time import sleep, time
+from lxml import etree
 
 class RenderJavascript(object):
   def __init__(self, store_uri):
@@ -43,7 +45,7 @@ class RenderJavascript(object):
     # see http://twistedmatrix.com/documents/current/core/howto/threading.html#auto2
     defered = deferToThread(self.phantomJSProcess, item)
     defered.addCallback(lambda _: _)
-    defered.addErrback(lambda _: item)
+    # defered.addErrback(lambda _: item)
     return defered
 
   def phantomJSProcess(self, item):
@@ -63,21 +65,14 @@ class RenderJavascript(object):
     item.screenshot = key
 
 def disqusComments(driver):
-  try:
-    iframe = driver.find_element_by_xpath("//*[@id='dsq2']")
-    driver.switch_to_frame(iframe)
-    # clickWhileVisible(driver, xPathWithClass("load-more") + "/a")
-    # page = driver.find_element_by_xpath("//body").get_attribute("innerHTML")
-    return tuple(extractComments(driver,
+  return tuple(extractComments(
+      driver=driver,
+      iframeXPath="//*[@id='dsq2']",
+      showMoreXpath=xPathWithClass("load-more") + "/a",
       commentNodesXPath=xPathWithClass("post"),
       contentXPath="." + xPathWithClass("post-message"),
-      authorXPath="." + xPathWithClass("author"),
-      dateXPath="." + xPathWithClass("post-meta") + "/a/@title",
-      avatarUrlXPath="." + xPathWithClass("user") + "/img/@src"))
-  except NoSuchElementException:
-    return list()
-  finally:
-    driver.switch_to_default_content()
+      authorXPath="." + xPathWithClass("author") + "//text()",
+      dateXPath="." + xPathWithClass("post-meta") + "/a/@title"))
 
 def clickWhileVisible(driver, xPath):
   try:
@@ -86,38 +81,54 @@ def clickWhileVisible(driver, xPath):
       sleep(0.2)
       driver.find_element_by_xpath(xPath).click()
       print "clicked"
-  except ElementNotVisibleException:
+  except (ElementNotVisibleException, NoSuchElementException):
     pass
 
-def extractComments(driver, commentNodesXPath,
-    contentXPath, authorXPath, dateXPath, avatarUrlXPath):
-  parentNodeXPath = xPathFirst("./ancestor::{}".format(commentNodesXPath))
-  def x(node, path):
-    try:
-      return node.find_element_by_xpath(path)
-    except NoSuchElementException:
-      return None
+def extractComments(driver, iframeXPath, showMoreXpath,
+  commentNodesXPath, contentXPath, authorXPath, dateXPath):
+  try:
+    iframe = driver.find_element_by_xpath(iframeXPath)
+  except NoSuchElementException:
+    return
+    yield
+  driver.switch_to_frame(iframe)
+  clickWhileVisible(driver, showMoreXpath)
+  innerPage = driver.find_element_by_xpath("//body").get_attribute("innerHTML")
+  parentNodeXPath = "./ancestor::" + commentNodesXPath[2:]
   nodesMapComments = OrderedDict(imap(
       lambda node: (node, CommentItem(
-          content=x(node, contentXPath),
-          author=x(node, authorXPath),
-          date=x(node, dateXPath),
-          avatarUrl=x(node, avatarUrlXPath),
-          parent=x(node, parentNodeXPath))),
-      driver.find_elements_by_xpath(commentNodesXPath)))
+          content=extractFirst(node, contentXPath),
+          author=extractFirst(node, authorXPath),
+          date=extractFirst(node, dateXPath),
+          parent=(node.xpath(parentNodeXPath) + [None])[0])),
+      parseHTML(innerPage).xpath(commentNodesXPath)))
   for comment in nodesMapComments.values():
-    if comment.parent:
+    if comment.parent is not None:
       comment.parent = nodesMapComments[comment.parent]
-    yield comment
+    if comment.content:
+      yield comment
+  driver.switch_to_default_content()
 
 def livefyreComments(driver):
-  try:
-    clickWhileVisible(driver, xPathWithClass("fyre-stream-more"))
-    return tuple(extractComments(driver,
-      commentNodesXPath=xPathWithClass("post"), # TODO...
-      contentXPath="." + xPathWithClass("post-message"),
-      authorXPath="." + xPathWithClass("author"),
-      dateXPath="." + xPathWithClass("post-meta") + "/a/@title",
-      avatarUrlXPath="." + xPathWithClass("user") + "/img/@src"))
-  except NoSuchElementException:
-    return list()
+  return tuple(extractComments(
+    driver=driver,
+    iframeXPath="//*[@id='livefyre']//iframe",
+    showMoreXpath=xPathWithClass("fyre-stream-more"),
+    commentNodesXPath=xPathWithClass("post"),
+    contentXPath="." + xPathWithClass("fyre-comment"),
+    authorXPath="." + xPathWithClass("fyre-comment-username") + "//text()",
+    dateXPath="." + xPathWithClass("post-meta") + "/a/@title"))
+#################### not getting any comments...
+#################### not getting any comments...
+#################### not getting any comments...
+#################### not getting any comments...
+#################### not getting any comments...
+#################### not getting any comments...
+
+#################### next is use feed on js rendred to extract the xpaths!
+#################### next is use feed on js rendred to extract the xpaths!
+#################### next is use feed on js rendred to extract the xpaths!
+#################### next is use feed on js rendred to extract the xpaths!
+#################### next is use feed on js rendred to extract the xpaths!
+#################### next is use feed on js rendred to extract the xpaths!
+#################### next is use feed on js rendred to extract the xpaths!

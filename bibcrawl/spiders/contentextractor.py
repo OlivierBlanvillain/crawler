@@ -4,7 +4,7 @@ TODO: Use readability as a fallback
 TODO: generate XPath for divs without class/id
 """
 from bibcrawl.spiders.stringsimilarity import stringSimilarity
-from bibcrawl.spiders.parseUtils import parseHTML, xPathFirst
+from bibcrawl.spiders.parseUtils import parseHTML, extractFirst
 from functools import partial
 from heapq import nlargest
 from itertools import imap, ifilter
@@ -32,8 +32,8 @@ class ContentExtractor(object):
   //*[@class='post-title']
   >>> len(extractor.getRssLinks())
   30
-  >>> len(content[0])
-  6100
+  >>> 6000 < len(content[0]) < 6200
+  True
   """
 
   def __init__(self, rss):
@@ -78,7 +78,7 @@ class ContentExtractor(object):
     """
     if self.needsRefresh:
       self._refresh()
-    return tuple(imap(lambda _: _xPathSelect(parsedPage, _), self.xPaths))
+    return tuple(imap(lambda _: extractFirst(parsedPage, _), self.xPaths))
 
   def _refresh(self):
     """Refreshes the XPaths with the current pages. Called internally once per
@@ -137,7 +137,7 @@ def _bestPath(contentZipPages):
   """
   nodeQueries = set(_nodeQueries(imap(lambda _: _[1], contentZipPages)))
   ratio = lambda content, page, query: (
-      stringSimilarity(content, _xPathSelect(page, query)))
+      stringSimilarity(content, extractFirst(page, query)))
   # TODO: breaks if last post is a youtube video or a common short title..
   topQueriesForFirst = nlargest(6, nodeQueries, key=
       partial(ratio, *contentZipPages[0]))
@@ -155,7 +155,7 @@ def _bestPath(contentZipPages):
   # for q in topQueriesForFirst:
   #   print ""
   #   pprint(q)
-  #   pprint(_cleanTags(_xPathSelect(contentZipPages[0][1], q)))
+  #   pprint(_cleanTags(extractFirst(contentZipPages[0][1], q)))
 
   # print ""
   # print ""
@@ -165,14 +165,14 @@ def _bestPath(contentZipPages):
   # # for q in list(topQueriesForFirst):
   # #   pprint(q)
   # #   pprint(_cleanTags(contentZipPages[0][0] or "dummy"))
-  # #   pprint(_cleanTags(_xPathSelect(contentZipPages[0][1], q)))
+  # #   pprint(_cleanTags(extractFirst(contentZipPages[0][1], q)))
   # #   print ""
 
   # # q = max(set(topQueries), key=topQueries.count)
   # # for c, p in contentZipPages:
   # #   print "..."
   # #   pprint(c)
-  # #   pprint(_xPathSelect(p, q))
+  # #   pprint(extractFirst(p, q))
   # from time import sleep
   # sleep(100000)
   # # DEBUG..
@@ -199,24 +199,3 @@ def _nodeQueries(pages):
         attribute = node.get(selector)
         if attribute and not any(imap(lambda _: _.isdigit(), attribute)):
           yield "//*[@{}='{}']".format(selector, attribute)
-
-# End with //text(), re test, use other string metric.
-
-def _xPathSelect(page, query):
-  """Executes a XPath query and return a string representation of the first
-  result. Example:
-
-    >>> from lxml.etree import HTML
-    >>> page = HTML("<html><body><div>#1</div><div>#2<div><p>nested") # [...]
-    >>> _xPathSelect(page, '/html/body/div[2]/div/p')
-    u'<p>nested</p>'
-
-  @type  page: lxml.etree._Element
-  @param page: the parsed page to process
-  @type  query: string
-  @param query: the XPath query to execute
-  @rtype: string
-  @return: the first result of the query, empty string if no result
-  """
-  result = page.xpath(xPathFirst(query))
-  return unicode(etree.tostring(result[0])) if(result) else u""

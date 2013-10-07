@@ -21,8 +21,8 @@ class RenderJavascriptTests(unittest.TestCase):
     self.pipeline.webdrivers.release(self.driver)
     self.mockserver.__exit__(None, None, None)
 
-  def testPhantomJS(self):
-    pass
+  def assertContains(self, string, substring):
+    self.assertEqual(substring in string, True)
 
   def testScreenShot(self):
     item = PostItem(url="http://localhost:8000/example.com")
@@ -31,15 +31,54 @@ class RenderJavascriptTests(unittest.TestCase):
       "0aa21e9d723c0ef4492126d3c4305c3cd82f39b6.png")
 
   # /!\ Online test case /!\
-  def testDisqusComments(self):
-    item = PostItem(url="http://docs.scala-lang.org/tutorials/scala-for-"
-      "java-programmers.html")
-    self.driver.get(item.url)
-    self.assertGreaterEqual(len(disqusComments(self.driver)), 23)
-
-  # /!\ Online test case /!\
   def testDisqusCommentsClicks(self):
     item = PostItem(url="http://korben.info/hadopi-faut-il-vraiment-arreter-"
       "de-telecharger.html")
     self.driver.get(item.url)
     self.assertGreaterEqual(len(disqusComments(self.driver)), 108)
+
+  # /!\ Online test case /!\
+  def testDisqusContent(self):
+    item = PostItem(url="http://docs.scala-lang.org/tutorials/scala-for-"
+      "java-programmers.html")
+    self.driver.get(item.url)
+
+    comments = disqusComments(self.driver)
+    self.assertGreaterEqual(len(comments), 23)
+
+    self.assertEqual(comments[0].author, u"Lars St\xf8ttrup Nielsen")
+    self.assertContains(comments[0].content, u"I managed to get through this")
+    self.assertEqual(comments[0].date, u"Wednesday, July 4 2012 11:14 PM")
+    self.assertEqual(comments[0].parent, None)
+    foundChild = False
+    for c in comments:
+      self.assertTrue(c.author)
+      self.assertTrue(c.content)
+      self.assertTrue(c.date)
+      if c.parent is comments[1]:
+        foundChild = True
+    self.assertTrue(foundChild)
+
+  # /!\ Online test case /!\
+  def testAALivefyreClicks(self):
+    item = PostItem(url="http://techcrunch.com/2013/09/26/iphone-5s-and-iphone-5c/")
+    self.driver.get(item.url)
+    self.assertGreaterEqual(len(livefyreComments(self.driver)), 106)
+
+  # /!\ Online test case /!\
+  def testAALivefyreContent(self):
+    item = PostItem(url="http://techcrunch.com/2013/10/04/skype-will-finally-start-syncing-chat-messages-across-devices/")
+    self.driver.get(item.url)
+
+    comments = disqusComments(self.driver)
+    self.assertEqual(comments[0].author, u"PaulSalo")
+    self.assertContains(comments[0].content, u"Need a reliable history")
+    self.assertEqual(comments[0].parent, None)
+    foundChild = False
+    for c in comments:
+      self.assertTrue(c.author)
+      self.assertTrue(c.content)
+      self.assertTrue(c.date)
+      if c.parent is comments[8]:
+        foundChild = True
+    self.assertTrue(foundChild)
