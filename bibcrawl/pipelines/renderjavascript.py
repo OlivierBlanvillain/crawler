@@ -114,21 +114,9 @@ def livefyreComments(driver):
     driver=driver,
     iframeXPath="//*[@id='livefyre']//iframe",
     showMoreXpath=xPathWithClass("fyre-stream-more"),
-    commentNodesXPath=xPathWithClass("post"),
+    commentNodesXPath=xPathWithClass("fyre-comment-article"),
     contentXPath="." + xPathWithClass("fyre-comment"),
     authorXPath="." + xPathWithClass("fyre-comment-username") + "//text()",
     dateXPath="." + xPathWithClass("post-meta") + "/a/@title"))
 #################### not getting any comments...
-#################### not getting any comments...
-#################### not getting any comments...
-#################### not getting any comments...
-#################### not getting any comments...
-#################### not getting any comments...
-
-#################### next is use feed on js rendred to extract the xpaths!
-#################### next is use feed on js rendred to extract the xpaths!
-#################### next is use feed on js rendred to extract the xpaths!
-#################### next is use feed on js rendred to extract the xpaths!
-#################### next is use feed on js rendred to extract the xpaths!
-#################### next is use feed on js rendred to extract the xpaths!
 #################### next is use feed on js rendred to extract the xpaths!
