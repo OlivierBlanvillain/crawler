@@ -244,3 +244,12 @@ class ContentExtractorTests(unittest.TestCase):
   # def testDigitalPostUse(self):
   #   self._de("2013/08/im-13-and-none-of-my-friends-use")
 
+  def _lic(self, post):
+    self._checkContentXPath(
+      "letitcrash.com/rss",
+      "letitcrash.com/post/{}".format(post),
+      "//*[@class='copy']")
+
+  def testLetItCrash(self):
+    self._lic("59190266995")
+""

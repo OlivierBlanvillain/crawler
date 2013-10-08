@@ -119,11 +119,11 @@ def extractContent(feed):
   try:
     return feed.content[0].value
   except AttributeError:
-    try:
-      return feed.description
-    except AttributeError:
-      # TODO: fallback
-      raise CloseSpider("Feed entry has no content and no description")
+    # try:
+    return feed.description
+    # except AttributeError:
+    #   # TODO: fallback
+    #   raise CloseSpider("Feed entry has no content and no description")
 
 
 def _bestPath(contentZipPages):

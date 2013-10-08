@@ -60,17 +60,19 @@ class RenderJavascriptTests(unittest.TestCase):
     self.assertTrue(foundChild)
 
   # /!\ Online test case /!\
-  def testAALivefyreClicks(self):
+  def testLivefyreClicks(self):
     item = PostItem(url="http://techcrunch.com/2013/09/26/iphone-5s-and-iphone-5c/")
     self.driver.get(item.url)
-    self.assertGreaterEqual(len(livefyreComments(self.driver)), 106)
+    self.assertGreaterEqual(len(livefyreComments(self.driver)), 105)
 
   # /!\ Online test case /!\
-  def testAALivefyreContent(self):
+  def testLivefyreContent(self):
     item = PostItem(url="http://techcrunch.com/2013/10/04/skype-will-finally-start-syncing-chat-messages-across-devices/")
     self.driver.get(item.url)
 
-    comments = disqusComments(self.driver)
+    comments = livefyreComments(self.driver)
+    print comments
+
     self.assertEqual(comments[0].author, u"PaulSalo")
     self.assertContains(comments[0].content, u"Need a reliable history")
     self.assertEqual(comments[0].parent, None)
@@ -79,6 +81,11 @@ class RenderJavascriptTests(unittest.TestCase):
       self.assertTrue(c.author)
       self.assertTrue(c.content)
       self.assertTrue(c.date)
-      if c.parent is comments[8]:
+      if c.parent is not None and c.parent.author == u"Will6":
         foundChild = True
     self.assertTrue(foundChild)
+
+  # /!\ Online test case /!\
+  def testFullWorkflow(slef):
+    pass
+
