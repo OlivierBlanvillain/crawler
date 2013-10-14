@@ -4,14 +4,13 @@ from bibcrawl.spiders.priorityheuristic import PriorityHeuristic
 from bibcrawl.spiders.parseUtils import buildUrlFilter, parseHTML
 from bibcrawl.spiders.parseUtils import extractLinks, extractRssLinks
 from bibcrawl.model.postitem import PostItem
-from itertools import ifilter, imap, chain
-from scrapy.exceptions import CloseSpider
+from itertools import ifilter, imap
 from scrapy.http import Request, Response
 from scrapy.spider import BaseSpider
 from twisted.internet import reactor
 
 class RssBasedCrawler(BaseSpider):
-  """I am spiderman:"""
+  """I am spiderman"""
   name = "man"
 
   def __init__(self, url, maxDownloads, *args, **kwargs):
@@ -30,7 +29,7 @@ class RssBasedCrawler(BaseSpider):
   #   raise CloseSpider("No usable rss feed.")
   def parse(self, response):
     """ Step 1: Find the rss feed from the website entry point. """
-    rssLinks = extractRssLinks(response.body, response.url)
+    rssLinks = extractRssLinks(parseHTML(response.body), response.url)
     nextRequest = lambda: Request(
         url=rssLinks.next(),
         callback=self.parseRss,

@@ -12,7 +12,7 @@ class PostItem(ObjectItem):
   file_urls = Field()
   files = Field()
 
-  commentFeedUrl = Field()
+  commentFeedUrls = Field()
   commentFeed = Field()
   comments = Field()
 

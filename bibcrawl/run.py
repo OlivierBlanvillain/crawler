@@ -16,8 +16,9 @@ def main():
       "ITEM_PIPELINES": [
           'bibcrawl.pipelines.debugprint.DebugPrint',
           'bibcrawl.pipelines.processhtml.ProcessHtml',
-          'bibcrawl.pipelines.renderjavascript.RenderJavascript',
-          'bibcrawl.pipelines.files.FilesPipeline',
+          'bibcrawl.pipelines.downloadimages.DownloadImages',
+          'bibcrawl.pipelines.downloadfeeds.DownloadFeeds',
+          # 'bibcrawl.pipelines.renderjavascript.RenderJavascript',
           'bibcrawl.pipelines.staticcomments.StaticComments',
           'bibcrawl.pipelines.backendpropagate.BackendPropagate',
       ],
@@ -34,7 +35,7 @@ def main():
 
   # Need test cases for this one: letitcrash.com
   # spider = newcrawl.RssBasedCrawler(url="techcrunch.com", maxDownloads=5000)
-  spider = newcrawl.RssBasedCrawler(url="korben.info", maxDownloads=5000)
+  spider = newcrawl.RssBasedCrawler(url="keikolynn.com", maxDownloads=5000)
   crawler = Crawler(settings)
 
   crawler.signals.connect(reactor.stop, signal=signals.spider_closed)

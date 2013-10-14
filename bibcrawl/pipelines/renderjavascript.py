@@ -44,7 +44,7 @@ class RenderJavascript(object):
     # see http://twistedmatrix.com/documents/current/core/howto/threading.html#auto2
     defered = deferToThread(self.phantomJSProcess, item)
     defered.addCallback(lambda _: _)
-    # defered.addErrback(lambda _: item)
+    # defered.addErrback(lambda _: item) TODO UǸ#
     return defered
 
   def phantomJSProcess(self, item):
@@ -118,3 +118,7 @@ def livefyreComments(driver):
     contentXP="." + xPathWithClass("fyre-comment"),
     authorXP="." + xPathWithClass("fyre-comment-username") + "//text()",
     dateXP="." + xPathWithClass("fyre-comment-date") + "//text()")
+
+# FB test case: http://www.blogger.webaholic.co.in/2011/09/facebook-comment-box-for-blogger.html
+# JS only blog: http://nurkiewicz.blogspot.ch/
+# blogspot test case w88 comments and 25 on the feed: http://www.keikolynn.com/2013/09/giveaway-win-chance-to-celebrate-fall.html

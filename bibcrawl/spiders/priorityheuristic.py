@@ -31,7 +31,7 @@ class PriorityHeuristic(object):
   def __init__(self, highScore):
     """Create a new PriorityHeuristic for a given highScore function.
 
-    @type  highScore: function of string => boolean
+    @type  highScore: function of string => bool
     @param highScore: filter for url that should be given a very high score
     """
     self.urlsZscore = [(u"", 0)]

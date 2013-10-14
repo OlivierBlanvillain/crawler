@@ -11,7 +11,6 @@ from lxml.html import soupparser
 def extractLinks(parsedPage):
   """Extracts all href links of a page.
 
-    >>> from urllib2 import urlopen
     >>> from bibcrawl.spiders.parseUtils import parseHTML
     >>> from bibcrawl.units.mockserver import MockServer, dl
     >>> with MockServer():
@@ -27,25 +26,23 @@ def extractLinks(parsedPage):
       lambda _: _.startswith("http"),
       parsedPage.xpath("//a/@href"))
 
-def extractRssLinks(page, url):
+def extractRssLinks(parsedPage, url):
   """Extracts all the RSS and ATOM feed links of a page.
 
-    >>> from urllib2 import urlopen
-    >>> from bibcrawl.units.mockserver import MockServer
+    >>> from bibcrawl.units.mockserver import MockServer, dl
     >>> with MockServer():
     ...   list(extractRssLinks(
-    ...       urlopen("http://localhost:8000/korben.info").read(),
+    ...       parseHTML(dl("korben.info")),
     ...       "http://korben.info/"))[:-1]
     ['http://korben.info/feed/atom', 'http://korben.info/feed']
 
-  @type  page: string
-  @param page: the html page to process
+  @type  parsedPage: lxml.etree._Element
+  @param parsedPage: the html page to process
   @type  url: string
   @param url: the page url, used to build absolute urls
   @rtype: collections. Iterable of strings
   @return: all the feed links of the page
   """
-  parsedPage = parseHTML(page)
   paths = imap(lambda _: "//link[@type='{}']/@href".format(_), (
       "application/atom+xml",
       "application/atom",
@@ -159,9 +156,9 @@ def buildUrlFilter(urls, debug=True):
 
   @type  urls: collections.Iterable of strings
   @param urls: urls with a similar pattern
-  @type  debug: boolean
+  @type  debug: bool
   @param debug: enable regex print, default=False
-  @rtype: function of string => boolean
+  @rtype: function of string => bool
   @return: the function filtering blog posts
   """
   eol = "#"
