@@ -3,8 +3,8 @@
 TODO: Use readability as a fallback
 TODO: generate XPath for divs without class/id
 """
-from bibcrawl.spiders.stringsimilarity import stringSimilarity
-from bibcrawl.spiders.parseUtils import parseHTML, extractFirst
+from bibcrawl.utils.stringsimilarity import stringSimilarity
+from bibcrawl.utils.parsing import parseHTML, extractFirst
 from functools import partial
 from heapq import nlargest
 from itertools import imap, ifilter
@@ -16,7 +16,7 @@ class ContentExtractor(object):
   """Extracts the content of blog posts using a rss feed. Usage:
 
   >>> from urllib2 import urlopen
-  >>> from bibcrawl.spiders.parseUtils import parseHTML
+  >>> from bibcrawl.utils.parsing import parseHTML
   >>> from bibcrawl.units.mockserver import MockServer, dl
   >>> pages = ("korben.info/80-bonnes-pratiques-seo.html", "korben.info/app-"
   ... "gratuite-amazon.html", "korben.info/cest-la-rentree-2.html",
@@ -109,7 +109,7 @@ class ContentExtractor(object):
         # link, authors, thr_total, author_detail, id, tags, published
     )
     self.xPaths = tuple(imap(
-        lambda extractr: _bestPath(zip(imap(extractr, entries), parsedPages)),
+        lambda extractr: bestPath(zip(imap(extractr, entries), parsedPages)),
         extractors))
 
     print("Best XPaths are:")
@@ -126,7 +126,7 @@ def extractContent(feed):
     #   raise CloseSpider("Feed entry has no content and no description")
 
 
-def _bestPath(contentZipPages):
+def bestPath(contentZipPages):
   """Given a list of content/page, computes the best XPath query that would
   return the content on each page.
 
@@ -135,11 +135,11 @@ def _bestPath(contentZipPages):
   @rtype: string
   @return: the XPath query that matches at best the content on each page
   """
-  nodeQueries = set(_nodeQueries(imap(lambda _: _[1], contentZipPages)))
+  queries = set(nodeQueries(imap(lambda _: _[1], contentZipPages)))
   ratio = lambda content, page, query: (
       stringSimilarity(content, extractFirst(page, query)))
   # TODO: breaks if last post is a youtube video or a common short title..
-  topQueriesForFirst = nlargest(6, nodeQueries, key=
+  topQueriesForFirst = nlargest(6, queries, key=
       partial(ratio, *contentZipPages[0]))
   topQueries = tuple(imap(
       lambda (c, p): max(topQueriesForFirst, key=partial(ratio, c, p)),
@@ -150,7 +150,7 @@ def _bestPath(contentZipPages):
   # for q in topQueriesForFirst:
   #   pprint(q)
   #   pprint(ratio(contentZipPages[0][0], contentZipPages[0][1], q))
-  # from bibcrawl.spiders.stringsimilarity import _cleanTags
+  # from bibcrawl.utils.stringsimilarity import _cleanTags
 
   # for q in topQueriesForFirst:
   #   print ""
@@ -160,7 +160,7 @@ def _bestPath(contentZipPages):
   # print ""
   # print ""
   # pprint((_cleanTags(contentZipPages[0][0])))
-  # # from bibcrawl.spiders.stringsimilarity import _cleanTags
+  # # from bibcrawl.utils.stringsimilarity import _cleanTags
   # # # pprint(topQueriesForFirst)
   # # for q in list(topQueriesForFirst):
   # #   pprint(q)
@@ -179,13 +179,13 @@ def _bestPath(contentZipPages):
 
   return max(set(topQueries), key=topQueries.count)
 
-def _nodeQueries(pages):
+def nodeQueries(pages):
   """Compute queries to each node of the html page using per id/class global
   selection.
 
     >>> from lxml.etree import HTML
     >>> page = HTML("<h1 class='title'>#1</h1><div id='footer'>#2</div> [...]")
-    >>> tuple( _nodeQueries([page]) )
+    >>> tuple( nodeQueries([page]) )
     ("//*[@class='title']", "//*[@id='footer']")
 
   @type  pages: collections.Iterable of lxml.etree._Element
@@ -199,3 +199,6 @@ def _nodeQueries(pages):
         attribute = node.get(selector)
         if attribute and not any(imap(lambda _: _.isdigit(), attribute)):
           yield "//*[@{}='{}']".format(selector, attribute)
+          break
+      else:
+        pass # TODO path

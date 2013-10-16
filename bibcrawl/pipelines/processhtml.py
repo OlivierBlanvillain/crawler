@@ -1,5 +1,5 @@
-from bibcrawl.spiders.parseUtils import parseHTML, extractImageLinks
-from bibcrawl.spiders.parseUtils import extractRssLinks
+from bibcrawl.utils.parsing import parseHTML, extractImageLinks
+from bibcrawl.utils.parsing import extractRssLinks
 from scrapy.exceptions import DropItem
 from itertools import imap, ifilter, chain
 

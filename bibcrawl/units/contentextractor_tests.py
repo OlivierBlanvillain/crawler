@@ -1,6 +1,6 @@
 import unittest
 from bibcrawl.units.mockserver import MockServer, dl
-from bibcrawl.spiders.contentextractor import ContentExtractor
+from bibcrawl.utils.contentextractor import ContentExtractor
 
 class ContentExtractorTests(unittest.TestCase):
 

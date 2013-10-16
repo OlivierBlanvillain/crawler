@@ -1,8 +1,8 @@
 """RssBasedCrawler """
-from bibcrawl.spiders.contentextractor import ContentExtractor
+from bibcrawl.utils.contentextractor import ContentExtractor
 from bibcrawl.spiders.priorityheuristic import PriorityHeuristic
-from bibcrawl.spiders.parseUtils import buildUrlFilter, parseHTML
-from bibcrawl.spiders.parseUtils import extractLinks, extractRssLinks
+from bibcrawl.utils.parsing import buildUrlFilter, parseHTML
+from bibcrawl.utils.parsing import extractLinks, extractRssLinks
 from bibcrawl.model.postitem import PostItem
 from itertools import ifilter, imap
 from scrapy.http import Request, Response

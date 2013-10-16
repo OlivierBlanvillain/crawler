@@ -1,7 +1,7 @@
 from bibcrawl.pipelines.files import FSFilesStore
 from bibcrawl.pipelines.webdriverpool import WebdriverPool
 from bibcrawl.model.commentitem import CommentItem
-from bibcrawl.spiders.parseUtils import xPathWithClass, parseHTML, extractFirst
+from bibcrawl.utils.parsing import xPathWithClass, parseHTML, extractFirst
 from collections import OrderedDict
 from cStringIO import StringIO
 from hashlib import sha1
@@ -44,7 +44,7 @@ class RenderJavascript(object):
     # see http://twistedmatrix.com/documents/current/core/howto/threading.html#auto2
     defered = deferToThread(self.phantomJSProcess, item)
     defered.addCallback(lambda _: _)
-    # defered.addErrback(lambda _: item) TODO UǸ#
+    # defered.addErrback(lambda _: item) TODO UN#
     return defered
 
   def phantomJSProcess(self, item):
@@ -75,7 +75,7 @@ def disqusComments(driver):
       commentXP=xPathWithClass("post"),
       contentXP="." + xPathWithClass("post-message"),
       authorXP="." + xPathWithClass("author") + "//text()",
-      dateXP="." + xPathWithClass("post-meta") + "/a/@title")
+      publishedXP="." + xPathWithClass("post-meta") + "/a/@title")
   # driver.switch_to_default_content()
 
 
@@ -89,7 +89,7 @@ def clickWhileVisible(driver, xPath):
   except (ElementNotVisibleException, NoSuchElementException):
     pass
 
-def extractComments(driver, commentXP, contentXP, authorXP, dateXP):
+def extractComments(driver, commentXP, contentXP, authorXP, publishedXP):
   page = driver.find_element_by_xpath(".//body").get_attribute("innerHTML")
   parentNodeXP = "./ancestor::" + commentXP[2:]
   getParentNode = lambda node: (node.xpath(parentNodeXP) + [None])[0]
@@ -97,7 +97,7 @@ def extractComments(driver, commentXP, contentXP, authorXP, dateXP):
       lambda node: (node, CommentItem(
           content=extractFirst(node, contentXP),
           author=extractFirst(node, authorXP),
-          date=extractFirst(node, dateXP),
+          published=extractFirst(node, publishedXP),
           parent=getParentNode(node))),
       parseHTML(page).xpath(commentXP)))
   for comment in nodesMapComments.values():
@@ -117,8 +117,9 @@ def livefyreComments(driver):
     commentXP=xPathWithClass("fyre-comment-article"),
     contentXP="." + xPathWithClass("fyre-comment"),
     authorXP="." + xPathWithClass("fyre-comment-username") + "//text()",
-    dateXP="." + xPathWithClass("fyre-comment-date") + "//text()")
+    publishedXP="." + xPathWithClass("fyre-comment-date") + "//text()")
 
 # FB test case: http://www.blogger.webaholic.co.in/2011/09/facebook-comment-box-for-blogger.html
 # JS only blog: http://nurkiewicz.blogspot.ch/
 # blogspot test case w88 comments and 25 on the feed: http://www.keikolynn.com/2013/09/giveaway-win-chance-to-celebrate-fall.html
+# Google+ comments: http://googlesystem.blogspot.ch/2013/10/the-new-google-gadgets.html

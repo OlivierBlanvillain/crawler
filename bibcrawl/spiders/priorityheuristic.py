@@ -1,5 +1,6 @@
 """Score predictor."""
-from bibcrawl.spiders.parseUtils import ascii
+from bibcrawl.utils.parsing import ascii
+from bibcrawl.utils.ohpython import first
 from heapq import nlargest
 from itertools import imap, ifilter
 from Levenshtein import ratio as stringSimilarity
@@ -51,7 +52,6 @@ class PriorityHeuristic(object):
       return maxint / 2
     else:
       k = min(5, int(ceil(len(self.urlsZscore) / 2.0)))
-      first = lambda _: _[0]
       ratioZscore = imap(
           lambda (i, s): (stringSimilarity(ascii(url), ascii(i)), s),
           self.urlsZscore)

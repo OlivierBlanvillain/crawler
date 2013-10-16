@@ -11,7 +11,7 @@ from lxml.html import soupparser
 def extractLinks(parsedPage):
   """Extracts all href links of a page.
 
-    >>> from bibcrawl.spiders.parseUtils import parseHTML
+    >>> from bibcrawl.utils.parsing import parseHTML
     >>> from bibcrawl.units.mockserver import MockServer, dl
     >>> with MockServer():
     ...   list(extractLinks( parseHTML(dl("example.com")) ))
@@ -105,16 +105,18 @@ def extractFirst(page, query):
   @rtype: string
   @return: the first result of the query, empty string if no result
   """
-  result = (page.xpath(query) + [""])[0]
-  return unicode(result if isinstance(result, (str, unicode))
-      else etree.tostring(result, with_tail=False))
-  # result = page.xpath(query)
-  # if not result:
-  #   return u""
-  # elif isinstance(result[0], (str, unicode)):
-  #   return unicode(result[0])
-  # else:
-  #   return unicode(etree.tostring(result[0], with_tail=False))
+  return nodeToString((page.xpath(query) + [""])[0])
+
+def nodeToString(node):
+  """Convert a etree node to an unicode string.
+
+    >>> from lxml.etree import HTML
+    >>> page = HTML("<html><body><div>#1</div><div>#2<p>nested")
+    >>> nodeToString(page)
+    u'<html><body><div>#1</div><div>#2<p>nested</p></div></body></html>'
+  """
+  return unicode(node if isinstance(node, (str, unicode))
+      else etree.tostring(node, with_tail=False))
 
 def xPathFirst(path):
   """Extends a XPath query to return the first result.

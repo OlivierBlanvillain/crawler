@@ -1,6 +1,6 @@
 import unittest
 from bibcrawl.units.mockserver import MockServer
-from bibcrawl.spiders.contentextractor import ContentExtractor
+from bibcrawl.utils.contentextractor import ContentExtractor
 from bibcrawl.pipelines.renderjavascript import RenderJavascript
 from bibcrawl.pipelines.renderjavascript import disqusComments
 from bibcrawl.pipelines.renderjavascript import livefyreComments
@@ -48,13 +48,13 @@ class RenderJavascriptTests(unittest.TestCase):
 
     self.assertEqual(comments[0].author, u"Lars St\xf8ttrup Nielsen")
     self.assertContains(comments[0].content, u"I managed to get through this")
-    self.assertEqual(comments[0].date, u"Wednesday, July 4 2012 11:14 PM")
+    self.assertEqual(comments[0].published, u"Wednesday, July 4 2012 11:14 PM")
     self.assertEqual(comments[0].parent, None)
     foundChild = False
     for c in comments:
       self.assertTrue(c.author)
       self.assertTrue(c.content)
-      self.assertTrue(c.date)
+      self.assertTrue(c.published)
       if c.parent is comments[1]:
         foundChild = True
     self.assertTrue(foundChild)
@@ -80,7 +80,7 @@ class RenderJavascriptTests(unittest.TestCase):
     for c in comments:
       self.assertTrue(c.author)
       self.assertTrue(c.content)
-      self.assertTrue(c.date)
+      self.assertTrue(c.published)
       if c.parent is not None and c.parent.author == u"Will6":
         foundChild = True
     self.assertTrue(foundChild)

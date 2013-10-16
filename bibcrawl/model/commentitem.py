@@ -4,6 +4,6 @@ from scrapy.item import Item, Field
 class CommentItem(ObjectItem):
   content = Field()
   author = Field()
-  date = Field()
+  published = Field()
   avatarUrl = Field()
   parent = Field()
