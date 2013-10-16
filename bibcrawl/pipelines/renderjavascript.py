@@ -1,18 +1,18 @@
+from bibcrawl.model.commentitem import CommentItem
 from bibcrawl.pipelines.files import FSFilesStore
 from bibcrawl.pipelines.webdriverpool import WebdriverPool
-from bibcrawl.model.commentitem import CommentItem
+from bibcrawl.utils.ohpython import *
 from bibcrawl.utils.parsing import xPathWithClass, parseHTML, extractFirst
 from collections import OrderedDict
 from cStringIO import StringIO
 from hashlib import sha1
+from lxml import etree
 from scrapy.exceptions import NotConfigured
 from selenium import webdriver
 from selenium.common.exceptions import ElementNotVisibleException
 from selenium.common.exceptions import NoSuchElementException
-from twisted.internet.threads import deferToThread
-from itertools import imap, ifilter
 from time import sleep, time
-from lxml import etree
+from twisted.internet.threads import deferToThread
 
 class RenderJavascript(object):
   def __init__(self, store_uri):
@@ -69,6 +69,7 @@ def disqusComments(driver):
     return tuple()
 
   driver.switch_to_frame(iframe)
+  sleep(0.2)
   clickWhileVisible(driver, xPathWithClass("load-more") + "/a")
   return extractComments(
       driver=driver,
@@ -83,10 +84,10 @@ def clickWhileVisible(driver, xPath):
   try:
     timeout = time() + 5
     while time() < timeout:
-      sleep(0.2)
       driver.find_element_by_xpath(xPath).click()
-      print "clicked"
-  except (ElementNotVisibleException, NoSuchElementException):
+      sleep(0.1)
+  except (ElementNotVisibleException, NoSuchElementException) as e:
+    print e
     pass
 
 def extractComments(driver, commentXP, contentXP, authorXP, publishedXP):
@@ -110,8 +111,8 @@ def livefyreComments(driver):
   #   iframe = driver.find_element_by_xpath(xPathWithClass("livefyre"))
   # except NoSuchElementException:
   #   return tuple()
-
-  clickWhileVisible(driver, xPathWithClass("fyre-stream-more"))
+  sleep(0.7)
+  clickWhileVisible(driver, "//*[@class='fyre-stream-more-container']")#xPathWithClass("fyre-text"))
   return extractComments(
     driver=driver,
     commentXP=xPathWithClass("fyre-comment-article"),

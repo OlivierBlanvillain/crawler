@@ -1,6 +1,20 @@
-"""Essential etility functions that should have been part of python core."""
+"""Essential utility functions that should have been part of python core."""
 
-from itertools import imap, chain
+from itertools import imap, ifilter, izip, chain
+from functools import partial
+
+__all__ = [
+  "chain",
+  "first",
+  "getOrElseUpdate",
+  "ifilter",
+  "iflatmap",
+  "imap",
+  "izip",
+  "partial",
+  "second",
+]
+
 
 def iflatmap(fun, itr):
   """Flatten map.

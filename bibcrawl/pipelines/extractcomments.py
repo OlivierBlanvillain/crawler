@@ -1,7 +1,5 @@
 from bibcrawl.model.commentitem import CommentItem
-from itertools import imap, ifilter, izip
-from functools import partial
-from bibcrawl.utils.ohpython import iflatmap, first, second
+from bibcrawl.utils.ohpython import *
 from bibcrawl.utils.parsing import nodeToString
 from bibcrawl.utils.contentextractor import nodeQueries
 from bibcrawl.utils.stringsimilarity import stringSimilarity

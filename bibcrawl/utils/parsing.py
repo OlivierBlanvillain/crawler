@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 """Utility functions for the RssBasedCrawler spider."""
-import re
-from itertools import imap, ifilter, chain
-from unicodedata import normalize
-from urlparse import urlsplit, urljoin
+from bibcrawl.utils.ohpython import *
 from lxml import etree, html
 from lxml.html import soupparser
+from re import match as rematch
+from unicodedata import normalize
+from urlparse import urlsplit, urljoin
 
 def extractLinks(parsedPage):
   """Extracts all href links of a page.
@@ -32,8 +32,7 @@ def extractRssLinks(parsedPage, url):
     >>> from bibcrawl.units.mockserver import MockServer, dl
     >>> with MockServer():
     ...   list(extractRssLinks(
-    ...       parseHTML(dl("korben.info")),
-    ...       "http://korben.info/"))[:-1]
+    ...       parseHTML(dl("korben.info")), "http://korben.info/"))[:-1]
     ['http://korben.info/feed/atom', 'http://korben.info/feed']
 
   @type  parsedPage: lxml.etree._Element
@@ -166,7 +165,7 @@ def buildUrlFilter(urls, debug=True):
   eol = "#"
   urlsTuple = tuple(urls)
   beginsWith = lambda regex: (
-      lambda str: bool(re.match(regex, str + "/" + eol)))
+      lambda str: bool(rematch(regex, str + "/" + eol)))
   (scheme, netloc, _, _, _) = urlsplit(urlsTuple[0])
   # Note that something like "[a-zA-Z]" would not be safe as it could append
   # that only one article out of many contains a digit in the title. Also if

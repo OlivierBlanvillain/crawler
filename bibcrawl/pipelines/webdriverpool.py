@@ -1,7 +1,7 @@
 """Manages a thread safe pool of WebDriver processes."""
+from bibcrawl.utils.ohpython import *
 from Queue import Queue, Empty
 from selenium import webdriver
-from itertools import imap
 
 class WebdriverPool(object):
   """Manages a thread safe pool of PhantomJS processes.

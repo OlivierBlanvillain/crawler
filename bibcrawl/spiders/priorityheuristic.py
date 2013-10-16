@@ -1,8 +1,7 @@
 """Score predictor."""
+from bibcrawl.utils.ohpython import *
 from bibcrawl.utils.parsing import ascii
-from bibcrawl.utils.ohpython import first
 from heapq import nlargest
-from itertools import imap, ifilter
 from Levenshtein import ratio as stringSimilarity
 from math import ceil
 from sys import maxint

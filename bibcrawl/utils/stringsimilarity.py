@@ -1,9 +1,8 @@
 """Implements string similarities."""
 
+from bibcrawl.utils.ohpython import *
 from lxml.html.clean import Cleaner
-from bibcrawl.utils.ohpython import getOrElseUpdate
-from functools import partial
-import re
+from re import sub as resub
 
 def bigrams(string):
   """Compute the bigrams (pair of adjacent characters) of a string.
@@ -31,7 +30,7 @@ def cleanTags(string):
   """
   htmlCleaned = Cleaner(allow_tags=[''], remove_unknown_tags=False
       ).clean_html(string or u"dummy")
-  return re.sub(r"\s\s+" , " ", htmlCleaned)
+  return resub(r"\s\s+" , " ", htmlCleaned)
 
 def dicesCoeffSimilarity(string1, string2, bufferDict=None):
   """Computes the dice's coefficient similarity between two strings.

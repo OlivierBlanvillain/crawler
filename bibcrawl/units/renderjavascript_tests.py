@@ -66,7 +66,7 @@ class RenderJavascriptTests(unittest.TestCase):
     self.assertGreaterEqual(len(livefyreComments(self.driver)), 105)
 
   # /!\ Online test case /!\
-  def testLivefyreContent(self):
+  def testAAALivefyreContent(self):
     item = PostItem(url="http://techcrunch.com/2013/10/04/skype-will-finally-start-syncing-chat-messages-across-devices/")
     self.driver.get(item.url)
 

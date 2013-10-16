@@ -1,7 +1,7 @@
-from scrapy.contrib.pipeline.media import MediaPipeline
-from itertools import imap
-from scrapy.http import Request
+from bibcrawl.utils.ohpython import *
 from feedparser import parse as feedparse
+from scrapy.contrib.pipeline.media import MediaPipeline
+from scrapy.http import Request
 
 class DownloadFeeds(MediaPipeline):
   def get_media_requests(self, item, info):

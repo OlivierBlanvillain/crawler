@@ -1,10 +1,10 @@
 """RssBasedCrawler """
-from bibcrawl.utils.contentextractor import ContentExtractor
+from bibcrawl.model.postitem import PostItem
 from bibcrawl.spiders.priorityheuristic import PriorityHeuristic
+from bibcrawl.utils.contentextractor import ContentExtractor
+from bibcrawl.utils.ohpython import *
 from bibcrawl.utils.parsing import buildUrlFilter, parseHTML
 from bibcrawl.utils.parsing import extractLinks, extractRssLinks
-from bibcrawl.model.postitem import PostItem
-from itertools import ifilter, imap
 from scrapy.http import Request, Response
 from scrapy.spider import BaseSpider
 from twisted.internet import reactor
@@ -31,10 +31,10 @@ class RssBasedCrawler(BaseSpider):
     """ Step 1: Find the rss feed from the website entry point. """
     rssLinks = extractRssLinks(parseHTML(response.body), response.url)
     nextRequest = lambda: Request(
-        url=rssLinks.next(),
-        callback=self.parseRss,
-        errback=nextRequest,
-        dont_filter=True)
+      url=rssLinks.next(),
+      callback=self.parseRss,
+      errback=nextRequest,
+      dont_filter=True)
     return nextRequest()
 
   def parseRss(self, response):
@@ -43,13 +43,13 @@ class RssBasedCrawler(BaseSpider):
     self.contentExtractor = ContentExtractor(response.body)
     for postUrl in self.contentExtractor.getRssLinks():
       yield Request(
-          url=postUrl,
-          callback=self.bufferPost,
-          errback=self.bufferPost,
-          dont_filter=True,
-          # meta={ "u": _ } is here to keep a "safe" copy of the source url.
-          # I don't trust response.url == (what was passed as Request url).
-          meta={ "u": postUrl })
+        url=postUrl,
+        callback=self.bufferPost,
+        errback=self.bufferPost,
+        dont_filter=True,
+        # meta={ "u": _ } is here to keep a "safe" copy of the source url.
+        # I don't trust response.url == (what was passed as Request url).
+        meta={ "u": postUrl })
 
   def bufferPost(self, response):
     """ Step 3: Back to the website, compute the best XPath queries to extract
@@ -58,8 +58,8 @@ class RssBasedCrawler(BaseSpider):
     self.bufferedPosts.append(response)
     if len(self.bufferedPosts) == len(self.contentExtractor.getRssLinks()):
       posts = tuple(ifilter(
-          lambda _: isinstance(_, Response),
-          self.bufferedPosts))
+        lambda _: isinstance(_, Response),
+        self.bufferedPosts))
       self.isBlogPost = buildUrlFilter(imap(lambda _: _.url, posts))
       self.priorityHeuristic = PriorityHeuristic(self.isBlogPost)
       for post in posts:
@@ -77,16 +77,15 @@ class RssBasedCrawler(BaseSpider):
       reactor.stop()
     elif self.isBlogPost(response.url):
       self.downloadsSoFar += 1
-      self.contentExtractor(parsedBody)
-      yield PostItem(url=response.url, parsedBody=parsedBody)
+      yield PostItem(url=response.url, parsedBodies=(parsedBody,))
 
     newUrls = set(ifilter(
-        lambda _: _ not in self.seen,
-        extractLinks(parsedBody)))
+      lambda _: _ not in self.seen,
+      extractLinks(parsedBody)))
     self.seen.update(newUrls)
     self.priorityHeuristic.feed(response.url, newUrls)
     for newUrl in newUrls:
       yield Request(
-          url=newUrl,
-          callback=self.crawl,
-          priority=self.priorityHeuristic(newUrl))
+        url=newUrl,
+        callback=self.crawl,
+        priority=self.priorityHeuristic(newUrl))

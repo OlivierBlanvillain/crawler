@@ -3,14 +3,13 @@
 TODO: Use readability as a fallback
 TODO: generate XPath for divs without class/id
 """
-from bibcrawl.utils.stringsimilarity import stringSimilarity
+from bibcrawl.utils.ohpython import *
 from bibcrawl.utils.parsing import parseHTML, extractFirst
-from functools import partial
+from bibcrawl.utils.stringsimilarity import stringSimilarity
+from feedparser import parse as feedparse # http://pythonhosted.org/feedparser/
 from heapq import nlargest
-from itertools import imap, ifilter
 from lxml import etree # http://lxml.de/index.html#documentation
 from scrapy.exceptions import CloseSpider
-import feedparser # http://pythonhosted.org/feedparser/
 
 class ContentExtractor(object):
   """Extracts the content of blog posts using a rss feed. Usage:
@@ -42,7 +41,7 @@ class ContentExtractor(object):
     @type  rss: string
     @param rss: the rss/atom feed
     """
-    self.rssEntries = feedparser.parse(rss).entries
+    self.rssEntries = feedparse(rss).entries
     self.rssLinks = tuple(imap(lambda _: _.link, self.rssEntries))
     self.urlZipPages = list()
     self.xPaths = None
