@@ -1,12 +1,13 @@
 """ContentExtractor"""
+
 # TODO: Use readability as a fallback
-# TODO: generate XPath for divs without class/id
 
 from bibcrawl.utils.ohpython import *
 from bibcrawl.utils.parsing import parseHTML, extractFirst, nodeQueries
 from bibcrawl.utils.stringsimilarity import stringSimilarity
 from feedparser import parse as feedparse
 from heapq import nlargest
+from scrapy.exceptions import CloseSpider
 
 class ContentExtractor(object):
   """Extracts the content of blog posts using a rss feed. Usage:
@@ -114,15 +115,14 @@ class ContentExtractor(object):
     print("\n".join(self.xPaths))
 
 def extractContent(feed):
-  """TODO"""
+  """Returns feed content value, or description if apsent."""
   try:
     return feed.content[0].value
   except AttributeError:
-    # try:
-    return feed.description
-    # except AttributeError:
-    #   # TODO: fallback
-    #   raise CloseSpider("Feed entry has no content and no description")
+    try:
+      return feed.description
+    except AttributeError:
+      raise CloseSpider("Feed entry has no content and no description")
 
 def bestPath(contentZipPages):
   """Given a list of content/page, computes the best XPath query that would

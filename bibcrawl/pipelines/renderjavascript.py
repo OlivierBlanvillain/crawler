@@ -34,14 +34,12 @@ class RenderJavascript(object):
   """Rendres the page with JavaScript, takes a screenshot and extract Disqus
   and Livefyre comments if present"""
 
-  def __init__(self, storeUri):
+  def __init__(self, storeUri="out"):
     """Instantiate for a given storeUri. Creates the WebriverPool.
 
     @type  storeUri: scrapy.contrib.pipeline.files.FSFileStore
     @param storeUri: the storeUri
     """
-    if not storeUri:
-      raise NotConfigured
     self.store = FSFilesStore(storeUri)
     self.webdrivers = WebdriverPool()
 
@@ -49,7 +47,7 @@ class RenderJavascript(object):
   def from_settings(cls, settings):
     """Instantiate with storeUri from settings.
 
-    @type  settings: TODO
+    @type  settings: scrapy.settings.Settings
     @param settings: the settings
     @rtype: RenderJavascript
     @return: the instantiated class

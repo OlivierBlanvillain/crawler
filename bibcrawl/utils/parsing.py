@@ -218,11 +218,7 @@ def parseHTML(page):
   try:
     return html.fromstring(page)
   except (etree.XMLSyntaxError, etree.ParserError):
-    # try:
-      return soupparser.fromstring(page)
-    # except:
-    #   # TODO: better? + add test case where both lxml and beautifulsoup fail.
-    #   return None
+    return soupparser.fromstring(page)
 
 def xPathWithClass(cls):
   """Builds a XPath expression to select all elements of a page that have a
