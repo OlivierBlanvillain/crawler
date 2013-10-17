@@ -1,4 +1,5 @@
-"""Essential utility functions that should have been part of python core."""
+"""oh python...
+Essential utility functions that should have been part of python core."""
 
 from itertools import imap, ifilter, izip, chain
 from functools import partial
@@ -6,6 +7,7 @@ from functools import partial
 __all__ = [
   "chain",
   "first",
+  "foreach",
   "getOrElseUpdate",
   "ifilter",
   "iflatmap",
@@ -13,6 +15,7 @@ __all__ = [
   "izip",
   "partial",
   "second",
+  "typecheck",
 ]
 
 
@@ -30,6 +33,24 @@ def iflatmap(fun, itr):
   @return: the flatten map of itr with fun
   """
   return chain.from_iterable(imap(fun, itr))
+
+def foreach(fun, itr):
+  """Foreach.
+
+    >>> from pprint import pprint
+    >>> foreach(pprint, (1, 2))
+    1
+    2
+
+  @type  fun: function of A => Any
+  @param fun: the function to apply to each element of itr
+  @type  itr: iterator of A
+  @param itr: the iterator to iter on
+  @rtype: NoneType
+  @return: None
+  """
+  for _ in itr:
+    fun(_)
 
 def first(listOrTuple):
   """Return the first element of a list.

@@ -1,44 +1,35 @@
+"""ExtractComments"""
+
 from bibcrawl.model.commentitem import CommentItem
 from bibcrawl.utils.ohpython import *
-from bibcrawl.utils.parsing import nodeToString
-from bibcrawl.utils.contentextractor import nodeQueries
+from bibcrawl.utils.parsing import nodeToString, nodeQueries
 from bibcrawl.utils.stringsimilarity import stringSimilarity
 
 class ExtractComments(object):
-  def process_item(self, item, spider):
-    """d
+  """Extracts comments using comment feed."""
+
+  def process_item(self, item, _):
+    """Populates item.comments using item.commentFeed if it has not been
+    already. If the feed overflows, uses some matching between the HTML tree
+    and the feed comments to extract comments from the page.
+
+    @type  item: bibcrawl.model.postitem.PostItem
+    @param item: the item to process
+    @type  spider: scrapy.spider.BaseSpider
+    @param spider: the spider that emitted this item
+    @rtype: bibcrawl.model.postitem.PostItem
+    @return: the processed item
     """
-    if item.commentFeed:
+    if item.commentFeed and not "comments" in item:
       comments = commentsFromFeed(item.commentFeed)
       if feedOverflow(item.commentFeed):
-        # TODO refactored out
-        pages = (item.parsedBody,)
-        xPaths = computeXPaths(comments, pages)
-        ex = imap(lambda path: iflatmap(lambda _: _.xpath(path), pages), xPaths)
-        item.comments = tuple(imap(
-          lambda (content, author, published): CommentItem(
-            content=content,
-            author=author,
-            published=published,
-            avatarUrl=None,
-            parent=None)),
-          izip(*ex))
+        item.comments = commentsHtmlExtraction(comments, item.parsedBodies)
       else:
         item.comments = comments
     return item
 
-def computeXPaths(feedComments, pages, debug=False):
+def commentsHtmlExtraction(feedComments, pages, debug=False):
   """Compute comment extraction XPaths from a list of comments and pages.
-
-
-#     >>> with MockServer():
-#     ...   pages = (parseHTML(dl("disqus.com/embed/comments/")), parseHTML(
-#     ...     dl("korben.info/hadopi-faut-il-vraiment-arreter-de-telecharger"
-#     ...     ".html")))
-#     ...   comments = commentsFromFeed(parse(dl("disqus.com/embed/comments/")))
-#     ...   cmts = computeXPaths(comments, pages, debug=True)
-#     ("//div[@class='post']", "//div[@class='post-message']", \
-# "//div[@class='author']", "//div[@class='post-meta']/a",)
 
     >>> from feedparser import parse
     >>> from bibcrawl.utils.parsing import parseHTML
@@ -48,7 +39,7 @@ def computeXPaths(feedComments, pages, debug=False):
     ...     "to-celebrate-fall.html")),)
     ...   comments = commentsFromFeed(parse(dl("keikolynn.com/feeds/"
     ...     "8790405898372485787/comments/default")))
-    ...   cmts = computeXPaths(comments, pages, debug=True)
+    ...   cmts = commentsHtmlExtraction(comments, pages, debug=True)
     ("//*[@class='comment-content']", "//*[@class='user']", \
 "//*[@class='datetime secondary-text']")
     >>> len(cmts)
@@ -82,11 +73,11 @@ def computeXPaths(feedComments, pages, debug=False):
 
   dct = dict() # Optimisation: x14 speedup for the doctest.
   bestPR = lambda targets, candidates: max(candidates, key=
-      lambda (_, result): sum(imap(
-        lambda content: max(imap(
-          partial(stringSimilarity, content, bufferDict=dct),
-          result)),
-        targets)))
+    lambda (_, result): sum(imap(
+      lambda content: max(imap(
+        partial(stringSimilarity, content, bufferDict=dct),
+        result)),
+      targets)))
 
   contentPathResult = bestPR(feedContents, pathZipLongResults)
 
@@ -98,20 +89,20 @@ def computeXPaths(feedComments, pages, debug=False):
   if debug:
     print(tuple(imap(first, exacts)))
 
-  # # Debug, List[String]
-  # from bibcrawl.utils.ohpython import typecheck
-  # checkListOfString = lambda _: typecheck((_, tuple), (first(_), basestring))
-  # checkListOfString(feedContents)
-  # checkListOfString(feedAuthors)
-  # checkListOfString(feedDates)
+    # # List[String]
+    # checkListOfString = lambda _: typecheck(
+    #   (_, tuple), (first(_), basestring))
+    # checkListOfString(feedContents)
+    # checkListOfString(feedAuthors)
+    # checkListOfString(feedDates)
 
-  # # List[(String, List[String])]
-  # checkListOfTupleOfStringAndListOfString = (lambda _ : typecheck(
-  #   (_, tuple), (first(_), tuple), (first(first(_)), basestring),
-  #   (second(first(_)), tuple), (first(second(first(_))), basestring)))
-  # checkListOfTupleOfStringAndListOfString(pathZipResults)
-  # checkListOfTupleOfStringAndListOfString(pathZipLongResults)
-  # checkListOfTupleOfStringAndListOfString(pathZipExactResults)
+    # # List[(String, List[String])]
+    # checkListOfTupleOfStringAndListOfString = (lambda _ : typecheck(
+    #   (_, tuple), (first(_), tuple), (first(first(_)), basestring),
+    #   (second(first(_)), tuple), (first(second(first(_))), basestring)))
+    # checkListOfTupleOfStringAndListOfString(pathZipResults)
+    # checkListOfTupleOfStringAndListOfString(pathZipLongResults)
+    # checkListOfTupleOfStringAndListOfString(pathZipExactResults)
 
   return tuple(imap(
     lambda (_1, _2, _3): CommentItem(

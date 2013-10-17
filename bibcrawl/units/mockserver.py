@@ -1,10 +1,5 @@
-"""Moke Server, made for simple offline testing. Usage:
+"""MockServer"""
 
-  >>> from urllib2 import urlopen
-  >>> with MockServer():
-  ...   len(urlopen("http://localhost:8000/example.com").read())
-  1344
-"""
 from os import chdir
 from os.path import abspath, dirname, join
 from SimpleHTTPServer import SimpleHTTPRequestHandler
@@ -14,7 +9,13 @@ from urllib2 import urlopen
 import sys, time
 
 class MockServer(object):
-  """Moke Server Context"""
+  """Moke Server, made for simple offline testing. Usage:
+
+    >>> from urllib2 import urlopen
+    >>> with MockServer():
+    ...   len(urlopen("http://localhost:8000/example.com").read())
+    1344
+  """
   def __init__(self):
     self.proc = None
 
@@ -31,18 +32,20 @@ class MockServer(object):
     self.proc.wait()
     time.sleep(0.2)
 
-class NullDevice():
-  def write(self, s):
+class NullStrea(object):
+  """Null Stream"""
+  def write(self, _):
+    """Unit write method"""
     pass
 
-def _run():
+def run():
   """ Serves"""
   chdir(join(abspath(dirname(__file__)), "blogs"))
   TCPServer.allow_reuse_address = True
   httpd = TCPServer(("", 8000), SimpleHTTPRequestHandler)
   print "I am here to serve you."
-  sys.stdout = NullDevice()
-  sys.stderr = NullDevice()
+  sys.stdout = NullStrea()
+  sys.stderr = NullStrea()
   httpd.serve_forever()
 
 def dl(url):
@@ -51,4 +54,4 @@ def dl(url):
   return urlopen("http://localhost:8000/{}".format(url)).read()
 
 if __name__ == "__main__":
-  _run()
+  run()

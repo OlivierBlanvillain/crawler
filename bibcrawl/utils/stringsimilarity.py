@@ -1,4 +1,4 @@
-"""Implements string similarities."""
+"""Implements string similarity."""
 
 from bibcrawl.utils.ohpython import *
 from lxml.html.clean import Cleaner
@@ -57,7 +57,6 @@ def dicesCoeffSimilarity(string1, string2, bufferDict=None):
   return (2.0 * len(intersection)) / (len(bigrams1) + len(bigrams2))
 
 def stringSimilarity(string1, string2, bufferDict=None):
-  # TODO: use bufferDict everywhere!
   """Computes similarity between two strings.
 
   @type  string1: string
@@ -69,6 +68,7 @@ def stringSimilarity(string1, string2, bufferDict=None):
   @rtype: float in [0;1]
   @return: the similarity of the inputs
   """
+  return dicesCoeffSimilarity(string1, string2, bufferDict)
   # from difflib import SequenceMatcher
   # from itertools import imap
 
@@ -81,7 +81,6 @@ def stringSimilarity(string1, string2, bufferDict=None):
   # return dmp.diff_levenshtein(diffs)
 
   ## Dice's coefficient similarity
-  return dicesCoeffSimilarity(string1, string2, bufferDict)
 
   ## SequenceMatcher
   # sm = SequenceMatcher(cleanTags(string1), cleanTags(string2))

@@ -1,5 +1,4 @@
-"""
-Files Pipeline
+"""Files Pipeline
 
 In the near future, this file will be part of the main Scrapy distribution. In
 the meantime, here it is, copy pasted from scrapy/master.

@@ -1,7 +1,11 @@
+"""PostItem"""
+
 from bibcrawl.model.objectitem import ObjectItem
-from scrapy.item import Item, Field
+from scrapy.item import Field
 
 class PostItem(ObjectItem):
+  """Item for blog post."""
+
   url = Field()
   parsedBodies = Field()
 

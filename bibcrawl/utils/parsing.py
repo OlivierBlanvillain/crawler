@@ -238,3 +238,27 @@ def xPathWithClass(cls):
   """
   return ("//*[contains(concat(' ', normalize-space(@class), ' '), ' {} ')]"
       .format(cls))
+
+def nodeQueries(pages):
+  """Compute queries to each node of the html page using per id/class global
+  selection.
+
+    >>> from lxml.etree import HTML
+    >>> page = HTML("<h1 class='title'>#1</h1><div id='footer'>#2</div> [...]")
+    >>> tuple( nodeQueries([page]) )
+    ("//*[@class='title']", "//*[@id='footer']")
+
+  @type  pages: collections.Iterable of lxml.etree._Element
+  @param pages: the pages to process
+  @rtype: generator of strings
+  @return: the queries
+  """
+  for page in pages:
+    for node in page.iter():
+      for selector in ("id", "class"):
+        attribute = node.get(selector)
+        if attribute and not any(imap(lambda _: _.isdigit(), attribute)):
+          yield "//*[@{}='{}']".format(selector, attribute)
+          break
+      else:
+        pass # TODO path

@@ -1,15 +1,12 @@
-"""Content Extractor.
+"""ContentExtractor"""
+# TODO: Use readability as a fallback
+# TODO: generate XPath for divs without class/id
 
-TODO: Use readability as a fallback
-TODO: generate XPath for divs without class/id
-"""
 from bibcrawl.utils.ohpython import *
-from bibcrawl.utils.parsing import parseHTML, extractFirst
+from bibcrawl.utils.parsing import parseHTML, extractFirst, nodeQueries
 from bibcrawl.utils.stringsimilarity import stringSimilarity
-from feedparser import parse as feedparse # http://pythonhosted.org/feedparser/
+from feedparser import parse as feedparse
 from heapq import nlargest
-from lxml import etree # http://lxml.de/index.html#documentation
-from scrapy.exceptions import CloseSpider
 
 class ContentExtractor(object):
   """Extracts the content of blog posts using a rss feed. Usage:
@@ -93,28 +90,31 @@ class ContentExtractor(object):
     #   .sortBy(_.url).map(parseHTML(_.page))
     pageUrls = tuple(imap(lambda (url, _): url, self.urlZipPages))
     entries = sorted(
-        ifilter(lambda _: _.link in pageUrls, self.rssEntries),
-        key=lambda _: _.link)
+      ifilter(lambda _: _.link in pageUrls, self.rssEntries),
+      key=lambda _: _.link)
     parsedPages = tuple(imap(
-        lambda (_, page): parseHTML(page),
-        sorted(
-          ifilter(lambda (url, _): url in self.rssLinks, self.urlZipPages),
-          key=lambda (url, _): url)))
+      lambda (_, page): parseHTML(page),
+      sorted(
+        ifilter(lambda (url, _): url in self.rssLinks, self.urlZipPages),
+        key=lambda (url, _): url)))
     extractors = (
-        extractContent,
-        lambda _: _.title,
-        # updated, published_parsed, updated_parsed, links, title, author,
-        # summary_detail, summary, content, guidislink, title_detail, href,
-        # link, authors, thr_total, author_detail, id, tags, published
+      extractContent,
+      lambda _: _.title,
+      # updated, published_parsed, updated_parsed, links, title, author,
+      # summary_detail, summary, content, guidislink, title_detail, href,
+      # link, authors, thr_total, author_detail, id, tags, published
     )
     self.xPaths = tuple(imap(
-        lambda extractr: bestPath(zip(imap(extractr, entries), parsedPages)),
-        extractors))
+      lambda extractr: bestPath(tuple(izip(
+        imap(extractr, entries),
+        parsedPages))),
+      extractors))
 
     print("Best XPaths are:")
     print("\n".join(self.xPaths))
 
 def extractContent(feed):
+  """TODO"""
   try:
     return feed.content[0].value
   except AttributeError:
@@ -123,7 +123,6 @@ def extractContent(feed):
     # except AttributeError:
     #   # TODO: fallback
     #   raise CloseSpider("Feed entry has no content and no description")
-
 
 def bestPath(contentZipPages):
   """Given a list of content/page, computes the best XPath query that would
@@ -135,69 +134,14 @@ def bestPath(contentZipPages):
   @return: the XPath query that matches at best the content on each page
   """
   queries = set(nodeQueries(imap(lambda _: _[1], contentZipPages)))
+  dct = dict()
   ratio = lambda content, page, query: (
-      stringSimilarity(content, extractFirst(page, query)))
+    stringSimilarity(content, extractFirst(page, query)), dct)
   # TODO: breaks if last post is a youtube video or a common short title..
   topQueriesForFirst = nlargest(6, queries, key=
-      partial(ratio, *contentZipPages[0]))
+    partial(ratio, *contentZipPages[0]))
   topQueries = tuple(imap(
-      lambda (c, p): max(topQueriesForFirst, key=partial(ratio, c, p)),
-      contentZipPages))
-
-  # # DEBUG:
-  # from pprint import pprint
-  # for q in topQueriesForFirst:
-  #   pprint(q)
-  #   pprint(ratio(contentZipPages[0][0], contentZipPages[0][1], q))
-  # from bibcrawl.utils.stringsimilarity import _cleanTags
-
-  # for q in topQueriesForFirst:
-  #   print ""
-  #   pprint(q)
-  #   pprint(_cleanTags(extractFirst(contentZipPages[0][1], q)))
-
-  # print ""
-  # print ""
-  # pprint((_cleanTags(contentZipPages[0][0])))
-  # # from bibcrawl.utils.stringsimilarity import _cleanTags
-  # # # pprint(topQueriesForFirst)
-  # # for q in list(topQueriesForFirst):
-  # #   pprint(q)
-  # #   pprint(_cleanTags(contentZipPages[0][0] or "dummy"))
-  # #   pprint(_cleanTags(extractFirst(contentZipPages[0][1], q)))
-  # #   print ""
-
-  # # q = max(set(topQueries), key=topQueries.count)
-  # # for c, p in contentZipPages:
-  # #   print "..."
-  # #   pprint(c)
-  # #   pprint(extractFirst(p, q))
-  # from time import sleep
-  # sleep(100000)
-  # # DEBUG..
+    lambda (c, p): max(topQueriesForFirst, key=partial(ratio, c, p)),
+    contentZipPages))
 
   return max(set(topQueries), key=topQueries.count)
-
-def nodeQueries(pages):
-  """Compute queries to each node of the html page using per id/class global
-  selection.
-
-    >>> from lxml.etree import HTML
-    >>> page = HTML("<h1 class='title'>#1</h1><div id='footer'>#2</div> [...]")
-    >>> tuple( nodeQueries([page]) )
-    ("//*[@class='title']", "//*[@id='footer']")
-
-  @type  pages: collections.Iterable of lxml.etree._Element
-  @param pages: the pages to process
-  @rtype: generator of strings
-  @return: the queries
-  """
-  for page in pages:
-    for node in page.iter():
-      for selector in ("id", "class"):
-        attribute = node.get(selector)
-        if attribute and not any(imap(lambda _: _.isdigit(), attribute)):
-          yield "//*[@{}='{}']".format(selector, attribute)
-          break
-      else:
-        pass # TODO path

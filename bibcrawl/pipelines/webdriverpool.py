@@ -1,4 +1,5 @@
-"""Manages a thread safe pool of WebDriver processes."""
+"""WebdriverPool"""
+
 from bibcrawl.utils.ohpython import *
 from Queue import Queue, Empty
 from selenium import webdriver
@@ -31,7 +32,6 @@ class WebdriverPool(object):
       try:
         return self.available.get_nowait()
       except Empty:
-        # TODO try: except selenium.common.exceptions.WebDriverException:
         driver = webdriver.PhantomJS("./lib/phantomjs/bin/phantomjs")
         self.all.put(driver)
         return driver

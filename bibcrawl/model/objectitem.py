@@ -1,4 +1,4 @@
-"""Object Item"""
+"""ObjectItem"""
 
 from scrapy.item import Item
 
@@ -20,6 +20,7 @@ class ObjectItem(Item):
     ... else:
     ...   fail
   """
+
   def __setattr__(self, key, value):
     """Sets a fild of the item using object attribute notation."""
     if key in self.fields:

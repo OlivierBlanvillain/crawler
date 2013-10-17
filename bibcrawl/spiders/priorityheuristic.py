@@ -1,4 +1,5 @@
-"""Score predictor."""
+"""PriorityHeuristic"""
+
 from bibcrawl.utils.ohpython import *
 from bibcrawl.utils.parsing import ascii
 from heapq import nlargest

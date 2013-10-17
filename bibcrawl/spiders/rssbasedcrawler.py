@@ -1,4 +1,5 @@
-"""RssBasedCrawler """
+"""RssBasedCrawler"""
+
 from bibcrawl.model.postitem import PostItem
 from bibcrawl.spiders.priorityheuristic import PriorityHeuristic
 from bibcrawl.utils.contentextractor import ContentExtractor
@@ -62,12 +63,14 @@ class RssBasedCrawler(BaseSpider):
         self.bufferedPosts))
       self.isBlogPost = buildUrlFilter(imap(lambda _: _.url, posts))
       self.priorityHeuristic = PriorityHeuristic(self.isBlogPost)
-      for post in posts:
-        self.contentExtractor.feed(post.body, post.meta["u"])
-      for post in posts:
-        for request in self.crawl(post):
-          yield request
-      # aka tuple(chain.from_iterable(imap(lambda _: self.crawl(_), posts)))
+      foreach(lambda _: self.contentExtractor.feed(_.body, _.meta["u"]), posts)
+      return iflatmap(lambda _: self.crawl(_), posts)
+      # aka
+      # for post in posts:
+      #   self.contentExtractor.feed(post.body, post.meta["u"])
+      # for post in posts:
+      #   for request in self.crawl(post):
+      #     yield request
 
   def crawl(self, response):
     """ Step 4: Recursively download all posts and extract relevant data.
