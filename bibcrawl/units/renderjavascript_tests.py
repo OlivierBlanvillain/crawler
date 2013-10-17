@@ -77,15 +77,10 @@ class RenderJavascriptTests(unittest.TestCase):
     self.assertContains(comments[0].content, u"Need a reliable history")
     self.assertEqual(comments[0].parent, None)
     foundChild = False
-    for c in comments:
-      self.assertTrue(c.author)
-      self.assertTrue(c.content)
-      self.assertTrue(c.published)
-      if c.parent is not None and c.parent.author == u"Will6":
+    for comment in comments:
+      self.assertTrue(comment.author)
+      self.assertTrue(comment.content)
+      self.assertTrue(comment.published)
+      if comment.parent is not None and comment.parent.author == u"Will6":
         foundChild = True
     self.assertTrue(foundChild)
-
-  # /!\ Online test case /!\
-  def testFullWorkflow(slef):
-    pass
-

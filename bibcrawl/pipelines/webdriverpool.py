@@ -41,7 +41,7 @@ class WebdriverPool(object):
     acquire call.
 
     @type  driver: selenium.webdriver.phantomjs.webdriver.WebDriver
-    @param driver: the released driver
+    @param driver: the driver to release
     """
     self.available.put(driver)
 

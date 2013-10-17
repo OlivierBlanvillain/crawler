@@ -46,8 +46,6 @@ def foreach(fun, itr):
   @param fun: the function to apply to each element of itr
   @type  itr: iterator of A
   @param itr: the iterator to iter on
-  @rtype: NoneType
-  @return: None
   """
   for _ in itr:
     fun(_)
@@ -88,8 +86,6 @@ def typecheck(*objectZipType):
 
   @type  objectZipType: list of (object, type)
   @param objectZipType: list of object/type to typecheck
-  @rtype: NoneType
-  @return: None
   """
   assert all(imap(lambda (_1, _2): isinstance(_1, _2), objectZipType))
 

@@ -1,5 +1,21 @@
 """RenderJavascript"""
 
+# Access files downloaded by PhantomJS is WIP:
+# https://github.com/ariya/phantomjs/pull/11484
+# At some point it would be nice to get images from here instead of
+# downloading everything through Scrapy and then through PhantomJS...
+
+# PhantomJS asynchronous api is not yet available:
+# https://github.com/ariya/phantomjs/issues/10980#issuecomment-23601340
+
+# FB test case: http://www.blogger.webaholic.co.in/2011/09/facebook-comment-
+# box-for-blogger.html
+# JS only blog: http://nurkiewicz.blogspot.ch/
+# blogspot test case w88 comments and 25 on the feed:
+# http://www.keikolynn.com/2013/09/giveaway-win-chance-to-celebrate-fall.html
+# Google+ comments: http://googlesystem.blogspot.ch/2013/10/the-new-google-
+# gadgets.html
+
 from bibcrawl.model.commentitem import CommentItem
 from bibcrawl.pipelines.files import FSFilesStore
 from bibcrawl.pipelines.webdriverpool import WebdriverPool
@@ -19,7 +35,11 @@ class RenderJavascript(object):
   and Livefyre comments if present"""
 
   def __init__(self, storeUri):
-    """Instantiate for a given storeUri. Creates"""
+    """Instantiate for a given storeUri. Creates the WebriverPool.
+
+    @type  storeUri: scrapy.contrib.pipeline.files.FSFileStore
+    @param storeUri: the storeUri
+    """
     if not storeUri:
       raise NotConfigured
     self.store = FSFilesStore(storeUri)
@@ -27,33 +47,32 @@ class RenderJavascript(object):
 
   @classmethod
   def from_settings(cls, settings):
-    """Instantiate with storeUri from settings."""
+    """Instantiate with storeUri from settings.
+
+    @type  settings: TODO
+    @param settings: the settings
+    @rtype: RenderJavascript
+    @return: the instantiated class
+    """
+    print type(settings)
     storeUri = settings['FILES_STORE']
     return cls(storeUri)
 
   def close_spider(self, _):
-    """TODO"""
+    """Closes the WebriverPool."""
     self.webdrivers.stop()
 
   def process_item(self, item, _):
-    """TODO
+    """JavaScript render item's page in a new thread. Populates
+    item.screenshot and item.comments if appropriate.
 
     @type  item: bibcrawl.model.postitem.PostItem
     @param item: the item to process
-    @type  spider: scrapy.spider.BaseSpider
-    @param spider: the spider that emitted this item
+    @type  _: scrapy.spider.BaseSpider
+    @param _: the spider that emitted this item
     @rtype: bibcrawl.model.postitem.PostItem
     @return: the processed item
     """
-    # Access files downloaded by PhantomJS is WIP:
-    # https://github.com/ariya/phantomjs/pull/11484
-    # At some point it would be nice to get images from here instead of
-    # downloading everything through Scrapy and then through PhantomJS...
-
-    # PhantomJS asynchronous api is not yet available:
-    # https://github.com/ariya/phantomjs/issues/10980#issuecomment-23601340
-    # Possible workaround with twisted:
-    # http://twistedmatrix.com/documents/11.0.0/core/howto/threading.html
     print("> " + item.url)
 
     defered = deferToThread(self.phantomJSProcess, item)
@@ -62,7 +81,14 @@ class RenderJavascript(object):
     return defered
 
   def phantomJSProcess(self, item):
-    """TODO"""
+    """Acquires an idle PhantomJS driver, loads the page, saves screenshot,
+    download Disqus and LiveFyre comments present and release the driver.
+
+    @type  item: bibcrawl.model.postitem.PostItem
+    @param item: the item to process
+    @rtype: bibcrawl.model.postitem.PostItem
+    @return: the processed item
+    """
     driver = self.webdrivers.acquire()
     driver.get(item.url)
     self.saveScreenshot(item, driver)
@@ -71,7 +97,13 @@ class RenderJavascript(object):
     return item
 
   def saveScreenshot(self, item, driver):
-    """TODO"""
+    """Save a screeshot of the current page in storeUri://screen/<HASH>.png.
+
+    @type  item: bibcrawl.model.postitem.PostItem
+    @param item: the item to process
+    @type  driver: selenium.webdriver.phantomjs.webdriver.WebDriver
+    @param driver: the driver
+    """
     uid = sha1(item.url).hexdigest()
     png = StringIO(driver.get_screenshot_as_png())
     key = 'screen/{}.png'.format(uid)
@@ -79,7 +111,14 @@ class RenderJavascript(object):
     item.screenshot = key
 
 def disqusComments(driver):
-  """TODO"""
+  """Extract comments from Disqus if present. Clicks on the "load-more" button
+  while its visible to load all comments.
+
+  @type  driver: selenium.webdriver.phantomjs.webdriver.WebDriver
+  @param driver: the driver
+  @rtype: tuple of CommentItem
+  @return: the extracted comments
+  """
   try:
     iframe = driver.find_element_by_xpath("//*[@id='dsq2']")
   except NoSuchElementException:
@@ -94,21 +133,63 @@ def disqusComments(driver):
     contentXP="." + xPathWithClass("post-message"),
     authorXP="." + xPathWithClass("author") + "//text()",
     publishedXP="." + xPathWithClass("post-meta") + "/a/@title")
-# driver.switch_to_default_content()
+  # driver.switch_to_default_content()
 
+def livefyreComments(driver):
+  """Extract comments from LiveFyre if present. Clicks on the "load-more"
+  button while its visible to load all comments.
 
-def clickWhileVisible(driver, xPath):
-  """TODO"""
+  @type  driver: selenium.webdriver.phantomjs.webdriver.WebDriver
+  @param driver: the driver
+  @rtype: tuple of CommentItem
+  @return: the extracted comments
+  """
+  sleep(1)
+  clickWhileVisible(driver, "//*[@class='fyre-stream-more-container']")
+  sleep(1)
+  return extractComments(
+    driver=driver,
+    commentXP=xPathWithClass("fyre-comment-article"),
+    contentXP="." + xPathWithClass("fyre-comment"),
+    authorXP="." + xPathWithClass("fyre-comment-username") + "//text()",
+    publishedXP="." + xPathWithClass("fyre-comment-date") + "//text()")
+
+def clickWhileVisible(driver, xPath, maxDuration=5, stepDuration=0.1):
+  """Clicks on a xPath selected element while it's visible.
+
+  @type  driver: selenium.webdriver.phantomjs.webdriver.WebDriver
+  @param driver: the driver
+  @type  xPath: string
+  @param xPath: the element xPath
+  @type  maxDuration: int
+  @param maxDuration: the maximum process duration, default = 5
+  @type  stepDuration: string
+  @param stepDuration: the duration between two clicks, default = 0.1
+  """
   try:
-    timeout = time() + 5
+    timeout = time() + maxDuration
     while time() < timeout:
       driver.find_element_by_xpath(xPath).click()
-      sleep(0.1)
+      sleep(stepDuration)
   except (ElementNotVisibleException, NoSuchElementException):
     pass
 
 def extractComments(driver, commentXP, contentXP, authorXP, publishedXP):
-  """TODO"""
+  """Generic procedure to extract comments from precomputed xPaths.
+
+  @type  driver: selenium.webdriver.phantomjs.webdriver.WebDriver
+  @param driver: the driver
+  @type  commentXP: string
+  @param commentXP: the xPath to a comment nodes
+  @type  contentXP: string
+  @param contentXP: the xPath to comment contents
+  @type  authorXP: string
+  @param authorXP: the xPath to comment authors
+  @type  publishedXP: string
+  @param publishedXP: the xPath to comment publication dates
+  @rtype: tuple of CommentItem
+  @return: the extracted comments
+  """
   try:
     page = driver.find_element_by_xpath(".//body").get_attribute("innerHTML")
   except (ElementNotVisibleException, NoSuchElementException):
@@ -122,30 +203,7 @@ def extractComments(driver, commentXP, contentXP, authorXP, publishedXP):
       published=extractFirst(node, publishedXP),
       parent=getParentNode(node))),
     parseHTML(page).xpath(commentXP)))
-  for comment in nodesMapComments.values():
-    if comment.parent is not None:
-      comment.parent = nodesMapComments[comment.parent]
+  foreach(
+    lambda cmmnt: cmmnt.__setattr__("parent", nodesMapComments[cmmnt.parent]),
+    ifilter(lambda _: _.parent is not None, nodesMapComments.values()))
   return tuple(ifilter(lambda _: _.content, nodesMapComments.values()))
-
-def livefyreComments(driver):
-  """TODO"""
-  # try:
-  #   iframe = driver.find_element_by_xpath(xPathWithClass("livefyre"))
-  # except NoSuchElementException:
-  #   return tuple()
-  sleep(1)
-  clickWhileVisible(driver, "//*[@class='fyre-stream-more-container']")
-  return extractComments(
-    driver=driver,
-    commentXP=xPathWithClass("fyre-comment-article"),
-    contentXP="." + xPathWithClass("fyre-comment"),
-    authorXP="." + xPathWithClass("fyre-comment-username") + "//text()",
-    publishedXP="." + xPathWithClass("fyre-comment-date") + "//text()")
-
-# FB test case: http://www.blogger.webaholic.co.in/2011/09/facebook-comment-
-# box-for-blogger.html
-# JS only blog: http://nurkiewicz.blogspot.ch/
-# blogspot test case w88 comments and 25 on the feed:
-# http://www.keikolynn.com/2013/09/giveaway-win-chance-to-celebrate-fall.html
-# Google+ comments: http://googlesystem.blogspot.ch/2013/10/the-new-google-
-# gadgets.html
