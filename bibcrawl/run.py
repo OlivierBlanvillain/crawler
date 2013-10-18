@@ -1,7 +1,7 @@
 """main"""
 
 # from scrapy import log
-from bibcrawl.spiders import rssbasedcrawler
+from bibcrawl.spiders.rssbasedcrawler import RssBasedCrawler
 from scrapy import signals
 from scrapy.crawler import Crawler
 from scrapy.settings import Settings
@@ -10,6 +10,9 @@ from twisted.internet import reactor
 def stop_reactor():
   """Stops the twistedreactor."""
   reactor.stop()
+
+def startSpider(spider):
+  pass
 
 def main():
   """Crawler entry point."""
@@ -38,9 +41,9 @@ def main():
   # maxDownloads=5000)
   # spider = rssbasedcrawler.RssBasedCrawler(url="keikolynn.com",
   # maxDownloads=5000)
-  spider = rssbasedcrawler.RssBasedCrawler(
-    url="keikolynn.com",
-    maxDownloads=5000)
+  spider = RssBasedCrawler(
+    domain="korben.info",
+    maxDownloads=50)
   crawler = Crawler(settings)
 
   crawler.signals.connect(reactor.stop, signals.spider_closed)

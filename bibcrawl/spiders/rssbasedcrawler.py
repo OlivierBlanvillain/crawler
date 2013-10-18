@@ -14,10 +14,10 @@ class RssBasedCrawler(BaseSpider):
   """I am spiderman"""
   name = "man"
 
-  def __init__(self, url, maxDownloads, *args, **kwargs):
+  def __init__(self, domain, since=None, maxDownloads=None, *args, **kwargs):
     super(RssBasedCrawler, self).__init__(*args, **kwargs)
-    self.allowed_domains = [ url ]
-    self.start_urls = [ "http://{}/".format(url) ]
+    self.allowed_domains = [ domain ]
+    self.start_urls = [ "http://{}/".format(domain) ]
     self.maxDownloads = maxDownloads
     self.downloadsSoFar = 0
     self.seen = set()
@@ -76,7 +76,7 @@ class RssBasedCrawler(BaseSpider):
     """ Step 4: Recursively download all posts and extract relevant data.
     """
     parsedBody = parseHTML(response.body)
-    if self.downloadsSoFar > self.maxDownloads:
+    if self.maxDownloads and self.downloadsSoFar > self.maxDownloads:
       reactor.stop()
     elif self.isBlogPost(response.url):
       self.downloadsSoFar += 1

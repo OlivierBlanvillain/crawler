@@ -24,7 +24,6 @@ from bibcrawl.utils.parsing import xPathWithClass, parseHTML, extractFirst
 from collections import OrderedDict
 from cStringIO import StringIO
 from hashlib import sha1
-from scrapy.exceptions import NotConfigured
 from selenium.common.exceptions import ElementNotVisibleException
 from selenium.common.exceptions import NoSuchElementException
 from time import sleep, time
@@ -142,6 +141,11 @@ def livefyreComments(driver):
   @rtype: tuple of CommentItem
   @return: the extracted comments
   """
+  try:
+    driver.find_element_by_xpath("//*[@id='livefyre']")
+  except NoSuchElementException:
+    return tuple()
+
   sleep(1)
   clickWhileVisible(driver, "//*[@class='fyre-stream-more-container']")
   sleep(1)

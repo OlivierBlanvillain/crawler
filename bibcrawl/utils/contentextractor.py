@@ -1,7 +1,5 @@
 """ContentExtractor"""
 
-# TODO: Use readability as a fallback
-
 from bibcrawl.utils.ohpython import *
 from bibcrawl.utils.parsing import parseHTML, extractFirst, nodeQueries
 from bibcrawl.utils.stringsimilarity import stringSimilarity
@@ -137,7 +135,6 @@ def bestPath(contentZipPages):
   dct = dict()
   ratio = lambda content, page, query: (
     stringSimilarity(content, extractFirst(page, query)), dct)
-  # TODO: breaks if last post is a youtube video or a common short title..
   topQueriesForFirst = nlargest(6, queries, key=
     partial(ratio, *contentZipPages[0]))
   topQueries = tuple(imap(

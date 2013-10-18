@@ -257,4 +257,4 @@ def nodeQueries(pages):
           yield "//*[@{}='{}']".format(selector, attribute)
           break
       else:
-        pass # TODO path
+        pass # path
