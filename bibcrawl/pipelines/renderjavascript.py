@@ -146,9 +146,9 @@ def livefyreComments(driver):
   except NoSuchElementException:
     return tuple()
 
-  sleep(1)
+  sleep(2)
   clickWhileVisible(driver, "//*[@class='fyre-stream-more-container']")
-  sleep(1)
+  sleep(2)
   return extractComments(
     driver=driver,
     commentXP=xPathWithClass("fyre-comment-article"),
@@ -156,7 +156,7 @@ def livefyreComments(driver):
     authorXP="." + xPathWithClass("fyre-comment-username") + "//text()",
     publishedXP="." + xPathWithClass("fyre-comment-date") + "//text()")
 
-def clickWhileVisible(driver, xPath, maxDuration=5, stepDuration=0.1):
+def clickWhileVisible(driver, xPath, maxDuration=5, stepDuration=0.5):
   """Clicks on a xPath selected element while it's visible.
 
   @type  driver: selenium.webdriver.phantomjs.webdriver.WebDriver
@@ -172,6 +172,7 @@ def clickWhileVisible(driver, xPath, maxDuration=5, stepDuration=0.1):
     timeout = time() + maxDuration
     while time() < timeout:
       driver.find_element_by_xpath(xPath).click()
+      # "document.getElementsByClassName('fyre-text')[0].click()")
       sleep(stepDuration)
   except (ElementNotVisibleException, NoSuchElementException):
     pass

@@ -18,8 +18,6 @@ class ProcessHtml(object):
     @rtype: bibcrawl.model.postitem.PostItem
     @return: the processed item
     """
-    print type(item)
-    print type(spider)
     extracted = spider.contentExtractor(first(item.parsedBodies))
     (item.content, item.title) = extracted
     # More to come.
@@ -28,7 +26,7 @@ class ProcessHtml(object):
       print "Empty content: DropItem"
       raise DropItem
     else:
-      item.file_urls = extractImageLinks(item.content, item.url)
+      item.file_urls = tuple(extractImageLinks(item.content, item.url))
       feeds = tuple(iflatmap(
         partial(extractRssLinks, url=item.url),
         item.parsedBodies))

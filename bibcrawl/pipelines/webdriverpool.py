@@ -32,6 +32,7 @@ class WebdriverPool(object):
       try:
         return self.available.get_nowait()
       except Empty:
+        # driver = webdriver.Firefox()
         driver = webdriver.PhantomJS("./lib/phantomjs/bin/phantomjs")
         self.all.put(driver)
         return driver

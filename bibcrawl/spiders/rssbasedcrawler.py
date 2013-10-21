@@ -1,7 +1,7 @@
 """RssBasedCrawler"""
 
 from bibcrawl.model.postitem import PostItem
-from bibcrawl.spiders.priorityheuristic import PriorityHeuristic
+from bibcrawl.utils.priorityheuristic import PriorityHeuristic
 from bibcrawl.utils.contentextractor import ContentExtractor
 from bibcrawl.utils.ohpython import *
 from bibcrawl.utils.parsing import buildUrlFilter, parseHTML
