@@ -51,7 +51,6 @@ class RenderJavascript(object):
     @rtype: RenderJavascript
     @return: the instantiated class
     """
-    print type(settings)
     storeUri = settings['FILES_STORE']
     return cls(storeUri)
 
@@ -70,8 +69,6 @@ class RenderJavascript(object):
     @rtype: bibcrawl.model.postitem.PostItem
     @return: the processed item
     """
-    print("> " + item.url)
-
     defered = deferToThread(self.phantomJSProcess, item)
     defered.addCallback(lambda _: _)
     defered.addErrback(lambda _: item)
@@ -89,7 +86,7 @@ class RenderJavascript(object):
     driver = self.webdrivers.acquire()
     driver.get(item.url)
     self.saveScreenshot(item, driver)
-    item.comments = disqusComments(driver) + livefyreComments(driver)
+    item.comments = disqusComments(driver) # + livefyreComments(driver)
     self.webdrivers.release(driver)
     return item
 

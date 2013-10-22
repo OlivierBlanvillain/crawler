@@ -107,7 +107,7 @@ def getOrElseUpdate(dictionary, key, opr):
   @type  opr: function of A => B
   @param opr: the function to compute new value from keys
   @rtype: B
-  @return: the the value associated with the key
+  @return: the value associated with the key
   """
   if dictionary is None:
     return opr(key)

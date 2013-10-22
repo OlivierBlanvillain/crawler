@@ -66,15 +66,15 @@ class RenderJavascriptTests(unittest.TestCase):
   #   self.assertGreaterEqual(len(livefyreComments(self.driver)), 85)
 
   # /!\ Online test case /!\
-  def testAAALivefyreContent(self):
+  def testLivefyreContent(self):
     item = PostItem(url="http://techcrunch.com/2013/10/04/skype-will-finally-start-syncing-chat-messages-across-devices/")
     self.driver.get(item.url)
 
     comments = livefyreComments(self.driver)
 
-    self.assertEqual(comments[0].author, u"PaulSalo")
-    self.assertContains(comments[0].content, u"Need a reliable history")
-    self.assertEqual(comments[0].parent, None)
+    self.assertEqual(comments[-1].author, u"NeonRenegade")
+    self.assertContains(comments[-1].content, u"Skype will finally leave 2007.")
+    self.assertEqual(comments[-1].parent, None)
     foundChild = False
     for comment in comments:
       self.assertTrue(comment.author)

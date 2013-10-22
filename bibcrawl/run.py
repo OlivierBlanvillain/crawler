@@ -1,11 +1,13 @@
 """main"""
-
+3
 # from scrapy import log
-from bibcrawl.spiders.rssbasedcrawler import RssBasedCrawler
+from bibcrawl.spiders.newcrawl import NewCrawl
+from bibcrawl.spiders.updatecrawl import UpdateCrawl
 from scrapy import signals
 from scrapy.crawler import Crawler
 from scrapy.settings import Settings
 from twisted.internet import reactor
+from datetime import date, timedelta, datetime
 
 def stop_reactor():
   """Stops the twistedreactor."""
@@ -37,13 +39,13 @@ def main():
   })
 
   # Need test cases for this one: letitcrash.com
-  # spider = rssbasedcrawler.RssBasedCrawler(url="techcrunch.com",
-  # maxDownloads=5000)
-  # spider = rssbasedcrawler.RssBasedCrawler(url="keikolynn.com",
-  # maxDownloads=5000)
-  spider = RssBasedCrawler(
-    domain="korben.info",
-    maxDownloads=50)
+  # techcrunch.com
+  # keikolynn.com
+
+  spider = NewCrawl(domain="korben.info", maxDownloads=500)
+  # spider = UpdateCrawl(
+  #   domain="korben.info",
+  #   since=datetime.now() - timedelta(days=1))
   crawler = Crawler(settings)
 
   crawler.signals.connect(reactor.stop, signals.spider_closed)

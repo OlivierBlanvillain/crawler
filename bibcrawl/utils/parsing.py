@@ -7,6 +7,8 @@ from lxml.html import soupparser
 from re import match as rematch
 from unicodedata import normalize
 from urlparse import urlsplit, urljoin
+from datetime import datetime
+from time import mktime
 
 def extractLinks(parsedPage):
   """Extracts all href links of a page.
@@ -258,3 +260,18 @@ def nodeQueries(pages):
           break
       else:
         pass # path
+
+
+def datetimeFromStructtime(structtime):
+  """Convert time.struct_time time into a datetime.
+
+     >>> from time import localtime
+     >>> type(datetimeFromStructtime(localtime()))
+     <type 'datetime.datetime'>
+
+  @type  structtime: time.struct_time
+  @param structtime: the time to convert
+  @rtype: datetime
+  @return: the converted time
+  """
+  return datetime.fromtimestamp(mktime(structtime))
