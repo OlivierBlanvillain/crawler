@@ -89,7 +89,6 @@ def commentsHtmlExtraction(feedComments, pages, debug=False):
 
   exacts = (contentPathResult, exactPR(feedAuthors), exactPR(feedDates))
   if debug:
-    # print(tuple(imap(first, exacts)))
     log.msg(tuple(imap(first, exacts)), log.DEBUG)
 
     # # List[String]

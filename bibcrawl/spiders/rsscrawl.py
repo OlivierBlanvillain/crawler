@@ -5,6 +5,7 @@ from bibcrawl.utils.ohpython import *
 from bibcrawl.utils.parsing import parseHTML, extractRssLinks
 from scrapy.http import Request, Response
 from scrapy.spider import BaseSpider
+from scrapy import log
 
 class RssCrawl(BaseSpider):
   """RssCrawl"""
@@ -32,7 +33,7 @@ class RssCrawl(BaseSpider):
 
   def parseRss(self, response):
     """TODO"""
-    print("Feed: {}".format(response.url))
+    log.msg("Feed: {}".format(response.url), log.INFO)
     self.contentExtractor = ContentExtractor(response.body)
     for postUrl in self.contentExtractor.getRssLinks():
       yield Request(

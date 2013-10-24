@@ -8,6 +8,7 @@ from bibcrawl.utils.parsing import extractLinks
 from scrapy.http import Request
 from bibcrawl.spiders.rsscrawl import RssCrawl
 from twisted.internet import reactor
+from scrapy import log
 
 class NewCrawl(RssCrawl):
   """NewCrawl"""
@@ -33,7 +34,7 @@ class NewCrawl(RssCrawl):
     if self.maxDownloads and self.downloadsSoFar > self.maxDownloads:
       reactor.stop()
     elif self.isBlogPost(response.url):
-      print("> " + response.url)
+      log.msg("> " + response.url, log.INFO)
       self.downloadsSoFar += 1
       yield PostItem(url=response.url, parsedBodies=(parsedBody,))
 
