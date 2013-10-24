@@ -12,6 +12,8 @@ from scrapy import log
 class ContentExtractor(object):
   """Extracts the content of blog posts using a rss feed. Usage:
 
+  >>> logger = log.msg
+  >>> log.msg = lambda _, __: printf(_)
   >>> from urllib2 import urlopen
   >>> from bibcrawl.utils.parsing import parseHTML
   >>> from bibcrawl.units.mockserver import MockServer, dl
@@ -31,6 +33,7 @@ class ContentExtractor(object):
   30
   >>> 6000 < len(content[0]) < 6200
   True
+  >>> log.msg = logger
   """
 
   def __init__(self, rss):
@@ -111,8 +114,7 @@ class ContentExtractor(object):
         parsedPages))),
       extractors))
 
-    log.msg("Best XPaths are:", log.DEBUG)
-    log.msg("\n".join(self.xPaths), log.DEBUG)
+    log.msg("Best XPaths are:\n" + "\n".join(self.xPaths), log.DEBUG)
 
 def extractContent(feed):
   """Returns feed content value, or description if apsent."""

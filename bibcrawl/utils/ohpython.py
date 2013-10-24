@@ -16,6 +16,7 @@ __all__ = [
   "izip",
   "log",
   "partial",
+  "printf",
   "second",
   "typecheck",
 ]
@@ -117,3 +118,7 @@ def getOrElseUpdate(dictionary, key, opr):
     if key not in dictionary:
       dictionary[key] = opr(key)
     return dictionary[key]
+
+def printf(string):
+  "Print function."
+  print string

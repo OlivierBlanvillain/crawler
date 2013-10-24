@@ -1,6 +1,5 @@
 """ExtractComments"""
 
-
 from bibcrawl.model.commentitem import CommentItem
 from bibcrawl.utils.ohpython import *
 from bibcrawl.utils.parsing import nodeToString, nodeQueries
@@ -29,8 +28,10 @@ class ExtractComments(object):
 
 
 def commentsHtmlExtraction(feedComments, pages, debug=False):
-  """Compute comment extraction XPaths from a list of comments and pages.
+  """Compute comment extraction XPaths from a list of comments and pages.$
 
+    >>> logger = log.msg
+    >>> log.msg = lambda _, __: printf(_)
     >>> from feedparser import parse
     >>> from bibcrawl.utils.parsing import parseHTML
     >>> from bibcrawl.units.mockserver import MockServer, dl
@@ -44,6 +45,7 @@ def commentsHtmlExtraction(feedComments, pages, debug=False):
 "//*[@class='datetime secondary-text']")
     >>> len(cmts)
     88
+    >>> log.msg = logger
 
   @type  comments: tuple of CommentItem
   @param comments: subset of all the comments of th page
@@ -87,6 +89,7 @@ def commentsHtmlExtraction(feedComments, pages, debug=False):
 
   exacts = (contentPathResult, exactPR(feedAuthors), exactPR(feedDates))
   if debug:
+    # print(tuple(imap(first, exacts)))
     log.msg(tuple(imap(first, exacts)), log.DEBUG)
 
     # # List[String]

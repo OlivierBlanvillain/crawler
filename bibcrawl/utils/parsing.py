@@ -138,6 +138,8 @@ def buildUrlFilter(urls):
   """Given a tuple of urls with similar pattern, computes a filtering function
   that accepts similar urls the and reject others.
 
+    >>> logger = log.msg
+    >>> log.msg = lambda _, __: printf(_)
     >>> times = buildUrlFilter([
     ... "http://www.thetimes.co.uk/tto/news/world/europe/article3844546.ece",
     ... "http://www.thetimes.co.uk/tto/business/industries/leisure/"
@@ -158,6 +160,7 @@ def buildUrlFilter(urls):
     True
     >>> engadget(u"http://www.engadget.com/THATSNAN/08/15/title/")
     False
+    >>> log.msg = logger
 
   @type  urls: collections.Iterable of strings
   @param urls: urls with a similar pattern
