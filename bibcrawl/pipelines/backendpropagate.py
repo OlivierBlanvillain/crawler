@@ -16,10 +16,10 @@ class BackendPropagate(object):
     try:
       len(item.commentFeed)
     except (KeyError, AttributeError):
-      print "No comment feed."
+      print("No comment feed.")
     else:
       try:
-        print len(item.comments), "comments!"
+        print("{} comments!".format(len(item.comments)))
       except (KeyError, AttributeError):
-        print "No comments."
+        print("No comments.")
     return item

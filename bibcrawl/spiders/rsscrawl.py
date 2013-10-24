@@ -1,4 +1,4 @@
-"""BaseCrawl"""
+"""RssCrawl"""
 
 from bibcrawl.utils.contentextractor import ContentExtractor
 from bibcrawl.utils.ohpython import *
@@ -6,13 +6,13 @@ from bibcrawl.utils.parsing import parseHTML, extractRssLinks
 from scrapy.http import Request, Response
 from scrapy.spider import BaseSpider
 
-class BaseCrawl(BaseSpider):
-  """BaseCrawl"""
-  name = "BaseCrawl"
+class RssCrawl(BaseSpider):
+  """RssCrawl"""
+  name = "RssCrawl"
 
   def __init__(self, domain, *args, **kwargs):
     """TODO"""
-    super(BaseCrawl, self).__init__(*args, **kwargs)
+    super(RssCrawl, self).__init__(*args, **kwargs)
     self.allowed_domains = [ domain ]
     self.start_urls = [ "http://{}/".format(domain) ]
     self.contentExtractor = None
@@ -32,7 +32,7 @@ class BaseCrawl(BaseSpider):
 
   def parseRss(self, response):
     """TODO"""
-    print response.url
+    print("Feed: {}".format(response.url))
     self.contentExtractor = ContentExtractor(response.body)
     for postUrl in self.contentExtractor.getRssLinks():
       yield Request(

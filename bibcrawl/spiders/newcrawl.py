@@ -6,10 +6,10 @@ from bibcrawl.utils.ohpython import *
 from bibcrawl.utils.parsing import buildUrlFilter, parseHTML
 from bibcrawl.utils.parsing import extractLinks
 from scrapy.http import Request
-from bibcrawl.spiders.basecrawl import BaseCrawl
+from bibcrawl.spiders.rsscrawl import RssCrawl
 from twisted.internet import reactor
 
-class NewCrawl(BaseCrawl):
+class NewCrawl(RssCrawl):
   """NewCrawl"""
   name = "NewCrawl"
 
@@ -23,8 +23,8 @@ class NewCrawl(BaseCrawl):
 
   def handleRssPosts(self, posts):
     """TODO"""
-    self.priorityHeuristic = PriorityHeuristic(self.isBlogPost)
     self.isBlogPost = buildUrlFilter(imap(lambda _: _.url, posts))
+    self.priorityHeuristic = PriorityHeuristic(self.isBlogPost)
     return iflatmap(lambda _: self.crawl(_), posts)
 
   def crawl(self, response):

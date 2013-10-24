@@ -85,8 +85,8 @@ class RenderJavascript(object):
     """
     driver = self.webdrivers.acquire()
     driver.get(item.url)
-    self.saveScreenshot(item, driver)
     item.comments = disqusComments(driver) # + livefyreComments(driver)
+    self.saveScreenshot(item, driver)
     self.webdrivers.release(driver)
     return item
 

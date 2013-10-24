@@ -23,7 +23,7 @@ class ProcessHtml(object):
     # More to come.
 
     if not (item.content):
-      print "Empty content: DropItem"
+      print("Empty content: DropItem")
       raise DropItem
     else:
       item.file_urls = tuple(extractImageLinks(item.content, item.url))
