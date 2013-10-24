@@ -8,6 +8,7 @@ from scrapy.crawler import Crawler
 from scrapy.settings import Settings
 from twisted.internet import reactor
 from datetime import date, timedelta, datetime
+from scrapy import log
 
 def stop_reactor():
   """Stops the twistedreactor."""
@@ -33,6 +34,8 @@ def main():
       "FILES_STORE": "img",
 
       "CONCURRENT_ITEMS": 10,
+      "STATS_DUMP": False,
+      "LOG_LEVEL": "DEBUG",
       # "CONCURRENT_REQUESTS": 1,
       # "CONCURRENT_REQUESTS_PER_DOMAIN": 1,
       # "CONCURRENT_REQUESTS_PER_IP": 1
@@ -44,8 +47,8 @@ def main():
 
   # spider = NewCrawl(domain="korben.info", maxDownloads=500)
   spider = UpdateCrawl(
-    domain="keikolynn.com",
-    since=datetime.now() - timedelta(days=2))
+    domain="korben.info",
+    since=datetime.now() - timedelta(days=10))
   crawler = Crawler(settings)
 
   crawler.signals.connect(reactor.stop, signals.spider_closed)
@@ -53,7 +56,7 @@ def main():
   crawler.configure()
   crawler.crawl(spider)
   crawler.start()
-  # log.start()
+  log.start()
   reactor.run()
 
 if __name__ == "__main__":

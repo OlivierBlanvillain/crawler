@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """Utility functions for the RssBasedCrawler spider."""
+
+from scrapy import log
 from bibcrawl.utils.ohpython import *
 from lxml import etree, html
 from lxml.html import soupparser
@@ -132,7 +134,7 @@ def xPathFirst(path):
   """
   return "({})[1]".format(path)
 
-def buildUrlFilter(urls, debug=True):
+def buildUrlFilter(urls):
   """Given a tuple of urls with similar pattern, computes a filtering function
   that accepts similar urls the and reject others.
 
@@ -159,8 +161,6 @@ def buildUrlFilter(urls, debug=True):
 
   @type  urls: collections.Iterable of strings
   @param urls: urls with a similar pattern
-  @type  debug: bool
-  @param debug: enable regex print, default=False
   @rtype: function of string => bool
   @return: the function filtering blog posts
   """
@@ -181,8 +181,8 @@ def buildUrlFilter(urls, debug=True):
         return bestRegex(current + pattern)
     return current
 
-  if debug:
-    print("Url regex: {}".format(bestRegex("^").replace("/" + eol, "")))
+  log.msg("Url regex: {}".format(bestRegex("^").replace("/" + eol, "")),
+    log.DEBUG)
   return beginsWith(bestRegex("^"))
 
 def ascii(string):

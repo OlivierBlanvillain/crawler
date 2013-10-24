@@ -1,5 +1,6 @@
 """ExtractComments"""
 
+
 from bibcrawl.model.commentitem import CommentItem
 from bibcrawl.utils.ohpython import *
 from bibcrawl.utils.parsing import nodeToString, nodeQueries
@@ -22,11 +23,10 @@ class ExtractComments(object):
     """
     if item.commentFeed and not "comments" in item:
       comments = commentsFromFeed(item.commentFeed)
-      if feedOverflow(item.commentFeed):
-        item.comments = commentsHtmlExtraction(comments, item.parsedBodies)
-      else:
-        item.comments = comments
+      item.comments = (commentsHtmlExtraction(comments, item.parsedBodies)
+        if feedOverflow(item.commentFeed) else comments)
     return item
+
 
 def commentsHtmlExtraction(feedComments, pages, debug=False):
   """Compute comment extraction XPaths from a list of comments and pages.
@@ -87,7 +87,7 @@ def commentsHtmlExtraction(feedComments, pages, debug=False):
 
   exacts = (contentPathResult, exactPR(feedAuthors), exactPR(feedDates))
   if debug:
-    print(tuple(imap(first, exacts)))
+    log.msg(tuple(imap(first, exacts)), log.DEBUG)
 
     # # List[String]
     # checkListOfString = lambda _: typecheck(

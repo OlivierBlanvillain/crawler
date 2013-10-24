@@ -15,8 +15,3 @@ blogmonitor:
 
 - Persistant blog info management
 - Check for updates, fire scrapyd jobs
-
-
-piepline:
-
-- Use buildin Logs

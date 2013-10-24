@@ -1,6 +1,7 @@
 """BackendPropagate"""
 
 from scrapy.exceptions import DropItem
+from scrapy import log
 
 class BackendPropagate(object):
   """
@@ -12,14 +13,14 @@ class BackendPropagate(object):
   @return: the processed item
   """
   def process_item(self, item, spider):
-    print(item.url),
+    log.msg(item.url, log.INFO),
     try:
       len(item.commentFeed)
     except (KeyError, AttributeError):
-      print("No comment feed.")
+      log.msg("No comment feed.", log.INFO)
     else:
       try:
-        print("{} comments!".format(len(item.comments)))
+        log.msg("{} comments!".format(len(item.comments)))
       except (KeyError, AttributeError):
-        print("No comments.")
+        log.msg("No comments.", log.INFO)
     return item

@@ -1,11 +1,13 @@
 """ContentExtractor"""
 
+
 from bibcrawl.utils.ohpython import *
 from bibcrawl.utils.parsing import parseHTML, extractFirst, nodeQueries
 from bibcrawl.utils.stringsimilarity import stringSimilarity
 from feedparser import parse as feedparse
 from heapq import nlargest
 from scrapy.exceptions import CloseSpider
+from scrapy import log
 
 class ContentExtractor(object):
   """Extracts the content of blog posts using a rss feed. Usage:
@@ -109,8 +111,8 @@ class ContentExtractor(object):
         parsedPages))),
       extractors))
 
-    print("Best XPaths are:")
-    print("\n".join(self.xPaths))
+    log.msg("Best XPaths are:", log.DEBUG)
+    log.msg("\n".join(self.xPaths), log.DEBUG)
 
 def extractContent(feed):
   """Returns feed content value, or description if apsent."""
