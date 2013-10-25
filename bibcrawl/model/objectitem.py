@@ -24,9 +24,9 @@ class ObjectItem(Item):
   def __setattr__(self, key, value):
     """Sets a fild of the item using object attribute notation."""
     if key in self.fields:
-      super(ObjectItem, self).__setitem__(key, value)
+      super(self.__class__, self).__setitem__(key, value)
     else:
-      super(ObjectItem, self).__setattr__(key, value)
+      super(self.__class__, self).__setattr__(key, value)
 
   def __getattr__(self, key):
     """Gets a fild of the item using object attribute notation."""

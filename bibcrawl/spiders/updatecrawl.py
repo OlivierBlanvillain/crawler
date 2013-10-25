@@ -8,22 +8,26 @@ from bibcrawl.spiders.rsscrawl import RssCrawl
 
 class UpdateCrawl(RssCrawl):
   """UpdateCrawl"""
-  name = "UpdateCrawl"
 
-  def __init__(self, domain, since, *args, **kwargs):
+  def __init__(self, startAt, domain, since, *args, **kwargs):
     """TODO"""
-    super(UpdateCrawl, self).__init__(domain, *args, **kwargs)
+    super(self.__class__, self).__init__(startAt, domain, *args, **kwargs)
     self.since = since
+    self.newRssLinks = list()
 
-  def handleRssPosts(self, posts):
+  def parse(self, response):
     """TODO"""
-    newRssLinks = set(imap(
-      lambda _: _.link,
-      ifilter(
-        lambda _: datetimeFromStructtime(_.published_parsed) > self.since,
-        self.contentExtractor.rssEntries)))
-    return imap(
-      lambda _: PostItem(url=_.url, parsedBodies=(parseHTML(_.body),)),
-      ifilter(
-        lambda _: _.meta["u"] in newRssLinks,
-        posts))
+    postRequests = self.parseRss(response)
+    self.newRssLinks = tuple((
+      _.link for _ in self.contentExtractor.rssEntries
+      if datetimeFromStructtime(_.published_parsed) > self.since))
+    if not self.newRssLinks:
+      self.logWarning("No new entries.")
+    else:
+      return postRequests
+
+  def handleRssEntries(self, posts):
+    """TODO"""
+    return (
+      PostItem(url=_.url, parsedBodies=(parseHTML(_.body),)) for _ in posts
+      if _.meta["u"] in self.newRssLinks)

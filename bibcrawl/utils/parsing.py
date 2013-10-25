@@ -251,6 +251,17 @@ def nodeQueries(pages):
   @rtype: generator of strings
   @return: the queries
   """
+  # selector = let(node.get(selector), lambda node, sel:)
+
+
+
+  # pathSelector = lambda node: ""
+  # return imap(
+  #   lambda node:
+  #     getOrElse(selector(node, "id"),
+  #       getOrElse(selector(node, "class"), pathSelector(node))),
+  #   iflatmap(lambda _: _.iter(), pages))
+
   for page in pages:
     for node in page.iter():
       for selector in ("id", "class"):

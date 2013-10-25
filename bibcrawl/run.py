@@ -44,10 +44,11 @@ def main():
   # techcrunch.com
   # keikolynn.com
 
-  spider = NewCrawl(domain="korben.info", maxDownloads=500)
-  # spider = UpdateCrawl(
-  #   domain="korben.info",
-  #   since=datetime.now() - timedelta(days=10))
+  # spider = NewCrawl(domain="korben.info", maxDownloads=500)
+  spider = UpdateCrawl(
+    startAt="http://korben.info/feed",
+    domain="korben.info",
+    since=datetime.now() - timedelta(days=1))
   crawler = Crawler(settings)
 
   crawler.signals.connect(reactor.stop, signals.spider_closed)
