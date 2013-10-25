@@ -2,7 +2,6 @@
 
 """Utility functions for the RssBasedCrawler spider."""
 
-from scrapy import log
 from bibcrawl.utils.ohpython import *
 from lxml import etree, html
 from lxml.html import soupparser
@@ -134,16 +133,15 @@ def xPathFirst(path):
   """
   return "({})[1]".format(path)
 
-def buildUrlFilter(urls):
+def buildUrlFilter(urls, logger=lambda _: None):
   """Given a tuple of urls with similar pattern, computes a filtering function
   that accepts similar urls the and reject others.
 
-    >>> logger = log.msg
-    >>> log.msg = lambda _, __: printf(_)
+    >>> from bibcrawl.units.mockserver import printer
     >>> times = buildUrlFilter([
     ... "http://www.thetimes.co.uk/tto/news/world/europe/article3844546.ece",
     ... "http://www.thetimes.co.uk/tto/business/industries/leisure/"
-    ... "article3843571.ece" ])
+    ... "article3843571.ece" ], printer)
     Url regex: ^http://www.thetimes.co.uk/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+$
     >>> times(u"http://www.thetimes.co.uk/tto/opinion/columnists/"
     ... "philipcollins/article3844110.ece")
@@ -153,14 +151,14 @@ def buildUrlFilter(urls):
 
     >>> engadget = buildUrlFilter([
     ... "http://www.engadget.com/2013/08/14/back-to-school-guide-tablets/",
-    ... "http://www.engadget.com/2013/08/15/we-can-do-this-hyperloop/" ])
+    ... "http://www.engadget.com/2013/08/15/we-can-do-this-hyperloop/" ]
+    ... , printer)
     Url regex: ^http://www.engadget.com/\\d+/\\d+/\\d+/[^/]+/$
     >>> engadget(u"http://www.engadget.com/2013/08/15/yahoo-weather-android-"
     ... "redesign/")
     True
     >>> engadget(u"http://www.engadget.com/THATSNAN/08/15/title/")
     False
-    >>> log.msg = logger
 
   @type  urls: collections.Iterable of strings
   @param urls: urls with a similar pattern
@@ -184,8 +182,7 @@ def buildUrlFilter(urls):
         return bestRegex(current + pattern)
     return current
 
-  log.msg("Url regex: {}".format(bestRegex("^").replace("/" + eol, "")),
-    log.DEBUG)
+  logger("Url regex: {}".format(bestRegex("^").replace("/" + eol, "")))
   return beginsWith(bestRegex("^"))
 
 def ascii(string):

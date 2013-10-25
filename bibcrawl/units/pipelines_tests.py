@@ -1,7 +1,7 @@
 
 import unittest
 from scrapy.exceptions import DropItem
-from bibcrawl.spiders.rssbasedcrawler import RssBasedCrawler
+from bibcrawl.spiders.rsscrawl import RssCrawl
 from bibcrawl.pipelines.processhtml import ProcessHtml
 from bibcrawl.pipelines.downloadfeeds import DownloadFeeds
 from bibcrawl.utils.contentextractor import ContentExtractor
@@ -17,7 +17,7 @@ class ContentExtractorTests(unittest.TestCase):
     }))
 
   def testProcessHtml(self):
-    spider = RssBasedCrawler("domain")
+    spider = RssCrawl("domain")
     spider.contentExtractor = lambda _: map(lambda _: "", range(2))
     processhtml = ProcessHtml()
     self.assertRaises(DropItem,

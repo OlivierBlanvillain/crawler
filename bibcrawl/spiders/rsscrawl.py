@@ -8,42 +8,63 @@ from scrapy.spider import BaseSpider
 from scrapy import log
 
 class RssCrawl(BaseSpider):
-  """RssCrawl"""
-  name = "RssCrawl"
+  """Initialize a crawl with a starting page by dowloading a RSS feed and all
+  its entries."""
+
+  name = "dummy"
 
   def __init__(self, domain, *args, **kwargs):
-    """TODO"""
+    """Instantiate for a given domaine.
+
+    @type  domain: string
+    @param domain: the starting page
+    """
     super(RssCrawl, self).__init__(*args, **kwargs)
     self.allowed_domains = [ domain ]
     self.start_urls = [ "http://{}/".format(domain) ]
     self.contentExtractor = None
     self.bufferedPosts = list()
+    self.name = "{}@{}".format(self.__class__.__name__, domain)
 
-  # except StopIteration:
-  #   raise CloseSpider("No usable rss feed.")
   def parse(self, response):
-    """TODO"""
+    """Extract the RSS free Request from the starting page Response.
+
+    @type: scrapy.http.response.html.HtmlResponse
+    @param domain: the starting page
+    @rtype: scrapy.http.request.Request
+    @return: the RSS feed Request
+    """
     rssLinks = extractRssLinks(parseHTML(response.body), response.url)
-    nextRequest = lambda: Request(
+    nextRequest = lambda _: Request(
       url=rssLinks.next(),
       callback=self.parseRss,
-      # errback=nextRequest,
+      errback=nextRequest,
       dont_filter=True)
-    return nextRequest()
+    try:
+      return nextRequest(None)
+    except StopIteration:
+      self.logError("No usable RSS feed.")
 
   def parseRss(self, response):
-    """TODO"""
-    log.msg("Feed: {}".format(response.url), log.INFO)
-    self.contentExtractor = ContentExtractor(response.body)
-    for postUrl in self.contentExtractor.getRssLinks():
-      yield Request(
-        url=postUrl,
+    """Extract entry Requests from the RSS feed.
+
+    @type: scrapy.http.response.html.HtmlResponse
+    @param domain: the RSS feed
+    @rtype: generator of scrapy.http.request.Request
+    @return: the entry Request
+    """
+    self.logInfo("Feed: {}".format(response.url))
+    self.contentExtractor = ContentExtractor(response.body, self.logBebug)
+    return imap(
+      lambda url: Request(
+        url=url,
         callback=self.bufferPost,
         errback=self.bufferPost,
         dont_filter=True,
         # meta={ "u": _ } is here to keep a "safe" copy of the source url.
         # I don't trust response.url == (what was passed as Request url).
-        meta={ "u": postUrl })
+        meta={ "u": url }),
+      self.contentExtractor.getRssLinks())
 
   def bufferPost(self, response):
     """TODO"""
@@ -54,6 +75,21 @@ class RssCrawl(BaseSpider):
         self.bufferedPosts))
       foreach(lambda _: self.contentExtractor.feed(_.body, _.meta["u"]), posts)
       return self.handleRssPosts(posts)
+
+  def logDebug(self, string):
+    self.log(string, log.DEBUG)
+
+  def logInfo(self, string):
+    self.log(string, log.INFO)
+
+  def logWarning(self, string):
+    self.log(string, log.WARNING)
+
+  def logError(self, string):
+    self.log(string, log.ERROR)
+
+  def logCritical(self, string):
+    self.log(string, log.CRITICAL)
 
   def handleRssPosts(self, posts):
     """TODO"""

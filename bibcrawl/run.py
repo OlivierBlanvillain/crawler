@@ -1,6 +1,5 @@
 """main"""
 
-# from scrapy import log
 from bibcrawl.spiders.newcrawl import NewCrawl
 from bibcrawl.spiders.updatecrawl import UpdateCrawl
 from scrapy import signals
@@ -45,10 +44,10 @@ def main():
   # techcrunch.com
   # keikolynn.com
 
-  # spider = NewCrawl(domain="korben.info", maxDownloads=500)
-  spider = UpdateCrawl(
-    domain="korben.info",
-    since=datetime.now() - timedelta(days=10))
+  spider = NewCrawl(domain="korben.info", maxDownloads=500)
+  # spider = UpdateCrawl(
+  #   domain="korben.info",
+  #   since=datetime.now() - timedelta(days=10))
   crawler = Crawler(settings)
 
   crawler.signals.connect(reactor.stop, signals.spider_closed)

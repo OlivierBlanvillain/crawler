@@ -6,7 +6,7 @@ from scrapy.contrib.pipeline.media import MediaPipeline
 from scrapy.http import Request
 
 class DownloadFeeds(MediaPipeline):
-  """Download comments rss feeds."""
+  """Download comments RSS feeds."""
   def get_media_requests(self, item, _):
     return tuple(imap(
       lambda _: Request(_, dont_filter=True),

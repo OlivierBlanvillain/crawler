@@ -8,11 +8,9 @@ from bibcrawl.utils.parsing import extractLinks
 from scrapy.http import Request
 from bibcrawl.spiders.rsscrawl import RssCrawl
 from twisted.internet import reactor
-from scrapy import log
 
 class NewCrawl(RssCrawl):
   """NewCrawl"""
-  name = "NewCrawl"
 
   def __init__(self, domain, maxDownloads=None, *args, **kwargs):
     super(NewCrawl, self).__init__(domain, *args, **kwargs)
@@ -24,7 +22,9 @@ class NewCrawl(RssCrawl):
 
   def handleRssPosts(self, posts):
     """TODO"""
-    self.isBlogPost = buildUrlFilter(imap(lambda _: _.url, posts))
+    self.isBlogPost = buildUrlFilter(
+      imap(lambda _: _.url, posts),
+      self.logDebug)
     self.priorityHeuristic = PriorityHeuristic(self.isBlogPost)
     return iflatmap(lambda _: self.crawl(_), posts)
 
@@ -34,7 +34,7 @@ class NewCrawl(RssCrawl):
     if self.maxDownloads and self.downloadsSoFar > self.maxDownloads:
       reactor.stop()
     elif self.isBlogPost(response.url):
-      log.msg("> " + response.url, log.INFO)
+      self.logInfo("> " + response.url)
       self.downloadsSoFar += 1
       yield PostItem(url=response.url, parsedBodies=(parsedBody,))
 

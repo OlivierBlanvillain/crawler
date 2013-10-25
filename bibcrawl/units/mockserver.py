@@ -56,3 +56,22 @@ def dl(url):
 
 if __name__ == "__main__":
   run()
+
+class PrintSpider:
+  def logDebug(self, string):
+    print string
+
+  def logInfo(self, string):
+    print string
+
+  def logWarning(self, string):
+    print string
+
+  def logError(self, string):
+    print string
+
+  def logCritical(self, string):
+    print string
+
+def printer(string):
+  print string

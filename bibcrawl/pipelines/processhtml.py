@@ -3,7 +3,6 @@
 from bibcrawl.utils.ohpython import *
 from bibcrawl.utils.parsing import extractImageLinks, extractRssLinks
 from scrapy.exceptions import DropItem
-from scrapy import log
 
 class ProcessHtml(object):
   """Process html page to extract content, image urls and feed urls."""
@@ -24,7 +23,7 @@ class ProcessHtml(object):
     # More to come.
 
     if not (item.content):
-      log.msg("Empty content: DropItem", log.INFO)
+      spider.logInfo("Empty content: DropItem")
       raise DropItem
     else:
       item.file_urls = tuple(extractImageLinks(item.content, item.url))

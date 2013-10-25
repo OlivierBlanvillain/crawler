@@ -8,7 +8,7 @@ from bibcrawl.utils.stringsimilarity import stringSimilarity
 class ExtractComments(object):
   """Extracts comments using comment feed."""
 
-  def process_item(self, item, _):
+  def process_item(self, item, spider):
     """Populates item.comments using item.commentFeed if it has not been
     already. If the feed overflows, uses some matching between the HTML tree
     and the feed comments to extract comments from the page.
@@ -22,37 +22,35 @@ class ExtractComments(object):
     """
     if item.commentFeed and not "comments" in item:
       comments = commentsFromFeed(item.commentFeed)
-      item.comments = (commentsHtmlExtraction(comments, item.parsedBodies)
+      item.comments = (
+        commentsHtmlExtraction(comments, item.parsedBodies, spider.logDebug)
         if feedOverflow(item.commentFeed) else comments)
     return item
 
 
-def commentsHtmlExtraction(feedComments, pages, debug=False):
-  """Compute comment extraction XPaths from a list of comments and pages.$
+def commentsHtmlExtraction(feedComments, pages, logger):
+  """Compute comment extraction XPaths from a list of comments and pages.
 
-    >>> logger = log.msg
-    >>> log.msg = lambda _, __: printf(_)
     >>> from feedparser import parse
     >>> from bibcrawl.utils.parsing import parseHTML
-    >>> from bibcrawl.units.mockserver import MockServer, dl
+    >>> from bibcrawl.units.mockserver import MockServer, dl, printer
     >>> with MockServer():
     ...   pages = (parseHTML(dl("keikolynn.com/2013/09/giveaway-win-chance-"
     ...     "to-celebrate-fall.html")),)
     ...   comments = commentsFromFeed(parse(dl("keikolynn.com/feeds/"
     ...     "8790405898372485787/comments/default")))
-    ...   cmts = commentsHtmlExtraction(comments, pages, debug=True)
+    ...   cmts = commentsHtmlExtraction(comments, pages, printer)
     ("//*[@class='comment-content']", "//*[@class='user']", \
 "//*[@class='datetime secondary-text']")
     >>> len(cmts)
     88
-    >>> log.msg = logger
 
   @type  comments: tuple of CommentItem
   @param comments: subset of all the comments of th page
   @type  pages: tuple of lxml.etree._Element
   @param pages: list of pages (frames of /page/n)
-  @type  debug: bool
-  @param debug: enable xpath print, default=False
+  @type  logger: function of string => Unit
+  @param logger: the logger
   @rtype: tuple of CommentItem
   @return: the extracted CommentItems
   """
@@ -88,8 +86,7 @@ def commentsHtmlExtraction(feedComments, pages, debug=False):
     pathZipLongResults)))
 
   exacts = (contentPathResult, exactPR(feedAuthors), exactPR(feedDates))
-  if debug:
-    log.msg(tuple(imap(first, exacts)), log.DEBUG)
+  logger(tuple(imap(first, exacts)))
 
     # # List[String]
     # checkListOfString = lambda _: typecheck(

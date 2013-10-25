@@ -7,21 +7,18 @@ from bibcrawl.utils.stringsimilarity import stringSimilarity
 from feedparser import parse as feedparse
 from heapq import nlargest
 from scrapy.exceptions import CloseSpider
-from scrapy import log
 
 class ContentExtractor(object):
-  """Extracts the content of blog posts using a rss feed. Usage:
+  """Extracts the content of blog posts using a RSS feed. Usage:
 
-  >>> logger = log.msg
-  >>> log.msg = lambda _, __: printf(_)
   >>> from urllib2 import urlopen
   >>> from bibcrawl.utils.parsing import parseHTML
-  >>> from bibcrawl.units.mockserver import MockServer, dl
+  >>> from bibcrawl.units.mockserver import MockServer, dl, printer
   >>> pages = ("korben.info/80-bonnes-pratiques-seo.html", "korben.info/app-"
   ... "gratuite-amazon.html", "korben.info/cest-la-rentree-2.html",
   ... "korben.info/super-parkour-bros.html")
   >>> with MockServer():
-  ...   extractor = ContentExtractor(dl("korben.info/feed"))
+  ...   extractor = ContentExtractor(dl("korben.info/feed"), printer)
   ...   extractor.feed(dl(pages[0]), "http://{}".format(pages[0]))
   ...   extractor.feed(dl(pages[1]), "http://{}".format(pages[1]))
   ...   extractor.feed(dl(pages[2]), "http://{}".format(pages[2]))
@@ -33,37 +30,39 @@ class ContentExtractor(object):
   30
   >>> 6000 < len(content[0]) < 6200
   True
-  >>> log.msg = logger
   """
 
-  def __init__(self, rss):
-    """Instantiates a content extractor for a given rss feed.
+  def __init__(self, rss, logger=lambda _: None):
+    """Instantiates a content extractor for a given RSS feed.
 
     @type  rss: string
     @param rss: the rss/atom feed
+    @type  logger: function of string => Unit
+    @param logger: the logger
     """
     self.rssEntries = feedparse(rss).entries
     self.rssLinks = tuple(imap(lambda _: _.link, self.rssEntries))
+    self.logger = logger
     self.urlZipPages = list()
     self.xPaths = None
     self.needsRefresh = True
 
   def getRssLinks(self):
-    """Returns the post links extracted from the rss feed.
+    """Returns the post links extracted from the RSS feed.
 
     @rtype: tuple of strings
-    @return: the post links extracted from the rss feed
+    @return: the post links extracted from the RSS feed
     """
     return self.rssLinks
 
   def feed(self, page, url):
     """Feeds the extractor with a new page. Careful, the urls feeded here must
-    match one url found in the rss feed provided in the constructor.
+    match one url found in the RSS feed provided in the constructor.
 
     @type  page: string
     @param page: the html page feeded
     @type  url: string
-    @param url: the url of the page, as found in the rss feed
+    @param url: the url of the page, as found in the RSS feed
     """
     self.needsRefresh = True
     self.urlZipPages.append((url, page))
@@ -114,7 +113,7 @@ class ContentExtractor(object):
         parsedPages))),
       extractors))
 
-    log.msg("Best XPaths are:\n" + "\n".join(self.xPaths), log.DEBUG)
+    self.logger("Best XPaths are:\n" + "\n".join(self.xPaths))
 
 def extractContent(feed):
   """Returns feed content value, or description if apsent."""
