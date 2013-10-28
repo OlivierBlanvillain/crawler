@@ -15,7 +15,7 @@ def bigrams(string):
   @rtype: set of string of size two
   @return: the set of bigrams
    """
-  return { string[i : i + 2] for i in xrange(len(string) - 1) }
+  return set(imap(lambda i: string[i : i + 2], xrange(len(string) - 1)))
 
 def cleanTags(string):
   """Remove all html tags from the string.

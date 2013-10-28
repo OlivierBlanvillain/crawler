@@ -251,16 +251,19 @@ def nodeQueries(pages):
   @rtype: generator of strings
   @return: the queries
   """
-  # selector = let(node.get(selector), lambda node, sel:)
+  # selector = lambda node, sel: (lambda attribute:
+  #   ("//*[@{}='{}']".format(sel, attribute), )
+  #   if attribute and not any(imap(lambda _: _.isdigit(), attribute))
+  #   else tuple()
+  # )(node.get(sel))
 
+  # pathSelector = lambda node: ("", )
 
-
-  # pathSelector = lambda node: ""
-  # return imap(
-  #   lambda node:
-  #     getOrElse(selector(node, "id"),
-  #       getOrElse(selector(node, "class"), pathSelector(node))),
-  #   iflatmap(lambda _: _.iter(), pages))
+  # return set(imap(
+  #   lambda node: chain(
+  #     selector(node, "id"), selector(node, "class"), pathSelector(node)
+  #   ).next(),
+  #   iflatmap(lambda _: _.iter(), pages)))
 
   for page in pages:
     for node in page.iter():
