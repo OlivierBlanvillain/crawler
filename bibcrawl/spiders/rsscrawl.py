@@ -21,7 +21,7 @@ class RssCrawl(BaseSpider):
     @type  domain: string
     @param domain: the domaine of the crawl
     """
-    super(self.__class__, self).__init__(*args, **kwargs)
+    super(RssCrawl, self).__init__(*args, **kwargs)
     self.allowed_domains = (domain ,)
     self.start_urls = (startAt, )
     self.contentExtractor = None

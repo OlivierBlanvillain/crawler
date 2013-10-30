@@ -20,11 +20,7 @@ def main():
   """Crawler entry point."""
   settings = Settings({
       "ITEM_PIPELINES": [
-          'bibcrawl.pipelines.renderjavascript.RenderJavascript',
           'bibcrawl.pipelines.processhtml.ProcessHtml',
-          'bibcrawl.pipelines.downloadimages.DownloadImages',
-          'bibcrawl.pipelines.downloadfeeds.DownloadFeeds',
-          'bibcrawl.pipelines.extractcomments.ExtractComments',
           'bibcrawl.pipelines.backendpropagate.BackendPropagate',
       ],
       # "HTTPCACHE_POLICY": "scrapy.contrib.httpcache.DummyPolicy",
@@ -44,11 +40,7 @@ def main():
   # techcrunch.com
   # keikolynn.com
 
-  # spider = NewCrawl(domain="korben.info", maxDownloads=500)
-  spider = UpdateCrawl(
-    startAt="http://korben.info/feed",
-    domain="korben.info",
-    since=datetime.now() - timedelta(days=1))
+  spider = NewCrawl(startAt="http://korben.info/", domain="korben.info", maxDownloads=5000)
   crawler = Crawler(settings)
 
   crawler.signals.connect(reactor.stop, signals.spider_closed)
