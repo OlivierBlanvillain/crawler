@@ -3,6 +3,11 @@ blogforever-crawler
 
 Blog crawler for the blogforever project.
 
+install:
+
+    pip install lxml, feedparser, goose-extractor, boilerpipe, readability-lxml
+
+
 run:
 
     python -m  bibcrawl/run
@@ -10,9 +15,4 @@ run:
 
 test:
 
-    nosetests --with-doctest bibcrawl
-
-
-continuous integration setup:
-
-    nodemon -e .py --exec "sudo nosetests --verbose --rednose --with-doctest --with-coverage --failed --cover-package bibcrawl"
+    nosetests --verbose --with-doctest --with-coverage --cover-package bibcrawl

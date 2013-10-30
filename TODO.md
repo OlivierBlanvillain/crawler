@@ -4,7 +4,7 @@ TOTO:
 newcrawl/updatecrawl:
 
 - Contentextractor.py: Make all the pages votes, not only the first one
-- Parsing.py: Build relative xPath is id and class selectors fail
+- Parsing.py: Build relative xPath is id and class selectors fail (?)
 
 blogmonitor:
 
