@@ -12,8 +12,8 @@ from twisted.internet import reactor
 class NewCrawl(RssCrawl):
   """NewCrawl"""
 
-  def __init__(self, startAt, domain, maxDownloads=None, *args, **kwargs):
-    super(self.__class__, self).__init__(startAt, domain, *args, **kwargs)
+  def __init__(self, startAt, maxDownloads=None):
+    super(self.__class__, self).__init__(startAt)
     self.maxDownloads = maxDownloads
     self.downloadsSoFar = 0
     self.seen = set()

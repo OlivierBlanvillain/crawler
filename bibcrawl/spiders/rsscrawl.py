@@ -6,6 +6,7 @@ from bibcrawl.utils.parsing import parseHTML, extractRssLinks
 from scrapy.http import Request, Response
 from scrapy.spider import BaseSpider
 from scrapy import log
+from urlparse import urlsplit
 
 class RssCrawl(BaseSpider):
   """Initialize a crawl with a starting page by dowloading a RSS feed and all
@@ -13,7 +14,7 @@ class RssCrawl(BaseSpider):
 
   name = "dummy"
 
-  def __init__(self, startAt, domain, *args, **kwargs):
+  def __init__(self, startAt, domain=None):
     """Instantiate for a given start url and domaine.
 
     @type  startAt: string
@@ -21,7 +22,9 @@ class RssCrawl(BaseSpider):
     @type  domain: string
     @param domain: the domaine of the crawl
     """
-    super(self.__class__, self).__init__(*args, **kwargs)
+    super(RssCrawl, self).__init__(None)
+    if domain is None:
+      (_, domain, _, _, _) = urlsplit(startAt)
     self.allowed_domains = (domain ,)
     self.start_urls = (startAt, )
     self.contentExtractor = None
