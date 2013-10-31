@@ -1,4 +1,6 @@
 """OutPropagate"""
+from bibcrawl.utils.fixbadunicode import fix_bad_unicode
+from bibcrawl.utils.stringsimilarity import cleanTags
 
 class OutPropagate(object):
   """
@@ -13,7 +15,6 @@ class OutPropagate(object):
     import codecs
     path = "out/" + item.url.replace("/", "{")
     spider.logInfo(path)
+    nicecontent = fix_bad_unicode(cleanTags(item.content))
     with codecs.open(path , "w", encoding="utf-8") as out:
-      out.write(item.content)
-
-
+      out.write(nicecontent)

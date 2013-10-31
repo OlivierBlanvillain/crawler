@@ -289,3 +289,4 @@ def datetimeFromStructtime(structtime):
   @return: the converted time
   """
   return datetime.fromtimestamp(mktime(structtime))
+

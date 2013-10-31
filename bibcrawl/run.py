@@ -30,17 +30,17 @@ def main():
           # 'bibcrawl.pipelines.backendpropagate.BackendPropagate',
           'bibcrawl.pipelines.outpropagate.OutPropagate',
       ],
-      # "HTTPCACHE_POLICY": "scrapy.contrib.httpcache.DummyPolicy",
-      "HTTPCACHE_STORAGE": "scrapy.contrib.httpcache.FilesystemCacheStorage",
+      "HTTPCACHE_POLICY": "scrapy.contrib.httpcache.DummyPolicy",
+      # "HTTPCACHE_STORAGE": "scrapy.contrib.httpcache.FilesystemCacheStorage",
       "HTTPCACHE_ENABLED": True,
       "FILES_STORE": "img",
 
-      "CONCURRENT_ITEMS": 10,
+      # "CONCURRENT_ITEMS": 1,
       "STATS_DUMP": False,
-      "LOG_LEVEL": "DEBUG",
-      "CONCURRENT_REQUESTS": 1,
-      "CONCURRENT_REQUESTS_PER_DOMAIN": 1,
-      "CONCURRENT_REQUESTS_PER_IP": 1
+      "LOG_LEVEL": "INFO",
+      # "CONCURRENT_REQUESTS": 1,
+      # "CONCURRENT_REQUESTS_PER_DOMAIN": 1,
+      # "CONCURRENT_REQUESTS_PER_IP": 1
   })
 
   # Need test cases for this one: letitcrash.com
