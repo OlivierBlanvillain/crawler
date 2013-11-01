@@ -138,10 +138,20 @@ def bestPath(contentZipPages):
   dct = dict()
   ratio = lambda content, page, query: (
     stringSimilarity(content, extractFirst(page, query)), dct)
-  topQueriesForFirst = nlargest(6, queries, key=
-    partial(ratio, *contentZipPages[0]))
+  # from scrapy import log
+  # log.msg(contentZipPages[0][0], level=log.WARNING)
+
+
   topQueries = tuple(imap(
-    lambda (c, p): max(topQueriesForFirst, key=partial(ratio, c, p)),
+    lambda (c, p): max(queries, key=partial(ratio, c, p)),
     contentZipPages))
 
   return max(set(topQueries), key=topQueries.count)
+
+  # topQueriesForFirst = nlargest(6, queries, key=
+  #   partial(ratio, *contentZipPages[0]))
+  # topQueries = tuple(imap(
+  #   lambda (c, p): max(topQueriesForFirst, key=partial(ratio, c, p)),
+  #   contentZipPages))
+
+  # return max(set(topQueries), key=topQueries.count)

@@ -59,7 +59,7 @@ class RssCrawl(BaseSpider):
     @return: the entry Requests
     """
     self.logInfo("Feed: {}".format(response.url))
-    self.contentExtractor = ContentExtractor(response.body, self.logDebug)
+    self.contentExtractor = ContentExtractor(response.body, self.logInfo)
     return imap(
       lambda url: Request(
         url=url,
