@@ -21,10 +21,11 @@ class EvalCrawl(RssCrawl):
     return imap(
       lambda _: Request(
         url=_.replace("{", "/"),
+        meta={ "u": _.replace("{", "/") },
         callback=self.crawl),
       listdir("../blogforever-crawler-publication/dataset/contents/"))
 
   def crawl(self, response):
     """TODO"""
     parsedBody = parseHTML(response.body)
-    return PostItem(url=response.url, parsedBodies=(parsedBody,))
+    return PostItem(url=response.meta["u"], parsedBodies=(parsedBody,))
