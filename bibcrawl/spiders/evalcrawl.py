@@ -18,14 +18,28 @@ class EvalCrawl(RssCrawl):
 
   def handleRssEntries(self, posts):
     """TODO"""
+    self.logInfo("DUDUDU" + self.allowed_domains[0])
+    self.logInfo(str(
+
+      "\n".join(filter(
+        lambda _: self.allowed_domains[0] in _,
+        listdir("../blogforever-crawler-publication/dataset/contents/")
+      ))
+
+      ))
     return imap(
       lambda _: Request(
         url=_.replace("{", "/"),
         meta={ "u": _.replace("{", "/") },
+        dont_filter=True,
         callback=self.crawl),
-      listdir("../blogforever-crawler-publication/dataset/contents/"))
+      ifilter(
+        lambda _: self.allowed_domains[0] in _,
+        listdir("../blogforever-crawler-publication/dataset/contents/")
+      ))
 
   def crawl(self, response):
     """TODO"""
+    self.logInfo("START:" + response.meta["u"])
     parsedBody = parseHTML(response.body)
     return PostItem(url=response.meta["u"], parsedBodies=(parsedBody,))

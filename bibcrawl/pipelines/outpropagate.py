@@ -16,7 +16,6 @@ class OutPropagate(object):
     path = "out/" + item.url.replace("/", "{")
     spider.logInfo(path)
     nicecontent = fix_bad_unicode(cleanTags(item.content))
-    if nicecontent.startswith("<div>"):
-      nicecontent = nicecontent[5:-6]
     with codecs.open(path , "w", encoding="utf-8") as out:
       out.write(nicecontent)
+    spider.logInfo("DONE:" + item.url)

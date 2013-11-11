@@ -3,10 +3,11 @@
 
 from bibcrawl.utils.ohpython import *
 from bibcrawl.utils.parsing import parseHTML, extractFirst, nodeQueries
-from bibcrawl.utils.stringsimilarity import stringSimilarity
+from bibcrawl.utils.stringsimilarity import stringSimilarity, cleanTags
 from feedparser import parse as feedparse
 from heapq import nlargest
 from scrapy.exceptions import CloseSpider
+from scrapy import log
 
 class ContentExtractor(object):
   """Extracts the content of blog posts using a RSS feed. Usage:
@@ -134,18 +135,16 @@ def bestPath(contentZipPages):
   @rtype: string
   @return: the XPath query that matches at best the content on each page
   """
-  queries = set(nodeQueries(imap(lambda _: _[1], contentZipPages)))
+  nonEmptyContentZipPages = tuple(ifilter(
+    lambda (content, _): cleanTags(content),
+    contentZipPages))
+  queries = set(nodeQueries(imap(lambda _: _[1], nonEmptyContentZipPages)))
   dct = dict()
   ratio = lambda content, page, query: (
-    stringSimilarity(content, extractFirst(page, query)), dct)
-  # from scrapy import log
-  # log.msg(contentZipPages[0][0], level=log.WARNING)
-
-
+    stringSimilarity(content, extractFirst(page, query), dct))
   topQueries = tuple(imap(
     lambda (c, p): max(queries, key=partial(ratio, c, p)),
-    contentZipPages))
-
+    nonEmptyContentZipPages))
   return max(set(topQueries), key=topQueries.count)
 
   # topQueriesForFirst = nlargest(6, queries, key=

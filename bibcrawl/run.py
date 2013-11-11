@@ -31,7 +31,7 @@ def main():
           'bibcrawl.pipelines.outpropagate.OutPropagate',
       ],
       "HTTPCACHE_POLICY": "scrapy.contrib.httpcache.DummyPolicy",
-      # "HTTPCACHE_STORAGE": "scrapy.contrib.httpcache.FilesystemCacheStorage",
+      "HTTPCACHE_STORAGE": "scrapy.contrib.httpcache.FilesystemCacheStorage",
       "HTTPCACHE_ENABLED": True,
       "FILES_STORE": "img",
 

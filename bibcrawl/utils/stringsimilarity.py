@@ -31,7 +31,8 @@ def cleanTags(string):
   # http://lxml.de/api/lxml.html.clean.Cleaner-class.html
   htmlCleaned = Cleaner(allow_tags=[''], remove_unknown_tags=False, style=True
       ).clean_html(string or u"dummy")
-  return resub(r"\s\s+" , " ", resub(r"\s\s+" , " ", htmlCleaned)).strip()
+  nice = htmlCleaned[5:-6] if htmlCleaned.startswith("<div>") else htmlCleaned
+  return resub(r"\s\s+" , " ", resub(r"\s\s+" , " ", nice)).strip()
 
 def dicesCoeffSimilarity(string1, string2, bufferDict=None):
   """Computes the dice's coefficient similarity between two strings.
