@@ -8,7 +8,6 @@ from feedparser import parse as feedparse
 from heapq import nlargest
 from scrapy.exceptions import CloseSpider
 from scrapy import log
-from scrapely import Scraper
 
 class ContentExtractor(object):
   """Extracts the content of blog posts using a RSS feed. Usage:
@@ -48,7 +47,6 @@ class ContentExtractor(object):
     self.urlZipPages = list()
     self.xPaths = None
     self.needsRefresh = True
-    self.s = Scraper()
 
   def getRssLinks(self):
     """Returns the post links extracted from the RSS feed.
@@ -80,14 +78,12 @@ class ContentExtractor(object):
     """
     if self.needsRefresh:
       self._refresh()
-# return tuple(imap(lambda _: extractFirst(parsedPage, _), self.xPaths))
-    return self.s.scrape_page(parsedPage)
+    return tuple(imap(lambda _: extractFirst(parsedPage, _), self.xPaths))
 
   def _refresh(self):
     """Refreshes the XPaths with the current pages. Called internally once per
     feed+ __call__ sequence."""
     self.needsRefresh = False
-
 
     # Python is so bad at this... Here is (for documentation purpose) how it
     # would be written in Scala (with url/_1 and page/_2 if urlZipPages is a
@@ -112,26 +108,16 @@ class ContentExtractor(object):
       # summary_detail, summary, content, guidislink, title_detail, href,
       # link, authors, thr_total, author_detail, id, tags, published
     )
+    self.xPaths = tuple(imap(
+      lambda extractr: bestPath(tuple(izip(
+        imap(extractr, entries),
+        parsedPages))),
+      extractors))
 
-# self.xPaths = tuple(imap(
-#   lambda extractr: bestPath(tuple(izip(
-#     imap(extractr, entries),
-#     parsedPages))),
-#   extractors))
-
-# self.logger("Best XPaths are:\n" + "\n".join(self.xPaths))
-    from scrapely.htmlpage import HtmlPage
-    urls = tuple(imap(
-      lambda (_, page): _,
-      sorted(
-        ifilter(lambda (url, _): url in self.rssLinks, self.urlZipPages),
-        key=lambda (url, _): url)))
-    for (content, url) in izip(imap(extractContent, entries), urls):
-      if page is not None:
-        self.s.train(url), { "description": content })
+    self.logger("Best XPaths are:\n" + "\n".join(self.xPaths))
 
 def extractContent(feed):
-  """Returns feed content value, or description if apsent."""
+  """Returns feed content value, or description if absent."""
   try:
     return feed.content[0].value
   except AttributeError:
