@@ -34,18 +34,18 @@ class NewCrawl(RssCrawl):
     if self.maxDownloads and self.downloadsSoFar > self.maxDownloads:
       reactor.stop()
     elif self.isBlogPost(response.url):
-      self.logInfo("> " + response.url)
+      # self.logInfo("> " + response.url)
       self.downloadsSoFar += 1
-      return (PostItem(url=response.url, parsedBodies=(parsedBody,)),)
+      yield PostItem(url=response.url, parsedBodies=(parsedBody,),
+        rawHtml=response.body)
 
     newUrls = set(ifilter(
       lambda _: _ not in self.seen,
       extractLinks(parsedBody)))
     self.seen.update(newUrls)
     self.priorityHeuristic.feed(response.url, newUrls)
-    return imap(
-      lambda newUrl: Request(
+    for newUrl in newUrls:
+      yield Request(
         url=newUrl,
         callback=self.crawl,
-        priority=self.priorityHeuristic(newUrl)),
-      newUrls)
+        priority=self.priorityHeuristic(newUrl))

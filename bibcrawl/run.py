@@ -23,12 +23,13 @@ def main():
   settings = Settings({
       "ITEM_PIPELINES": [
           # 'bibcrawl.pipelines.renderjavascript.RenderJavascript',
-          'bibcrawl.pipelines.processhtml.ProcessHtml',
+          # 'bibcrawl.pipelines.processhtml.ProcessHtml',
+          'bibcrawl.pipelines.timeextrator.TimeExtrator',
           # 'bibcrawl.pipelines.downloadimages.DownloadImages',
           # 'bibcrawl.pipelines.downloadfeeds.DownloadFeeds',
           # 'bibcrawl.pipelines.extractcomments.ExtractComments',
           # 'bibcrawl.pipelines.backendpropagate.BackendPropagate',
-          'bibcrawl.pipelines.outpropagate.OutPropagate',
+          # 'bibcrawl.pipelines.outpropagate.OutPropagate',
       ],
       "HTTPCACHE_POLICY": "scrapy.contrib.httpcache.DummyPolicy",
       "HTTPCACHE_STORAGE": "scrapy.contrib.httpcache.FilesystemCacheStorage",
@@ -53,7 +54,8 @@ def main():
   #   domain="korben.info",
   #   since=datetime.now() - timedelta(days=1))
 
-  spider = EvalCrawl(startAt="http://" + sys.argv[1])
+  # spider = EvalCrawl(startAt="http://" + sys.argv[1])
+  spider = NewCrawl(startAt="http://www.quantumdiaries.org/", maxDownloads=5000)
 
   crawler = Crawler(settings)
 

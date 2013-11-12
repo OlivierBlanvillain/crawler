@@ -5,6 +5,7 @@
 from bibcrawl.utils.ohpython import *
 from lxml import etree, html
 from lxml.html import soupparser
+from lxml.etree import SerialisationError
 from re import match as rematch
 from unicodedata import normalize
 from urlparse import urlsplit, urljoin
@@ -117,8 +118,12 @@ def nodeToString(node):
     >>> nodeToString(page)
     u'<html><body><div>#1</div><div>#2<p>nested</p></div></body></html>'
   """
-  return unicode(node if isinstance(node, (str, unicode))
+  try:
+    return unicode(node if isinstance(node, (str, unicode))
       else etree.tostring(node, with_tail=False))
+  except SerialisationError:
+    # See this lxml bug: https://bugs.launchpad.net/lxml/+bug/400588
+    return u""
 
 def xPathFirst(path):
   """Extends a XPath query to return the first result.

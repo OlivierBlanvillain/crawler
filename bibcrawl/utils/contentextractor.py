@@ -103,7 +103,7 @@ class ContentExtractor(object):
         key=lambda (url, _): url)))
     extractors = (
       extractContent,
-      lambda _: _.title,
+      # lambda _: _.title,
       # updated, published_parsed, updated_parsed, links, title, author,
       # summary_detail, summary, content, guidislink, title_detail, href,
       # link, authors, thr_total, author_detail, id, tags, published
@@ -135,9 +135,10 @@ def bestPath(contentZipPages):
   @rtype: string
   @return: the XPath query that matches at best the content on each page
   """
-  nonEmptyContentZipPages = tuple(ifilter(
-    lambda (content, _): cleanTags(content),
-    contentZipPages))
+  nonEmptyContentZipPages = contentZipPages
+  # nonEmptyContentZipPages = tuple(ifilter(
+  #   lambda (content, _): cleanTags(content),
+  #   contentZipPages))
   queries = set(nodeQueries(imap(lambda _: _[1], nonEmptyContentZipPages)))
   dct = dict()
   ratio = lambda content, page, query: (
