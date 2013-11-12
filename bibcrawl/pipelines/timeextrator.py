@@ -15,8 +15,12 @@ class TimeExtrator(object):
   def process_item(self, item, spider):
     gcenabled = gc.isenabled()
     gc.disable()
+    class WRP(object):
+      def __init__(self, h):
+        self.parsed_body = h
+
     try:
-      contentExtractor = lambda _: spider.contentExtractor(parseHTML(_))
+      contentExtractor = lambda _: spider.contentExtractor(WRP(_))
       boilerpipeExtractor = lambda _: Extractor(html=_).getText()
       gooseExtractor = lambda _: Goose().extract(raw_html=_).cleaned_text
       readabilityExtractor = lambda _: cleanTags(Document(_).summary())
