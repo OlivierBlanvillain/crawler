@@ -7,7 +7,6 @@ from scrapy.http import Request, Response
 from scrapy.spider import BaseSpider
 from scrapy import log
 from urlparse import urlsplit
-from scrapely import Scraper
 
 class RssCrawl(BaseSpider):
   """Initialize a crawl with a starting page by dowloading a RSS feed and all
@@ -31,7 +30,6 @@ class RssCrawl(BaseSpider):
     self.contentExtractor = None
     self.bufferedPosts = list()
     self.name = "{}@{}".format(self.__class__.__name__, domain)
-    self.s = Scraper()
 
   def parse(self, response):
     """Extract the RSS free Request from the starting page Response.
@@ -88,11 +86,6 @@ class RssCrawl(BaseSpider):
         lambda _: isinstance(_, Response),
         self.bufferedPosts))
       foreach(lambda _: self.contentExtractor.feed(_.body, _.meta["u"]), posts)
-      for post in posts:
-        content = filter(
-          lambda _: _.link == post.meta["u"],
-          self.contentExtractor.rssEntries)[0].content[0].value
-        self.s.train(post.meta["u"], {"description": content})
       return self.handleRssEntries(posts)
 
   def logDebug(self, string):

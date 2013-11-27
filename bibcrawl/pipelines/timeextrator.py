@@ -36,4 +36,3 @@ def timeMeThis(e):
   t0 = time()
   e()
   return time() - t0
-
