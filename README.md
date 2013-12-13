@@ -1,11 +1,11 @@
-blogforever-crawler
+Blogforever crawler
 ===================
 
 Blog crawler for the blogforever project.
 
 install:
 
-    pip install lxml, feedparser, goose-extractor, boilerpipe, readability-lxml
+    pip install lxml, feedparser
 
 
 run:

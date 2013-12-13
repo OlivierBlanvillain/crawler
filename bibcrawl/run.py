@@ -2,7 +2,6 @@
 
 from bibcrawl.spiders.newcrawl import NewCrawl
 from bibcrawl.spiders.updatecrawl import UpdateCrawl
-from bibcrawl.spiders.evalcrawl import EvalCrawl
 from scrapy import signals
 from scrapy.crawler import Crawler
 from scrapy.settings import Settings
