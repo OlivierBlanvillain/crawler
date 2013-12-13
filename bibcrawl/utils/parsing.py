@@ -276,9 +276,15 @@ def nodeQueries(pages):
         attribute = node.get(selector)
         if attribute and not any(imap(lambda _: _.isdigit(), attribute)):
           yield "//*[@{}='{}']".format(selector, attribute)
+          yield "//*[@{}='{}']//h1".format(selector, attribute)
+          yield "//*[@{}='{}']//h2".format(selector, attribute)
+          yield "//*[@{}='{}']//h3".format(selector, attribute)
           break
       else:
         pass # path
+  yield "//h1"
+  yield "//h2"
+  yield "//h3" # TODO: clean up.
 
 
 def datetimeFromStructtime(structtime):

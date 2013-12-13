@@ -103,7 +103,7 @@ class ContentExtractor(object):
         key=lambda (url, _): url)))
     extractors = (
       extractContent,
-      # lambda _: _.title,
+      lambda _: _.title,
       # updated, published_parsed, updated_parsed, links, title, author,
       # summary_detail, summary, content, guidislink, title_detail, href,
       # link, authors, thr_total, author_detail, id, tags, published
