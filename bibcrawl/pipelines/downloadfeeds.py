@@ -21,10 +21,3 @@ class DownloadFeeds(MediaPipeline):
     except StopIteration:
       pass
     return item
-    # aka
-    # okresults = [x for ok, x in results if ok and x.status == 200]
-    # if len(okresults) > 0:
-    #   item.commentFeed = feedparse(okresults[0].body)
-    # return item
-
-

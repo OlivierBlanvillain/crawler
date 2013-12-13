@@ -30,6 +30,8 @@ class ContentExtractor(object):
   >>> 6000 < len(content[0]) < 6200
   True
   """
+  # //*[@class='post-date']/p/span
+  # //*[@class='post-date']/p/strong
 
   def __init__(self, rss, logger=lambda _: None):
     """Instantiates a content extractor for a given RSS feed.
@@ -83,13 +85,6 @@ class ContentExtractor(object):
     feed+ __call__ sequence."""
     self.needsRefresh = False
 
-    # Python is so bad at this... Here is (for documentation purpose) how it
-    # would be written in Scala (with url/_1 and page/_2 if urlZipPages is a
-    # list of pairs and not a list of case classes):
-    # val pageUrls = urlZipPages.map(_.url)
-    # val entries = rssEntries.filter(pageUrls contains _.link).sortBy(_.link)
-    # val parsedPages = urlZipPages.filter(rssLinks contains _.url)
-    #   .sortBy(_.url).map(parseHTML(_.page))
     pageUrls = tuple(imap(lambda (url, _): url, self.urlZipPages))
     entries = sorted(
       ifilter(lambda _: _.link in pageUrls, self.rssEntries),
@@ -102,25 +97,30 @@ class ContentExtractor(object):
     extractors = (
       extractContent,
       lambda _: _.title,
-      # updated, published_parsed, updated_parsed, links, title, author,
-      # summary_detail, summary, content, guidislink, title_detail, href,
-      # link, authors, thr_total, author_detail, id, tags, published
+      # ...
     )
+    bestPathsPerPage = tuple(imap(
+      partial(bestPaths, extractors=extractors),
+      izip(entries, parsedPages)))
     self.xPaths = tuple(imap(
-      lambda extractr: bestPath(tuple(izip(
-        imap(extractr, entries),
-        parsedPages))),
-      extractors))
+      lambda _: max(set(_), key=_.count),
+      izip(*bestPathsPerPage)))
+
+    # self.xPaths = tuple(imap(
+    #   lambda extractr: bestPath(tuple(izip(
+    #     imap(extractr, entries),
+    #     parsedPages))),
+    #   extractors))
 
     self.logger("Best XPaths are:\n" + "\n".join(self.xPaths))
 
-def extractContent(feed):
-  """Returns feed content value, or description if absent."""
+def extractContent(feedEntry):
+  """Returns article from feed entry, or description if absent."""
   try:
-    return feed.content[0].value
+    return feedEntry.content[0].value
   except AttributeError:
     try:
-      return feed.description
+      return feedEntry.description
     except AttributeError:
       raise CloseSpider("Feed entry has no content and no description")
 

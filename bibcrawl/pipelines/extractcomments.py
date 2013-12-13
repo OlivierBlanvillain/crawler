@@ -86,20 +86,20 @@ def commentsHtmlExtraction(feedComments, pages, logger):
   exacts = (contentPathResult, exactPR(feedAuthors), exactPR(feedDates))
   logger(tuple(imap(first, exacts)))
 
-    # # List[String]
-    # checkListOfString = lambda _: typecheck(
-    #   (_, tuple), (first(_), basestring))
-    # checkListOfString(feedContents)
-    # checkListOfString(feedAuthors)
-    # checkListOfString(feedDates)
+  # # List[String]
+  # checkListOfString = lambda _: typecheck(
+  #   (_, tuple), (first(_), basestring))
+  # checkListOfString(feedContents)
+  # checkListOfString(feedAuthors)
+  # checkListOfString(feedDates)
 
-    # # List[(String, List[String])]
-    # checkListOfTupleOfStringAndListOfString = (lambda _ : typecheck(
-    #   (_, tuple), (first(_), tuple), (first(first(_)), basestring),
-    #   (second(first(_)), tuple), (first(second(first(_))), basestring)))
-    # checkListOfTupleOfStringAndListOfString(pathZipResults)
-    # checkListOfTupleOfStringAndListOfString(pathZipLongResults)
-    # checkListOfTupleOfStringAndListOfString(pathZipExactResults)
+  # # List[(String, List[String])]
+  # checkListOfTupleOfStringAndListOfString = (lambda _ : typecheck(
+  #   (_, tuple), (first(_), tuple), (first(first(_)), basestring),
+  #   (second(first(_)), tuple), (first(second(first(_))), basestring)))
+  # checkListOfTupleOfStringAndListOfString(pathZipResults)
+  # checkListOfTupleOfStringAndListOfString(pathZipLongResults)
+  # checkListOfTupleOfStringAndListOfString(pathZipExactResults)
 
   return tuple(imap(
     lambda (_1, _2, _3): CommentItem(
