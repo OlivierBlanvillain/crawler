@@ -1,18 +1,17 @@
-Blogforever crawler
+BlogForever crawler
 ===================
-
-Blog crawler for the blogforever project.
 
 install:
 
-    pip install lxml, feedparser
-
+    pip install Scrapy, lxml, feedparser
+    pip install pytest pytest-cov pytest-incremental
+    wget PhantomJS from http://phantomjs.org/download.html
+    (cd lib/; tar xjf path/to/tarball; mv * phantomjs)
 
 run:
 
     python -m  bibcrawl/run
 
-
 test:
 
-    nosetests --verbose --with-doctest --with-coverage --cover-package bibcrawl
+    py.test

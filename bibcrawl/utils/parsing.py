@@ -16,9 +16,7 @@ def extractLinks(parsedPage):
   """Extracts all href links of a page.
 
     >>> from bibcrawl.utils.parsing import parseHTML
-    >>> from bibcrawl.units.mockserver import MockServer, dl
-    >>> with MockServer():
-    ...   list(extractLinks( parseHTML(dl("example.com")) ))
+    >>> list(extractLinks( parseHTML(readtestdata("example.com")) ))
     ['http://www.iana.org/domains/example']
 
   @type  parsedPage: lxml.etree._Element
@@ -33,10 +31,9 @@ def extractLinks(parsedPage):
 def extractRssLinks(parsedPage, url):
   """Extracts all the RSS and ATOM feed links of a page.
 
-    >>> from bibcrawl.units.mockserver import MockServer, dl
-    >>> with MockServer():
-    ...   list(extractRssLinks(
-    ...       parseHTML(dl("korben.info")), "http://korben.info/"))[:-1]
+    >>> list(extractRssLinks(
+    ...   parseHTML(readtestdata("korben.info/")),
+    ...   "http://korben.info/"))[:-1]
     ['http://korben.info/feed/atom', 'http://korben.info/feed']
 
   @type  parsedPage: lxml.etree._Element
@@ -74,12 +71,8 @@ def extractRssLinks(parsedPage, url):
 def extractImageLinks(page, url):
   """Extracts all the images links of a page.
 
-    >>> from urllib2 import urlopen
-    >>> from bibcrawl.units.mockserver import MockServer
-    >>> with MockServer():
-    ...   list(extractImageLinks(
-    ...       urlopen("http://localhost:8000/korben.info/viber-linux.html").
-    ...           read(), "http://korben.info/viber-linux.html"))[0]
+    >>> list(extractImageLinks(readtestdata("korben.info/viber-linux.html"),
+    ...   "http://korben.info/viber-linux.html"))[0]
     'http://korben.info/wp-content/themes/korben-steaw/hab/logo.png'
 
   @type  page: string
@@ -142,11 +135,10 @@ def buildUrlFilter(urls, logger=lambda _: None):
   """Given a tuple of urls with similar pattern, computes a filtering function
   that accepts similar urls the and reject others.
 
-    >>> from bibcrawl.units.mockserver import printer
     >>> times = buildUrlFilter([
     ... "http://www.thetimes.co.uk/tto/news/world/europe/article3844546.ece",
     ... "http://www.thetimes.co.uk/tto/business/industries/leisure/"
-    ... "article3843571.ece" ], printer)
+    ... "article3843571.ece" ], printf)
     Url regex: ^http://www.thetimes.co.uk/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+$
     >>> times(u"http://www.thetimes.co.uk/tto/opinion/columnists/"
     ... "philipcollins/article3844110.ece")
@@ -157,7 +149,7 @@ def buildUrlFilter(urls, logger=lambda _: None):
     >>> engadget = buildUrlFilter([
     ... "http://www.engadget.com/2013/08/14/back-to-school-guide-tablets/",
     ... "http://www.engadget.com/2013/08/15/we-can-do-this-hyperloop/" ]
-    ... , printer)
+    ... , printf)
     Url regex: ^http://www.engadget.com/\\d+/\\d+/\\d+/[^/]+/$
     >>> engadget(u"http://www.engadget.com/2013/08/15/yahoo-weather-android-"
     ... "redesign/")
@@ -276,15 +268,9 @@ def nodeQueries(pages):
         attribute = node.get(selector)
         if attribute and not any(imap(lambda _: _.isdigit(), attribute)):
           yield "//*[@{}='{}']".format(selector, attribute)
-          yield "//*[@{}='{}']//h1".format(selector, attribute)
-          yield "//*[@{}='{}']//h2".format(selector, attribute)
-          yield "//*[@{}='{}']//h3".format(selector, attribute)
           break
       else:
         pass # path
-  yield "//h1"
-  yield "//h2"
-  yield "//h3" # TODO: clean up.
 
 
 def datetimeFromStructtime(structtime):

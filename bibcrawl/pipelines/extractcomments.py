@@ -33,13 +33,11 @@ def commentsHtmlExtraction(feedComments, pages, logger):
 
     >>> from feedparser import parse
     >>> from bibcrawl.utils.parsing import parseHTML
-    >>> from bibcrawl.units.mockserver import MockServer, dl, printer
-    >>> with MockServer():
-    ...   pages = (parseHTML(dl("keikolynn.com/2013/09/giveaway-win-chance-"
-    ...     "to-celebrate-fall.html")),)
-    ...   comments = commentsFromFeed(parse(dl("keikolynn.com/feeds/"
-    ...     "8790405898372485787/comments/default")))
-    ...   cmts = commentsHtmlExtraction(comments, pages, printer)
+    >>> pages = (parseHTML(readtestdata("keikolynn.com/2013/09/giveaway-win"
+    ...   "-chance-to-celebrate-fall.html")),)
+    >>> comments = commentsFromFeed(parse(readtestdata("keikolynn.com/feeds/"
+    ...   "8790405898372485787/comments/default")))
+    >>> cmts = commentsHtmlExtraction(comments, pages, printf)
     ("//*[@class='comment-content']", "//*[@class='user']", \
 "//*[@class='datetime secondary-text']")
     >>> len(cmts)
@@ -113,10 +111,8 @@ def feedOverflow(feed):
   showed in the feed.
 
     >>> from feedparser import parse
-    >>> from bibcrawl.units.mockserver import MockServer, dl
-    >>> with MockServer():
-    ...   feedOverflow((parse(dl("korben.info/hadopi-faut-il-vraiment"
-    ...     "-arreter-de-telecharger.html/feed"))))
+    >>> feedOverflow((parse(readtestdata("korben.info/hadopi-faut-il"
+    ...   "-vraiment-arreter-de-telecharger.html/feed"))))
     True
 
   @type  feed: feedparser.FeedParserDict
@@ -130,10 +126,8 @@ def commentsFromFeed(feed):
   """Extracts all the comments contained in a feed.
 
     >>> from feedparser import parse
-    >>> from bibcrawl.units.mockserver import MockServer, dl
-    >>> with MockServer():
-    ...   comments = commentsFromFeed((parse(dl("korben.info/hadopi-faut-il"
-    ...     "-vraiment-arreter-de-telecharger.html/feed"))))
+    >>> comments = commentsFromFeed((parse(readtestdata("korben.info/hadopi"
+    ...   "-faut-il-vraiment-arreter-de-telecharger.html/feed"))))
     >>> len(comments)
     30
 

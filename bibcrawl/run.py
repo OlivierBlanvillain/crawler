@@ -37,7 +37,7 @@ def main():
       "STATS_DUMP": False,
       "LOG_LEVEL": "DEBUG",
       # "CONCURRENT_REQUESTS": 1,
-      # "CONCURRENT_REQUESTS_PER_DOMAIN": 1,
+      # "CONCURREN  T_REQUESTS_PER_DOMAIN": 1,
       # "CONCURRENT_REQUESTS_PER_IP": 1
   })
 

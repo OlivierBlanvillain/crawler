@@ -15,6 +15,7 @@ __all__ = [
   "izip",
   "partial",
   "printf",
+  "readtestdata",
   "second",
   "typecheck",
 ]
@@ -117,6 +118,16 @@ def getOrElseUpdate(dictionary, key, opr):
       dictionary[key] = opr(key)
     return dictionary[key]
 
+
+# Test functions, here to save doctest imports...
+
 def printf(string):
   "Print function."
   print string
+
+def readtestdata(path):
+  from os.path import dirname, join
+  if path.endswith("/"):
+    path = path + "index.html"
+  filename = join(dirname(__file__), "../testdata", path)
+  return open(filename).read()

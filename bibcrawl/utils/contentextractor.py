@@ -14,16 +14,14 @@ class ContentExtractor(object):
 
   >>> from urllib2 import urlopen
   >>> from bibcrawl.utils.parsing import parseHTML
-  >>> from bibcrawl.units.mockserver import MockServer, dl, printer
   >>> pages = ("korben.info/80-bonnes-pratiques-seo.html", "korben.info/app-"
   ... "gratuite-amazon.html", "korben.info/cest-la-rentree-2.html",
   ... "korben.info/super-parkour-bros.html")
-  >>> with MockServer():
-  ...   extractor = ContentExtractor(dl("korben.info/feed"), printer)
-  ...   extractor.feed(dl(pages[0]), "http://{}".format(pages[0]))
-  ...   extractor.feed(dl(pages[1]), "http://{}".format(pages[1]))
-  ...   extractor.feed(dl(pages[2]), "http://{}".format(pages[2]))
-  ...   content = extractor(parseHTML(dl(pages[3])))
+  >>> extractor = ContentExtractor(readtestdata("korben.info/feed"), printf)
+  >>> extractor.feed(readtestdata(pages[0]), "http://{}".format(pages[0]))
+  >>> extractor.feed(readtestdata(pages[1]), "http://{}".format(pages[1]))
+  >>> extractor.feed(readtestdata(pages[2]), "http://{}".format(pages[2]))
+  >>> content = extractor(parseHTML(readtestdata(pages[3])))
   Best XPaths are:
   //*[@class='post-content']
   //*[@class='post-title']

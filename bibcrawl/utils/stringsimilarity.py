@@ -21,7 +21,7 @@ def cleanTags(string):
   """Remove all html tags from the string.
 
     >>> cleanTags("<html><head><title>Hello</title><body>Test</body></html>")
-    '<div>HelloTest</div>'
+    'HelloTest'
 
   @type  string: string
   @param string: the string to clean
