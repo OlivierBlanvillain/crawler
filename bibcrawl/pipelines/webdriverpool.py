@@ -3,6 +3,7 @@
 from bibcrawl.utils.ohpython import *
 from Queue import Queue, Empty
 from selenium import webdriver
+from os.path import dirname, join
 
 class WebdriverPool(object):
   """Manages a thread safe pool of PhantomJS processes.
@@ -33,7 +34,8 @@ class WebdriverPool(object):
         return self.available.get_nowait()
       except Empty:
         # driver = webdriver.Firefox()
-        driver = webdriver.PhantomJS("./lib/phantomjs/bin/phantomjs")
+        path = join(dirname(__file__), "../../lib/phantomjs/bin/phantomjs")
+        driver = webdriver.PhantomJS(path)
         self.all.put(driver)
         return driver
 

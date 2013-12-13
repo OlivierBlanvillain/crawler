@@ -3,6 +3,7 @@ Essential utility functions that should have been part of python core."""
 
 from itertools import imap, ifilter, izip, chain
 from functools import partial
+from os.path import dirname, join
 
 __all__ = [
   "chain",
@@ -126,7 +127,6 @@ def printf(string):
   print string
 
 def readtestdata(path):
-  from os.path import dirname, join
   if path.endswith("/"):
     path = path + "index.html"
   filename = join(dirname(__file__), "../testdata", path)
