@@ -6,7 +6,9 @@ from functools import partial
 from os.path import dirname, join
 
 __all__ = [
+  "block",
   "chain",
+  "false",
   "first",
   "foreach",
   "getOrElseUpdate",
@@ -14,10 +16,12 @@ __all__ = [
   "iflatmap",
   "imap",
   "izip",
+  "let",
   "partial",
   "printf",
   "readtestdata",
   "second",
+  "true",
   "typecheck",
 ]
 
@@ -119,15 +123,25 @@ def getOrElseUpdate(dictionary, key, opr):
       dictionary[key] = opr(key)
     return dictionary[key]
 
+def block(*_):
+  """Returns the last element of a list."""
+  return _[-1]
+
+def let(v, c):
+  """Defines a variable v in c"""
+  return c(v)
 
 # Test functions, here to save doctest imports...
-
 def printf(string):
-  "Print function."
+  """Print function."""
   print string
 
 def readtestdata(path):
+  """Read html blog test data"""
   if path.endswith("/"):
     path = path + "index.html"
   filename = join(dirname(__file__), "../testdata", path)
   return open(filename).read()
+
+false = False
+true = True

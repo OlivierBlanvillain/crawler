@@ -1,9 +1,9 @@
 """ContentExtractor"""
 
-
 from bibcrawl.utils.ohpython import *
 from bibcrawl.utils.parsing import parseHTML, extractFirst, nodeQueries
 from bibcrawl.utils.stringsimilarity import stringSimilarity, cleanTags
+from bibcrawl.utils.stringsimilarity import bigrams
 from feedparser import parse as feedparse
 from heapq import nlargest
 from scrapy.exceptions import CloseSpider
@@ -72,9 +72,9 @@ class ContentExtractor(object):
     """Extracts content from a page.
 
     @type  parsedPage: lxml.etree._Element
-    @param parsedPage: the parsed page, computed for the default value None
+    @param parsedPage: the web page where content is extracted
     @rtype: 1-tuple of strings
-    @return: the extracted (content, )
+    @return: the extracted (content, ) # TODO
     """
     if self.needsRefresh:
       self._refresh()
@@ -94,14 +94,9 @@ class ContentExtractor(object):
       sorted(
         ifilter(lambda (url, _): url in self.rssLinks, self.urlZipPages),
         key=lambda (url, _): url)))
-    extractors = (
-      extractContent,
-      lambda _: _.title,
-      # ...
-    )
     bestPathsPerPage = tuple(imap(
-      partial(bestPaths, extractors=extractors),
-      izip(entries, parsedPages)))
+      lambda (p, e): bestPaths(p, e),
+      izip(parsedPages, entries)))
     self.xPaths = tuple(imap(
       lambda _: max(set(_), key=_.count),
       izip(*bestPathsPerPage)))
@@ -114,7 +109,35 @@ class ContentExtractor(object):
 
     self.logger("Best XPaths are:\n" + "\n".join(self.xPaths))
 
-def extractContent(feedEntry):
+def bestPaths(parsedPage, feedEntry):
+  """Given a parsedPage and a feedEntry, computes the best XPath queries to
+  extract relevant content from the page. The elements extracted by the
+  returned queries are unknown by the caller and are hard coded in this
+  method.
+
+  @type  parsedPage: lxml.etree._Element
+  @param parsedPage: target web page
+  @type  feedEntry: feedparser.FeedParserDict
+  @param feedEntry: web feed entry corresponding to the target page
+  @return: XPath queries to extract relevant content from the page
+  """
+  bigramsBuffer = dict()
+  zipQueryExtracted = allQueries(parsedPage, bigramsBuffer)
+  ssimScore = lambda target, (query, content): (
+    stringSimilarity(target, content, bigramsBuffer))
+
+  articlePath = first(max(zipQueryExtracted, key=
+    partial(ssimScore, getArticle(feedEntry))))
+  titlePath = first(max(zipQueryExtracted, key=
+    partial(ssimScore, feedEntry.title)))
+  return (articlePath, titlePath) # ..
+
+# extractors = (
+#   extractContent,
+#   lambda _: _.title,
+#   # ...
+# )
+def getArticle(feedEntry):
   """Returns article from feed entry, or description if absent."""
   try:
     return feedEntry.content[0].value
@@ -124,22 +147,81 @@ def extractContent(feedEntry):
     except AttributeError:
       raise CloseSpider("Feed entry has no content and no description")
 
-def bestPath(contentZipPages):
-  """Given a list of content/page, computes the best XPath query that would
-  return the content on each page.
+def allQueries(parsedPage, bigramsBuffer):
+  """Computes all the possible XPath queries. Pairs of query and extracted
+  content returned.
 
-  @type  contentZipPages: list of pairs of string/lxml.etree._Element
-  @param contentZipPages: the list of content/page used to guide the process
-  @rtype: string
-  @return: the XPath query that matches at best the content on each page
+    >>> from lxml.etree import HTML
+    >>> parsedPage = HTML("<html><body><div>#1</div><div>#2<p>nested")
+    >>> bigramsBuffer = dict()
+    >>> allQueries(parsedPage, bigramsBuffer)
+    [('/html/body/div/p', 'nested '), ('/html/body/div', '#1 '), ('/html', '#1 #2 nested '), ('/html/body', '#1 #2 nested ')]
+    >>> bigramsBuffer
+    {'#2 nested ': set(['ed', 'ne', 'd ', 'st', '2 ', '#2', 'te', 'es']), '#1 ': set(['1 ', '#1']), 'nested ': set(['es', 'ed', 'te', 'ne', 'd ', 'st']), '#1 #2 nested ': set(['ed', 'ne', 'd ', 'st', '1 ', '2 ', '#2', '#1', 'te', 'es'])}
+
+  @type  parsedPage: lxml.etree._Element
+  @param parsedPage: the parsed page
+  @type  bigramsBuffer: dictionary of text to set of 2-tuples for charaters
+  @param bigramsBuffer: the dictionary where bigrams are pre-computed
+  @rtype: pairs of string
+  @return: all pairs of query, extracted content
   """
-  nonEmptyContentZipPages = tuple(ifilter(
-    lambda (content, _): cleanTags(content),
-    contentZipPages))
-  dct = dict()
-  ratio = lambda content, page, query: (
-    stringSimilarity(content, extractFirst(page, query), dct))
-  topQueries = tuple(imap(
-    lambda (c, p): max(nodeQueries([p]), key=partial(ratio, c, p)),
-    nonEmptyContentZipPages))
-  return max(set(topQueries), key=topQueries.count)
+  content = dict()
+  results = dict()
+  # Reverse depth first preorder traversal to compute nodes texts and bigrams.
+  for node in reversed(list(parsedPage.iter())):
+    childrens = list(node)
+    node.text = "" if not node.text else node.text + " "
+    content[node] = node.text + "".join(map(content.get, childrens))
+    results[bestpathtonode(node)] = content[node]
+    # getOrElseUpdate(results, bestpathtonode(node), lambda _: content[node])
+    bigramsBuffer[content[node]] = (bigrams(node.text)
+      .union(*map(lambda _: bigramsBuffer.get(content[_], set()), childrens)))
+  return list(ifilter(
+    lambda _: first(_).strip() and second(_).strip(),
+    results.items()))
+
+def bestpathtonode(node):
+  """Recursively computes the best path to a node.
+
+    >>> from lxml.etree import HTML
+    >>> parsedPage = HTML("<html><body><div>#1</div><div id='i'>#2<p>nested")
+    >>> bestpathtonode(first(first(parsedPage)))
+    '/html/body/div'
+    >>> bestpathtonode(second(first(parsedPage)))
+    "//*[@id='i']"
+    >>> bestpathtonode(first(second(first(parsedPage))))
+    "//*[@id='i']/p"
+
+  @type  node: lxml.etree._Element
+  @param node: the node
+  @rtype: string
+  @return: the best path
+  """
+  isvalid = lambda att: att and not any(imap(lambda _: _.isdigit(), att))
+  return (
+    "" if node is None or not isinstance(node.tag, basestring) else
+    "//*[@id='{}']".format(node.get("id")) if isvalid(node.get("id")) else
+    "//*[@class='{}']".format(node.get("class")) if isvalid(node.get("class"))
+    else bestpathtonode(node.getparent()) + "/" + str(node.tag))
+
+
+# def bestPath(contentZipPages):
+#   """Given a list of content/page, computes the best XPath query that would
+#   return the content on each page.
+
+#   @type  contentZipPages: list of pairs of string/lxml.etree._Element
+#   @param contentZipPages: the list of content/page used to guide the process
+#   @rtype: string
+#   @return: the XPath query that matches at best the content on each page
+#   """
+#   nonEmptyContentZipPages = tuple(ifilter(
+#     lambda (content, _): cleanTags(content),
+#     contentZipPages))
+#   dct = dict()
+#   ratio = lambda content, page, query: (
+#     stringSimilarity(content, extractFirst(page, query), dct))
+#   topQueries = tuple(imap(
+#     lambda (c, p): max(nodeQueries([p]), key=partial(ratio, c, p)),
+#     nonEmptyContentZipPages))
+#   return max(set(topQueries), key=topQueries.count)

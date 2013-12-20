@@ -101,7 +101,10 @@ def extractFirst(page, query):
   @rtype: string
   @return: the first result of the query, empty string if no result
   """
-  return nodeToString((page.xpath(query) + [""])[0])
+  try:
+    return nodeToString((page.xpath(query) + [""])[0])
+  except:
+    raise Exception("**" + query + "**")
 
 def nodeToString(node):
   """Convert a etree node to an unicode string.
@@ -286,4 +289,3 @@ def datetimeFromStructtime(structtime):
   @return: the converted time
   """
   return datetime.fromtimestamp(mktime(structtime))
-
