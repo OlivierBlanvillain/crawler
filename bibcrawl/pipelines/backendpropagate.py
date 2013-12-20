@@ -11,13 +11,13 @@ class BackendPropagate(object):
   """
   def process_item(self, item, spider):
     spider.logInfo(item.url)
-    try:
-      len(item.commentFeed)
-    except (KeyError, AttributeError):
-      spider.logInfo("No comment feed.")
-    else:
-      try:
-        spider.logInfo("{} comments!".format(len(item.comments)))
-      except (KeyError, AttributeError):
-        spider.logInfo("No comments.")
+    # try:
+    #   len(item.commentFeed)
+    # except (KeyError, AttributeError):
+    #   spider.logInfo("No comment feed.")
+    # else:
+    #   try:
+    #     spider.logInfo("{} comments!".format(len(item.comments)))
+    #   except (KeyError, AttributeError):
+    #     spider.logInfo("No comments.")
     return item

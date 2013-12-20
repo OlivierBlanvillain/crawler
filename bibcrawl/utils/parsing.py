@@ -101,10 +101,7 @@ def extractFirst(page, query):
   @rtype: string
   @return: the first result of the query, empty string if no result
   """
-  try:
-    return nodeToString((page.xpath(query) + [""])[0])
-  except:
-    raise Exception("**" + query + "**")
+  return nodeToString((page.xpath(query) + [""])[0])
 
 def nodeToString(node):
   """Convert a etree node to an unicode string.
@@ -118,8 +115,7 @@ def nodeToString(node):
     return unicode(node if isinstance(node, (str, unicode))
       else etree.tostring(node, with_tail=False))
   except SerialisationError:
-    # See this lxml bug: https://bugs.launchpad.net/lxml/+bug/400588
-    return u""
+    return u""# See this lxml bug: https://bugs.launchpad.net/lxml/+bug/400588
 
 def xPathFirst(path):
   """Extends a XPath query to return the first result.
@@ -185,14 +181,14 @@ def buildUrlFilter(urls, logger=lambda _: None):
   logger("Url regex: {}".format(bestRegex("^").replace("/" + eol, "")))
   return beginsWith(bestRegex("^"))
 
-def ascii(string):
+def asciiprojection(string):
   r"""Force convert a string to ascii.
 
-  >>> ascii(u"École Polytechnique Fédérale de Lausanne")
+  >>> asciiprojection(u"École Polytechnique Fédérale de Lausanne")
   'cole Polytechnique Fdrale de Lausanne'
-  >>> ascii("Et voilà.")
+  >>> asciiprojection("Et voilà.")
   'Et voil\xc3\xa0.'
-  >>> ascii("problem solved")
+  >>> asciiprojection("problem solved")
   'problem solved'
   """
   if isinstance(string, str):
@@ -237,6 +233,7 @@ def xPathWithClass(cls):
   return ("//*[contains(concat(' ', normalize-space(@class), ' '), ' {} ')]"
       .format(cls))
 
+# TODO: Uot used anymore.
 def nodeQueries(pages):
   """Compute queries to each node of the html page using per id/class global
   selection.

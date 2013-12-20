@@ -1,13 +1,11 @@
 """ContentExtractor"""
 
 from bibcrawl.utils.ohpython import *
-from bibcrawl.utils.parsing import parseHTML, extractFirst, nodeQueries
-from bibcrawl.utils.stringsimilarity import stringSimilarity, cleanTags
+from bibcrawl.utils.parsing import parseHTML, extractFirst
+from bibcrawl.utils.stringsimilarity import stringSimilarity
 from bibcrawl.utils.stringsimilarity import bigrams
 from feedparser import parse as feedparse
-from heapq import nlargest
 from scrapy.exceptions import CloseSpider
-from scrapy import log
 
 class ContentExtractor(object):
   """Extracts the content of blog posts using a RSS feed. Usage:
@@ -101,12 +99,6 @@ class ContentExtractor(object):
       lambda _: max(set(_), key=_.count),
       izip(*bestPathsPerPage)))
 
-    # self.xPaths = tuple(imap(
-    #   lambda extractr: bestPath(tuple(izip(
-    #     imap(extractr, entries),
-    #     parsedPages))),
-    #   extractors))
-
     self.logger("Best XPaths are:\n" + "\n".join(self.xPaths))
 
 def bestPaths(parsedPage, feedEntry):
@@ -132,11 +124,6 @@ def bestPaths(parsedPage, feedEntry):
     partial(ssimScore, feedEntry.title)))
   return (articlePath, titlePath) # ..
 
-# extractors = (
-#   extractContent,
-#   lambda _: _.title,
-#   # ...
-# )
 def getArticle(feedEntry):
   """Returns article from feed entry, or description if absent."""
   try:
@@ -155,9 +142,13 @@ def allQueries(parsedPage, bigramsBuffer):
     >>> parsedPage = HTML("<html><body><div>#1</div><div>#2<p>nested")
     >>> bigramsBuffer = dict()
     >>> allQueries(parsedPage, bigramsBuffer)
-    [('/html/body/div/p', 'nested '), ('/html/body/div', '#1 '), ('/html', '#1 #2 nested '), ('/html/body', '#1 #2 nested ')]
+    [('/html/body/div/p', 'nested '), ('/html/body/div', '#1 '), ('/html', '#1\
+ #2 nested '), ('/html/body', '#1 #2 nested ')]
     >>> bigramsBuffer
-    {'#2 nested ': set(['ed', 'ne', 'd ', 'st', '2 ', '#2', 'te', 'es']), '#1 ': set(['1 ', '#1']), 'nested ': set(['es', 'ed', 'te', 'ne', 'd ', 'st']), '#1 #2 nested ': set(['ed', 'ne', 'd ', 'st', '1 ', '2 ', '#2', '#1', 'te', 'es'])}
+    {'#2 nested ': set(['ed', 'ne', 'd ', 'st', '2 ', '#2', 'te', 'es']), '#1\
+ ': set(['1 ', '#1']), 'nested ': set(['es', 'ed', 'te', 'ne', 'd ',\
+ 'st']), '#1 #2 nested ': set(['ed', 'ne', 'd ', 'st', '1 ', '2 ', '#2',\
+ '#1', 'te', 'es'])}
 
   @type  parsedPage: lxml.etree._Element
   @param parsedPage: the parsed page
@@ -172,11 +163,11 @@ def allQueries(parsedPage, bigramsBuffer):
   for node in reversed(list(parsedPage.iter())):
     childrens = list(node)
     node.text = "" if not node.text else node.text + " "
-    content[node] = node.text + "".join(map(content.get, childrens))
+    content[node] = node.text + "".join(imap(content.get, childrens))
     results[bestpathtonode(node)] = content[node]
     # getOrElseUpdate(results, bestpathtonode(node), lambda _: content[node])
     bigramsBuffer[content[node]] = (bigrams(node.text)
-      .union(*map(lambda _: bigramsBuffer.get(content[_], set()), childrens)))
+      .union(*imap(lambda _: bigramsBuffer.get(content[_], set()), childrens)))
   return list(ifilter(
     lambda _: first(_).strip() and second(_).strip(),
     results.items()))
@@ -205,23 +196,3 @@ def bestpathtonode(node):
     "//*[@class='{}']".format(node.get("class")) if isvalid(node.get("class"))
     else bestpathtonode(node.getparent()) + "/" + str(node.tag))
 
-
-# def bestPath(contentZipPages):
-#   """Given a list of content/page, computes the best XPath query that would
-#   return the content on each page.
-
-#   @type  contentZipPages: list of pairs of string/lxml.etree._Element
-#   @param contentZipPages: the list of content/page used to guide the process
-#   @rtype: string
-#   @return: the XPath query that matches at best the content on each page
-#   """
-#   nonEmptyContentZipPages = tuple(ifilter(
-#     lambda (content, _): cleanTags(content),
-#     contentZipPages))
-#   dct = dict()
-#   ratio = lambda content, page, query: (
-#     stringSimilarity(content, extractFirst(page, query), dct))
-#   topQueries = tuple(imap(
-#     lambda (c, p): max(nodeQueries([p]), key=partial(ratio, c, p)),
-#     nonEmptyContentZipPages))
-#   return max(set(topQueries), key=topQueries.count)

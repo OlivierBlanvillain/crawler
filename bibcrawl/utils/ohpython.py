@@ -22,6 +22,8 @@ __all__ = [
   "readtestdata",
   "second",
   "true",
+  "tailcall",
+  "tailreq",
   "typecheck",
 ]
 
@@ -130,6 +132,47 @@ def block(*_):
 def let(v, c):
   """Defines a variable v in c"""
   return c(v)
+
+class tailreq(object):
+  """Decorator for tail call elimination using trampoline. Usage:
+
+    >>> @tailreq
+    ... def fact(n, r=1):
+    ...   return r if n <= 1 else tailcall(fact)(n-1, n*r)
+    >>> len(str(fact(10000)))
+    35660
+
+    >>> @tailreq
+    ... def even(x):
+    ...   return True if x == 0 else tailcall(odd)(x - 1)
+    >>> @tailreq
+    ... def odd(x):
+    ...   return False if x == 0 else tailcall(even)(x - 1)
+    >>> odd(10000)
+    False
+  """
+  def __init__(self, function):
+    self.function = function
+  def __call__(self, *args):
+    result = self.function(*args)
+    while type(result) is tailcall:
+      result = result.handle()
+    return result
+
+class tailcall(object):
+  """Currided definition of tail calls."""
+  def __init__(self, cont):
+    self.cont = cont
+  def __call__(self, *args):
+    self.args = args
+    return self
+  def handle(self):
+    # Uncomment to allow "tailcalling" non tailreq functions.
+    # I personally prefer to get an error in this case.
+    # if type(self.cont) is tailreq:
+      return self.cont.function(*self.args)
+    # else:
+    #   return self.cont(*self.args)
 
 # Test functions, here to save doctest imports...
 def printf(string):

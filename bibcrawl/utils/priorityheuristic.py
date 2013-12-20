@@ -1,7 +1,7 @@
 """PriorityHeuristic"""
 
 from bibcrawl.utils.ohpython import *
-from bibcrawl.utils.parsing import ascii
+from bibcrawl.utils.parsing import asciiprojection
 from heapq import nlargest
 from Levenshtein import ratio as stringSimilarity
 from math import ceil
@@ -52,9 +52,9 @@ class PriorityHeuristic(object):
       return maxint / 2
     else:
       k = min(5, int(ceil(len(self.urlsZscore) / 2.0)))
-      ratioZscore = imap(
-          lambda (i, s): (stringSimilarity(ascii(url), ascii(i)), s),
-          self.urlsZscore)
+      ratioZscore = imap(lambda (i, s):
+        (stringSimilarity(asciiprojection(url), asciiprojection(i)), s),
+        self.urlsZscore)
       knearestRatioZscore = nlargest(k, ratioZscore, first)
       sumRatios = sum(imap(first, knearestRatioZscore))
       weightedScores = imap(lambda (r, s): r * s, knearestRatioZscore)

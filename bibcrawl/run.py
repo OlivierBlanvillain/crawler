@@ -26,26 +26,27 @@ def main():
           # 'bibcrawl.pipelines.downloadimages.DownloadImages',
           # 'bibcrawl.pipelines.downloadfeeds.DownloadFeeds',
           # 'bibcrawl.pipelines.extractcomments.ExtractComments',
-          # 'bibcrawl.pipelines.backendpropagate.BackendPropagate',
+          'bibcrawl.pipelines.backendpropagate.BackendPropagate',
       ],
       "HTTPCACHE_POLICY": "scrapy.contrib.httpcache.DummyPolicy",
       "HTTPCACHE_STORAGE": "scrapy.contrib.httpcache.FilesystemCacheStorage",
       "HTTPCACHE_ENABLED": True,
       "FILES_STORE": "img",
 
-      # "CONCURRENT_ITEMS": 1,
+      "CONCURRENT_ITEMS": 1,
       "STATS_DUMP": False,
       "LOG_LEVEL": "DEBUG",
-      # "CONCURRENT_REQUESTS": 1,
-      # "CONCURREN  T_REQUESTS_PER_DOMAIN": 1,
-      # "CONCURRENT_REQUESTS_PER_IP": 1
+      "CONCURRENT_REQUESTS": 1,
+      "CONCURREN  T_REQUESTS_PER_DOMAIN": 1,
+      "CONCURRENT_REQUESTS_PER_IP": 1
   })
 
   # Need test cases for this one: letitcrash.com
   # techcrunch.com
   # keikolynn.com
 
-  spider = NewCrawl(domain="korben.info", maxDownloads=500)
+  # spider = NewCrawl(domain="korben.info", maxDownloads=500)
+  spider = NewCrawl(startAt="http://www.quantumdiaries.org/", maxDownloads=5000)
   # spider = UpdateCrawl(
   #   startAt="http://korben.info/feed",
   #   domain="korben.info",
