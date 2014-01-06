@@ -12,6 +12,7 @@ class PostItem(ObjectItem):
 
   content = Field()
   title = Field()
+  author = Field()
   # More to come.
 
   file_urls = Field()

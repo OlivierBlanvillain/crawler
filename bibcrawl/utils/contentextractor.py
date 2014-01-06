@@ -24,7 +24,6 @@ class ContentExtractor(object):
   //*[@class='post-content']
   //*[@class='post-title']
   //*[@class='orange']
-  //*[@class='post-footer']
   >>> len(extractor.getRssLinks())
   30
   >>> 6000 < len(content[0]) < 6200
@@ -164,7 +163,10 @@ def allQueries(parsedPage, bigramsBuffer):
   # Reverse depth first preorder traversal to compute nodes texts and bigrams.
   for node in reversed(list(parsedPage.iter())):
     childrens = list(node)
-    node.text = "" if not node.text else node.text + " "
+    try:
+      node.text = "" if not node.text else node.text + " "
+    except UnicodeError:
+      node.text = ""
     content[node] = node.text + "".join(imap(content.get, childrens))
     results[bestpathtonode(node)] = content[node]
     # getOrElseUpdate(results, bestpathtonode(node), lambda _: content[node])
