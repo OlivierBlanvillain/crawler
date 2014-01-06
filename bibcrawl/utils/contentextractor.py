@@ -23,13 +23,13 @@ class ContentExtractor(object):
   Best XPaths are:
   //*[@class='post-content']
   //*[@class='post-title']
+  //*[@class='orange']
+  //*[@class='post-footer']
   >>> len(extractor.getRssLinks())
   30
   >>> 6000 < len(content[0]) < 6200
   True
   """
-  # //*[@class='post-date']/p/span
-  # //*[@class='post-date']/p/strong
 
   def __init__(self, rss, logger=lambda _: None):
     """Instantiates a content extractor for a given RSS feed.
@@ -114,25 +114,27 @@ def bestPaths(parsedPage, feedEntry):
   @return: XPath queries to extract relevant content from the page
   """
   bigramsBuffer = dict()
-  zipQueryExtracted = allQueries(parsedPage, bigramsBuffer)
+  queryZipExtracted = allQueries(parsedPage, bigramsBuffer)
   ssimScore = lambda target, (query, content): (
     stringSimilarity(target, content, bigramsBuffer))
 
-  articlePath = first(max(zipQueryExtracted, key=
-    partial(ssimScore, getArticle(feedEntry))))
-  titlePath = first(max(zipQueryExtracted, key=
-    partial(ssimScore, feedEntry.title)))
-  return (articlePath, titlePath) # ..
+  articlePath = first(max(queryZipExtracted, key=
+    partial(ssimScore, feedEntry.content[0].get("value", feedEntry.description))))
 
-def getArticle(feedEntry):
-  """Returns article from feed entry, or description if absent."""
-  try:
-    return feedEntry.content[0].value
-  except AttributeError:
-    try:
-      return feedEntry.description
-    except AttributeError:
-      raise CloseSpider("Feed entry has no content and no description")
+  titlePath = first(max(queryZipExtracted, key=
+    partial(ssimScore, feedEntry.title)))
+
+  distancesToArticle = distancesToNode(
+    articlePath, tuple(imap(first, queryZipExtracted)), parsedPage)
+  dtossimScore = lambda target, (query, content): (
+    stringSimilarity(target, content, bigramsBuffer)
+    * 1/(distancesToArticle[query] + 1))
+  authorPath = first(max(queryZipExtracted, key=
+    partial(dtossimScore, feedEntry.author)))
+
+  datePath = first(max(queryZipExtracted, key=
+    partial(dtossimScore, feedEntry.author)))
+  return (articlePath, titlePath, authorPath) # ..
 
 def allQueries(parsedPage, bigramsBuffer):
   """Computes all the possible XPath queries. Pairs of query and extracted
@@ -196,3 +198,32 @@ def bestpathtonode(node):
     "//*[@class='{}']".format(node.get("class")) if isvalid(node.get("class"))
     else bestpathtonode(node.getparent()) + "/" + str(node.tag))
 
+def distancesToNode(targetPath, queries, parsedPage):
+  """Returns a map of query -> tree distance to a given target node in a page.
+
+  >>> from lxml.etree import HTML
+  >>> p = HTML("<html><body><div>#1</div><div id='i'>#2<p>nested")
+  >>> distancesToNode("//*[@id='i']/p", ["/html/body", "/html/body/div"], p)
+  {'/html/body': 2, '/html/body/div': 3}
+
+  @type  targetPath: string
+  @param targetPath: the target node
+  @type  queries: list of strings
+  @param queries: the list of queries defining the domain of the map
+  @type  parsedPage: lxml.etree._Element
+  @param parsedPage: the page
+  @rtype: dictionary to string to integer
+  @return: the distance map
+  """
+  parents0 = tailreq(lambda node, acc:
+    acc + (node,) if(node == None)
+    else tailcall(parents0)(node.getparent(), acc + (node,)) )
+  parents = lambda path: parents0((parsedPage.xpath(path) + [None])[0], tuple())
+  distance = lambda parents1, parents2: min(imap(
+    lambda node: parents1.index(node) + parents2.index(node),
+    set(parents1).intersection(set(parents2)) ))
+
+  targetParents = parents(targetPath)
+  return dict(imap(
+    lambda query: (query, distance(targetParents, parents(query))),
+    queries))
