@@ -3,8 +3,7 @@ BlogForever crawler
 
 install:
 
-    pip install Scrapy, lxml, feedparser
-    pip install pytest pytest-incremental
+    pip install Scrapy lxml feedparser pytest pytest-incremental
     wget PhantomJS from http://phantomjs.org/download.html
     (cd lib/; tar xjf path/to/tarball; mv * phantomjs)
 
@@ -15,3 +14,7 @@ run:
 test:
 
     py.test
+
+Scrapy settings:
+
+    http://doc.scrapy.org/en/latest/topics/settings.html

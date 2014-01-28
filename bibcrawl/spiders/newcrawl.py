@@ -11,10 +11,12 @@ from twisted.internet import reactor
 
 class NewCrawl(RssCrawl):
   """NewCrawl"""
+  
+  name = "newcrawl"
 
-  def __init__(self, startAt, maxDownloads=None):
-    super(self.__class__, self).__init__(startAt)
-    self.maxDownloads = maxDownloads
+  def __init__(self, startat, maxdownloads=None):
+    super(self.__class__, self).__init__(startat)
+    self.maxDownloads = maxdownloads
     self.downloadsSoFar = 0
     self.seen = set()
     self.isBlogPost = None
