@@ -3,6 +3,7 @@
 from bibcrawl.utils.ohpython import *
 from bibcrawl.utils.parsing import asciiprojection
 from heapq import nlargest
+from Levenshtein import ratio as stringSimilarity
 from math import ceil
 from sys import maxint
 
