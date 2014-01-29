@@ -4,8 +4,7 @@ from bibcrawl.spiders.newcrawl import NewCrawl
 from bibcrawl.spiders.updatecrawl import UpdateCrawl
 from scrapy import signals
 from scrapy.crawler import Crawler
-from scrapy.utils.project import get_project_settings as Settings
-# from scrapy.settings import Settings
+from scrapy.settings import Settings
 from twisted.internet import reactor
 from datetime import date, timedelta, datetime
 from scrapy import log
@@ -15,39 +14,36 @@ def stop_reactor():
   """Stops the twistedreactor."""
   reactor.stop()
 
-def startSpider(spider):
-  pass
-
 def main():
   """Crawler entry point."""
-  # settings = Settings({
-  #     "ITEM_PIPELINES": [
-  #         # 'bibcrawl.pipelines.renderjavascript.RenderJavascript',
-  #         'bibcrawl.pipelines.processhtml.ProcessHtml',
-  #         # 'bibcrawl.pipelines.downloadimages.DownloadImages',
-  #         # 'bibcrawl.pipelines.downloadfeeds.DownloadFeeds',
-  #         # 'bibcrawl.pipelines.extractcomments.ExtractComments',
-  #         'bibcrawl.pipelines.backendpropagate.BackendPropagate',
-  #     ],
-  #     "HTTPCACHE_POLICY": "scrapy.contrib.httpcache.DummyPolicy",
-  #     "HTTPCACHE_STORAGE": "scrapy.contrib.httpcache.FilesystemCacheStorage",
-  #     "HTTPCACHE_ENABLED": True,
-  #     "FILES_STORE": "img",
+  settings = Settings({
+      "ITEM_PIPELINES": [
+          # 'bibcrawl.pipelines.renderjavascript.RenderJavascript',
+          'bibcrawl.pipelines.processhtml.ProcessHtml',
+          # 'bibcrawl.pipelines.downloadimages.DownloadImages',
+          # 'bibcrawl.pipelines.downloadfeeds.DownloadFeeds',
+          # 'bibcrawl.pipelines.extractcomments.ExtractComments',
+          'bibcrawl.pipelines.backendpropagate.BackendPropagate',
+      ],
+      # "HTTPCACHE_POLICY": "scrapy.contrib.httpcache.DummyPolicy",
+      # "HTTPCACHE_STORAGE": "scrapy.contrib.httpcache.FilesystemCacheStorage",
+      # "HTTPCACHE_ENABLED": True,
+      "FILES_STORE": "img",
 
-  #     "CONCURRENT_ITEMS": 1,
-  #     "STATS_DUMP": False,
-  #     "LOG_LEVEL": "DEBUG",
-  #     "CONCURRENT_REQUESTS": 1,
-  #     "CONCURREN  T_REQUESTS_PER_DOMAIN": 1,
-  #     "CONCURRENT_REQUESTS_PER_IP": 1
-  # })
+      "CONCURRENT_ITEMS": 1,
+      "STATS_DUMP": False,
+      "LOG_LEVEL": "DEBUG",
+      "CONCURRENT_REQUESTS": 1,
+      "CONCURREN  T_REQUESTS_PER_DOMAIN": 1,
+      "CONCURRENT_REQUESTS_PER_IP": 1
+  })
 
   # Need test cases for this one: letitcrash.com
   # techcrunch.com
   # keikolynn.com
 
   # spider = NewCrawl(domain="korben.info", maxDownloads=500)
-  spider = NewCrawl(startAt="http://www.quantumdiaries.org/", maxDownloads=5000)
+  spider = NewCrawl(startat="http://www.quantumdiaries.org/", maxdownloads=5000)
   # spider = UpdateCrawl(
   #   startAt="http://korben.info/feed",
   #   domain="korben.info",
