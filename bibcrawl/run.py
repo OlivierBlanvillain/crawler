@@ -14,9 +14,6 @@ def stop_reactor():
   """Stops the twistedreactor."""
   reactor.stop()
 
-def startSpider(spider):
-  pass
-
 def main():
   """Crawler entry point."""
   settings = Settings({
@@ -28,9 +25,9 @@ def main():
           # 'bibcrawl.pipelines.extractcomments.ExtractComments',
           'bibcrawl.pipelines.backendpropagate.BackendPropagate',
       ],
-      "HTTPCACHE_POLICY": "scrapy.contrib.httpcache.DummyPolicy",
-      "HTTPCACHE_STORAGE": "scrapy.contrib.httpcache.FilesystemCacheStorage",
-      "HTTPCACHE_ENABLED": True,
+      # "HTTPCACHE_POLICY": "scrapy.contrib.httpcache.DummyPolicy",
+      # "HTTPCACHE_STORAGE": "scrapy.contrib.httpcache.FilesystemCacheStorage",
+      # "HTTPCACHE_ENABLED": True,
       "FILES_STORE": "img",
 
       "CONCURRENT_ITEMS": 1,
@@ -46,13 +43,13 @@ def main():
   # keikolynn.com
 
   # spider = NewCrawl(domain="korben.info", maxDownloads=500)
-  spider = NewCrawl(startAt="http://www.quantumdiaries.org/", maxDownloads=5000)
+  spider = NewCrawl(startat="http://www.quantumdiaries.org/", maxdownloads=5000)
   # spider = UpdateCrawl(
   #   startAt="http://korben.info/feed",
   #   domain="korben.info",
   #   since=datetime.now() - timedelta(days=1))
 
-  crawler = Crawler(settings)
+  crawler = Crawler(Settings())
 
   crawler.signals.connect(reactor.stop, signals.spider_closed)
   crawler.signals.connect(reactor.getThreadPool().stop, signals.spider_closed)

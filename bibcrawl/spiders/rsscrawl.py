@@ -137,4 +137,3 @@ class RssCrawl(BaseSpider):
     @return: the next requests and items to process
     """
     pass
-
