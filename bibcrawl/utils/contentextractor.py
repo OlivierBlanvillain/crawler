@@ -16,9 +16,9 @@ class ContentExtractor(object):
   ... "gratuite-amazon.html", "korben.info/cest-la-rentree-2.html",
   ... "korben.info/super-parkour-bros.html")
   >>> extractor = ContentExtractor(readtestdata("korben.info/feed"), printf)
-  >>> extractor.feed(readtestdata(pages[0]), "http://{}".format(pages[0]))
-  >>> extractor.feed(readtestdata(pages[1]), "http://{}".format(pages[1]))
-  >>> extractor.feed(readtestdata(pages[2]), "http://{}".format(pages[2]))
+  >>> extractor.feed(readtestdata(pages[0]), "http://{0}".format(pages[0]))
+  >>> extractor.feed(readtestdata(pages[1]), "http://{0}".format(pages[1]))
+  >>> extractor.feed(readtestdata(pages[2]), "http://{0}".format(pages[2]))
   >>> content = extractor(parseHTML(readtestdata(pages[3])))
   Best XPaths are:
   //*[@class='post-content']
@@ -196,8 +196,8 @@ def bestpathtonode(node):
   isvalid = lambda att: att and not any(imap(lambda _: _.isdigit(), att))
   return (
     "" if node is None or not isinstance(node.tag, basestring) else
-    "//*[@id='{}']".format(node.get("id")) if isvalid(node.get("id")) else
-    "//*[@class='{}']".format(node.get("class")) if isvalid(node.get("class"))
+    "//*[@id='{0}']".format(node.get("id")) if isvalid(node.get("id")) else
+    "//*[@class='{0}']".format(node.get("class")) if isvalid(node.get("class"))
     else bestpathtonode(node.getparent()) + "/" + str(node.tag))
 
 def distancesToNode(targetPath, queries, parsedPage):

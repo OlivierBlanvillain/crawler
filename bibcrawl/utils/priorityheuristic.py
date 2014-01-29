@@ -58,7 +58,7 @@ class PriorityHeuristic(object):
       knearestRatioZscore = nlargest(k, ratioZscore, first)
       sumRatios = sum(imap(first, knearestRatioZscore))
       weightedScores = imap(lambda (r, s): r * s, knearestRatioZscore)
-      # print "    Predicted {} for url {}.".format(
+      # print "    Predicted {0} for url {1}.".format(
       #     int(round(sum(weightedScores) / (sumRatios or 1))),
       #     url)
       return int(round(sum(weightedScores) / (sumRatios or 1)))
@@ -75,5 +75,5 @@ class PriorityHeuristic(object):
     """
     if not self.highScore(url):
       score = len(links) + 99 * len(tuple(ifilter(self.highScore, links)))
-      # print "got {}, panned {} on {}".format(score, self.__call__(url), url)
+      # print "got {0}, panned {1} on {2}".format(score, self.__call__(url), url)
       self.urlsZscore.append((url, score))

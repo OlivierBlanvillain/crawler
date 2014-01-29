@@ -29,7 +29,7 @@ class RssCrawl(BaseSpider):
     self.start_urls = (startAt, )
     self.contentExtractor = None
     self.bufferedPosts = list()
-    self.name = "{}@{}".format(self.__class__.__name__, domain)
+    self.name = "{0}@{1}".format(self.__class__.__name__, domain)
 
   def parse(self, response):
     """Extract the RSS free Request from the starting page Response.
@@ -58,7 +58,7 @@ class RssCrawl(BaseSpider):
     @rtype: generator of scrapy.http.request.Request
     @return: the entry Requests
     """
-    self.logInfo("Feed: {}".format(response.url))
+    self.logInfo("Feed: {0}".format(response.url))
     self.contentExtractor = ContentExtractor(response.body, self.logInfo)
     return imap(
       lambda url: Request(

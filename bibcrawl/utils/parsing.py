@@ -43,7 +43,7 @@ def extractRssLinks(parsedPage, url):
   @rtype: collections. Iterable of strings
   @return: all the feed links of the page
   """
-  paths = imap(lambda _: "//link[@type='{}']/@href".format(_), (
+  paths = imap(lambda _: "//link[@type='{0}']/@href".format(_), (
       "application/atom+xml",
       "application/atom",
       "text/atom+xml",
@@ -128,7 +128,7 @@ def xPathFirst(path):
   @rtype: string
   @return: the XPath with first result selection
   """
-  return "({})[1]".format(path)
+  return "({0})[1]".format(path)
 
 def buildUrlFilter(urls, logger=lambda _: None):
   """Given a tuple of urls with similar pattern, computes a filtering function
@@ -170,7 +170,7 @@ def buildUrlFilter(urls, logger=lambda _: None):
   # that only one article out of many contains a digit in the title. Also if
   # we try to match more precisely the urls we might find a temporary pattern
   # like /2013/.
-  patterns = ("{}://".format(scheme), netloc, eol + "$", "/", "\\d+/", "[^/]+/")
+  patterns = ("{0}://".format(scheme), netloc, eol + "$", "/", "\\d+/", "[^/]+/")
   def bestRegex(current):
     """Recursively compute the best regex."""
     for pattern in patterns:
@@ -178,7 +178,7 @@ def buildUrlFilter(urls, logger=lambda _: None):
         return bestRegex(current + pattern)
     return current
 
-  logger("Url regex: {}".format(bestRegex("^").replace("/" + eol, "")))
+  logger("Url regex: {0}".format(bestRegex("^").replace("/" + eol, "")))
   return beginsWith(bestRegex("^"))
 
 def asciiprojection(string):
@@ -230,7 +230,7 @@ def xPathWithClass(cls):
   @rtype: string
   @return: the XPath expression selecting on this class
   """
-  return ("//*[contains(concat(' ', normalize-space(@class), ' '), ' {} ')]"
+  return ("//*[contains(concat(' ', normalize-space(@class), ' '), ' {0} ')]"
       .format(cls))
 
 # TODO: Uot used anymore.
@@ -249,7 +249,7 @@ def nodeQueries(pages):
   @return: the queries
   """
   # selector = lambda node, sel: (lambda attribute:
-  #   ("//*[@{}='{}']".format(sel, attribute), )
+  #   ("//*[@{0}='{1}']".format(sel, attribute), )
   #   if attribute and not any(imap(lambda _: _.isdigit(), attribute))
   #   else tuple()
   # )(node.get(sel))
@@ -267,7 +267,7 @@ def nodeQueries(pages):
       for selector in ("id", "class"):
         attribute = node.get(selector)
         if attribute and not any(imap(lambda _: _.isdigit(), attribute)):
-          yield "//*[@{}='{}']".format(selector, attribute)
+          yield "//*[@{0}='{1}']".format(selector, attribute)
           break
       else:
         pass # path

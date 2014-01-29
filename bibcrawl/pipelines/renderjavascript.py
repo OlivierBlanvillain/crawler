@@ -100,7 +100,7 @@ class RenderJavascript(object):
     """
     uid = sha1(item.url).hexdigest()
     png = StringIO(driver.get_screenshot_as_png())
-    key = 'screen/{}.png'.format(uid)
+    key = 'screen/{0}.png'.format(uid)
     self.store.persist_file(key, png, None)
     item.screenshot = key
 
