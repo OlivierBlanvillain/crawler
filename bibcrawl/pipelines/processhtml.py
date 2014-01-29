@@ -6,9 +6,6 @@ from scrapy.exceptions import DropItem
 
 from bibcrawl.utils.parsing import parseHTML
 from bibcrawl.utils.stringsimilarity import cleanTags
-from boilerpipe.extract import Extractor
-from goose import Goose
-# from readability.readability import Document
 from scrapy import log
 from time import time
 import gc
