@@ -42,8 +42,4 @@ class ProcessHtml(object):
       item.commentFeedUrls = tuple(chain(
         (item.url + "/feed",),
         ifilter(lambda _: "comments" in _, feeds)))
-
-
-
-
       return item

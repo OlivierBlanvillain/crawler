@@ -42,9 +42,9 @@ def dicesCoeffSimilarity(string1, string2, bufferDict=None):
     True
 
   @type  string1: string
-  @param string1: the string to clean
+  @param string1: the first string
   @type  string2: string
-  @param string2: the string to clean
+  @param string2: the second string
   @type  bufferDict: dict
   @param bufferDict: buffer dictionary
   @rtype: float in [0;1]
@@ -59,7 +59,7 @@ def dicesCoeffSimilarity(string1, string2, bufferDict=None):
   return (2.0 * len(intersection)) / (len(bigrams1) + len(bigrams2))
 
 def stringSimilarity(string1, string2, bufferDict=None):
-  """Computes similarity between two strings.
+  """Computes the similarity between two strings.
 
   @type  string1: string
   @param string1: the string to clean

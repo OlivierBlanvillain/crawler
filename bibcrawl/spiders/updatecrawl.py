@@ -9,9 +9,9 @@ from bibcrawl.spiders.rsscrawl import RssCrawl
 class UpdateCrawl(RssCrawl):
   """UpdateCrawl"""
 
-  def __init__(self, startAt, domain, since):
+  def __init__(self, startAt, since):
     """TODO"""
-    super(self.__class__, self).__init__(startAt, domain)
+    super(self.__class__, self).__init__(startAt)
     self.since = since
     self.newRssLinks = list()
 

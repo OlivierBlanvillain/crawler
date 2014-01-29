@@ -10,7 +10,7 @@ class BackendPropagate(object):
   @return: the processed item
   """
   def process_item(self, item, spider):
-    spider.logInfo(item.url)
+    spider.logInfo("Completed {}".format(item.url))
     # try:
     #   len(item.commentFeed)
     # except (KeyError, AttributeError):
@@ -20,4 +20,4 @@ class BackendPropagate(object):
     #     spider.logInfo("{} comments!".format(len(item.comments)))
     #   except (KeyError, AttributeError):
     #     spider.logInfo("No comments.")
-    return item
+    # return item
