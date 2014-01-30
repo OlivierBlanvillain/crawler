@@ -170,7 +170,7 @@ def buildUrlFilter(urls, logger=lambda _: None):
   # that only one article out of many contains a digit in the title. Also if
   # we try to match more precisely the urls we might find a temporary pattern
   # like /2013/.
-  patterns = ("{0}://".format(scheme), netloc, eol + "$", "/", "\\d+/", "[^/]+/")
+  patterns = "{0}://".format(scheme), netloc, eol + "$", "/", "\\d+/", "[^/]+/"
   def bestRegex(current):
     """Recursively compute the best regex."""
     for pattern in patterns:
@@ -248,20 +248,6 @@ def nodeQueries(pages):
   @rtype: generator of strings
   @return: the queries
   """
-  # selector = lambda node, sel: (lambda attribute:
-  #   ("//*[@{0}='{1}']".format(sel, attribute), )
-  #   if attribute and not any(imap(lambda _: _.isdigit(), attribute))
-  #   else tuple()
-  # )(node.get(sel))
-
-  # pathSelector = lambda node: ("", )
-
-  # return set(imap(
-  #   lambda node: chain(
-  #     selector(node, "id"), selector(node, "class"), pathSelector(node)
-  #   ).next(),
-  #   iflatmap(lambda _: _.iter(), pages)))
-
   for page in pages:
     for node in page.iter():
       for selector in ("id", "class"):
@@ -270,7 +256,7 @@ def nodeQueries(pages):
           yield "//*[@{0}='{1}']".format(selector, attribute)
           break
       else:
-        pass # path
+        pass # path"
 
 
 def datetimeFromStructtime(structtime):

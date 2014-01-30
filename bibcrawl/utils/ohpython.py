@@ -129,9 +129,9 @@ def block(*_):
   """Returns the last element of a list."""
   return _[-1]
 
-def let(v, c):
-  """Defines a variable v in c"""
-  return c(v)
+def let(var, cont):
+  """Defines a variable var in cont"""
+  return cont(var)
 
 class tailreq(object):
   """Decorator for tail call elimination using trampoline. Usage:
@@ -152,8 +152,10 @@ class tailreq(object):
     False
   """
   def __init__(self, function):
+    """Constructor"""
     self.function = function
   def __call__(self, *args):
+    """Apply method"""
     result = self.function(*args)
     while type(result) is tailcall:
       result = result.handle()
@@ -162,11 +164,15 @@ class tailreq(object):
 class tailcall(object):
   """Currided definition of tail calls."""
   def __init__(self, cont):
+    """Constructor"""
     self.cont = cont
+    self.args = None
   def __call__(self, *args):
+    """Apply method"""
     self.args = args
     return self
   def handle(self):
+      """Handles the tail call"""
     # Uncomment to allow "tailcalling" non tailreq functions.
     # I personally prefer to get an error in this case.
     # if type(self.cont) is tailreq:

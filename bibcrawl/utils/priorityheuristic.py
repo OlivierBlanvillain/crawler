@@ -75,5 +75,5 @@ class PriorityHeuristic(object):
     """
     if not self.highScore(url):
       score = len(links) + 99 * len(tuple(ifilter(self.highScore, links)))
-      # print "got {0}, panned {1} on {2}".format(score, self.__call__(url), url)
+      # print "got {0}, panned {1} on {2}".format(score, self.__call__(url),url)
       self.urlsZscore.append((url, score))

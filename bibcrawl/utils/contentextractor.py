@@ -5,7 +5,6 @@ from bibcrawl.utils.parsing import parseHTML, extractFirst
 from bibcrawl.utils.stringsimilarity import stringSimilarity
 from bibcrawl.utils.stringsimilarity import bigrams
 from feedparser import parse as feedparse
-from scrapy.exceptions import CloseSpider
 
 class ContentExtractor(object):
   """Extracts the content of blog posts using a RSS feed. Usage:
@@ -70,8 +69,8 @@ class ContentExtractor(object):
 
     @type  parsedPage: lxml.etree._Element
     @param parsedPage: the web page where content is extracted
-    @rtype: 1-tuple of strings
-    @return: the extracted (content, ) # TODO
+    @rtype: tuple of strings
+    @return: the extracted content
     """
     if self.needsRefresh:
       self._refresh()
@@ -118,7 +117,7 @@ def bestPaths(parsedPage, feedEntry):
     stringSimilarity(target, content, bigramsBuffer))
 
   articlePath = first(max(queryZipExtracted, key=
-    partial(ssimScore, feedEntry.content[0].get("value", feedEntry.description))))
+    partial(ssimScore,feedEntry.content[0].get("value",feedEntry.description))))
 
   titlePath = first(max(queryZipExtracted, key=
     partial(ssimScore, feedEntry.title)))
@@ -130,10 +129,9 @@ def bestPaths(parsedPage, feedEntry):
     * 1/(distancesToArticle[query] + 1))
   authorPath = first(max(queryZipExtracted, key=
     partial(dtossimScore, feedEntry.author)))
-
-  datePath = first(max(queryZipExtracted, key=
-    partial(dtossimScore, feedEntry.author)))
-  return (articlePath, titlePath, authorPath) # ..
+  # datePath = first(max(queryZipExtracted, key=
+  #   partial(dtossimScore, feedEntry.author)))
+  return (articlePath, titlePath, authorPath) # TBC...
 
 def allQueries(parsedPage, bigramsBuffer):
   """Computes all the possible XPath queries. Pairs of query and extracted
