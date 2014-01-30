@@ -9,5 +9,6 @@ ITEM_PIPELINES = {
   # 'bibcrawl.pipelines.extractcomments.ExtractComments': 700,
   'bibcrawl.pipelines.backendpropagate.BackendPropagate': 800,
 }
-FILES_STORE    = "img"
+FILES_STORE    = 'img'
 SPIDER_MODULES = ['bibcrawl.spiders']
+PHANTOMJS_PATH = '/opt/phantomjs/bin/phantomjs'

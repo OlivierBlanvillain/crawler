@@ -24,6 +24,7 @@ from bibcrawl.utils.parsing import xPathWithClass, parseHTML, extractFirst
 from collections import OrderedDict
 from cStringIO import StringIO
 from hashlib import sha1
+from scrapy.contrib.closespider import CloseSpider
 from selenium.common.exceptions import ElementNotVisibleException
 from selenium.common.exceptions import NoSuchElementException
 from time import sleep, time
@@ -33,14 +34,16 @@ class RenderJavascript(object):
   """Rendres the page with JavaScript, takes a screenshot and extract Disqus
   and Livefyre comments if present"""
 
-  def __init__(self, storeUri="out"):
+  def __init__(self, storeUri, phantomjsPath):
     """Instantiate for a given storeUri. Creates the WebriverPool.
 
-    @type  storeUri: scrapy.contrib.pipeline.files.FSFileStore
+    @type  storeUri: string
     @param storeUri: the storeUri
+    @type  storeUri: string
+    @param storeUri: the phantomjsPath
     """
     self.store = FSFilesStore(storeUri)
-    self.webdrivers = WebdriverPool()
+    self.webdrivers = WebdriverPool(phantomjsPath)
 
   @classmethod
   def from_settings(cls, settings):
@@ -51,8 +54,11 @@ class RenderJavascript(object):
     @rtype: RenderJavascript
     @return: the instantiated class
     """
-    storeUri = settings['FILES_STORE']
-    return cls(storeUri)
+    if not settings['FILES_STORE']:
+      raise CloseSpider("FILES_STORE setting needed to save screenshots.")
+    if not settings['PHANTOMJS_PATH']:
+      raise CloseSpider("PHANTOMJS_PATH setting needed to save screenshots.")
+    return cls(settings['FILES_STORE'], settings['PHANTOMJS_PATH'])
 
   def close_spider(self, _):
     """Closes the WebriverPool."""

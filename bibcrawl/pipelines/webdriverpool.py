@@ -16,8 +16,13 @@ class WebdriverPool(object):
     >>> wd.acquire() is None
     True
   """
-  def __init__(self):
-    """Creates a new WebdriverPool instance with two empty queues."""
+  def __init__(self, phantomjsPath):
+    """Creates a new WebdriverPool instance with two empty queues.
+ 
+    @type  storeUri: string
+    @param storeUri: the phantomjsPath
+    """
+    self.phantomjsPath = phantomjsPath
     self.all = Queue()
     self.available = Queue()
     self.stopped = False
@@ -33,9 +38,7 @@ class WebdriverPool(object):
       try:
         return self.available.get_nowait()
       except Empty:
-        # driver = webdriver.Firefox()
-        path = join(dirname(__file__), "../../lib/phantomjs/bin/phantomjs")
-        driver = webdriver.PhantomJS(path)
+        driver = webdriver.PhantomJS(self.phantomjsPath)
         self.all.put(driver)
         return driver
 
