@@ -8,7 +8,7 @@ from os.path import dirname, join
 class WebdriverPool(object):
   """Manages a thread safe pool of PhantomJS processes.
 
-    >>> wd = WebdriverPool()
+    >>> wd = WebdriverPool("/opt/phantomjs/bin/phantomjs")
     >>> driver = wd.acquire()
     >>> driver.get("www.google.com") # use driver...
     >>> wd.release(driver)

@@ -3,17 +3,19 @@ BlogForever crawler
 
 [Final blogforever platform deployment instructions](http://blogforever.eu/wp-content/uploads/2013/10/repository-deployment-instructions.pdf)
 
-install:
+Installation for python 2.6:
 
     pip install scrapy==0.18.4
-    pip install lxml httplib2 feedparser pytest pytest-incremental selenium
-    wget PhantomJS from http://phantomjs.org/download.html
-    (cd lib/; tar xjf path/to/tarball; mv * phantomjs)
+    pip install lxml httplib2 feedparser selenium python-Levenshtein
+    install [PhantomJS][1] to /opt/phantomjs/bin/phantomjs
 
-run:
+Run:
 
-    scrapy crawl NewCrawl -a startAt="http://www.quantumdiaries.org/"
+    scrapy crawl NewCrawl -a startAt=http://www.quantumdiaries.org/
+    scrapy crawl UpdateCrawl -a startAt=http://www.quantumdiaries.org/ -a since=1388593000
+Test:
 
-test:
-
+    pip install pytest pytest-incremental
     py.test
+
+[1]: http://phantomjs.org/download.html

@@ -32,10 +32,10 @@ class RssCrawl(BaseSpider):
     self.name = "{0}@{1}".format(self.__class__.__name__, domain)
 
   def parse(self, response):
-    """Extract the RSS free Request from the starting page Response.
+    """Extract the RSS feed Requests from the starting page Response.
 
-    @type domain: scrapy.http.response.html.HtmlResponse
-    @param domain: the starting page
+    @type response: scrapy.http.response.html.HtmlResponse
+    @param response: the starting page
     @rtype: scrapy.http.request.Request
     @return: the RSS feed Request
     """

@@ -8,7 +8,6 @@ class PostItem(ObjectItem):
 
   url = Field()
   parsedBodies = Field()
-  rawHtml = Field() # Eval only, TODO: remove
 
   content = Field()
   title = Field()

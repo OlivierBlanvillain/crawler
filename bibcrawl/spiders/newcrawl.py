@@ -45,8 +45,7 @@ class NewCrawl(RssCrawl):
     elif self.isBlogPost(response.url):
       # self.logInfo("> " + response.url)
       self.downloadsSoFar += 1
-      yield PostItem(url=response.url, parsedBodies=(parsedBody,),
-        rawHtml=response.body)
+      yield PostItem(url=response.url, parsedBodies=(parsedBody,))
 
     newUrls = set(ifilter(
       lambda _: _ not in self.seen,
