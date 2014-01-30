@@ -4,14 +4,11 @@
 ITEM_PIPELINES = {
   'bibcrawl.pipelines.renderjavascript.RenderJavascript': 300,
   'bibcrawl.pipelines.processhtml.ProcessHtml': 400,
-  # 'scrapy.contrib.pipeline.images.ImagesPipeline': 500,
   'bibcrawl.pipelines.downloadimages.DownloadImages': 500,
   # 'bibcrawl.pipelines.downloadfeeds.DownloadFeeds': 600,
   # 'bibcrawl.pipelines.extractcomments.ExtractComments': 700,
   'bibcrawl.pipelines.backendpropagate.BackendPropagate': 800,
 }
 FILES_STORE    = 'img'
-IMAGES_STORE   = 'img'
 SPIDER_MODULES = ['bibcrawl.spiders']
 PHANTOMJS_PATH = '/opt/phantomjs/bin/phantomjs'
-IMAGES_THUMBS = {}

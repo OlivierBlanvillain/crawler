@@ -6,6 +6,7 @@ from bibcrawl.utils.parsing import parseHTML
 from bibcrawl.utils.parsing import datetimeFromStructtime
 from bibcrawl.spiders.rsscrawl import RssCrawl
 from datetime import datetime
+
 class UpdateCrawl(RssCrawl):
   name = "updatecrawl"
 

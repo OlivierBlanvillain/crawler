@@ -131,6 +131,9 @@ def bestPaths(parsedPage, feedEntry):
     partial(dtossimScore, feedEntry.author)))
   # datePath = first(max(queryZipExtracted, key=
   #   partial(dtossimScore, feedEntry.author)))
+
+  # Note: Add a path to this tuple and it will be visible in the processhtml
+  # pipline
   return (articlePath, titlePath, authorPath) # TBC...
 
 def allQueries(parsedPage, bigramsBuffer):
