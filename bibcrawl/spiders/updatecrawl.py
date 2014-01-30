@@ -34,6 +34,11 @@ class UpdateCrawl(RssCrawl):
     self.newRssLinks = tuple((
       _.link for _ in self.contentExtractor.rssEntries
       if datetimeFromStructtime(_.published_parsed) > self.since))
+
+    # Note: If all posts of the feed are new, we might have lost some of the
+    # previous ones...
+    # if len(self.newRssLinks) == len(self.contentExtractor.rssEntries): ...
+    
     if not self.newRssLinks:
       self.logWarning("No new entries.")
     else:

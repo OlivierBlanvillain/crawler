@@ -11,7 +11,7 @@ def isFresh(url, etag):
     >>> e = first(Http().request("http://www.quantumdiaries.org/feed/"))["etag"]
     >>> isFresh("http://www.quantumdiaries.org/feed/", e)
     False
-    >>> isFresh("http://www.quantumdiaries.org/feed/", '"Another etag"')
+    >>> isFresh("http://www.quantumdiaries.org/feed/", '"slkdfjsldkjf"')
     True
 
   @type  url: string

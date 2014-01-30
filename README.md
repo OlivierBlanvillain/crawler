@@ -19,3 +19,18 @@ Test:
     py.test
 
 [1]: http://phantomjs.org/download.html
+
+
+TODO:
+=====
+
+Add to the DB, per blog
+
+- link to web-feed
+- latest etag of this feed
+- date of last crawl (unix format)
+
+Blog monitor algo:
+
+    if isFresh, start an updatecrawl with last crawl date
+    otherwise we are fine for this blog.
