@@ -233,7 +233,6 @@ def xPathWithClass(cls):
   return ("//*[contains(concat(' ', normalize-space(@class), ' '), ' {0} ')]"
       .format(cls))
 
-# TODO: Uot used anymore.
 def nodeQueries(pages):
   """Compute queries to each node of the html page using per id/class global
   selection.

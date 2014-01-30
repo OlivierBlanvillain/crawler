@@ -149,7 +149,7 @@ class FilesPipeline(MediaPipeline):
         if not store_uri:
             raise NotConfigured
         self.store = self._get_store(store_uri)
-        super(self.__class__, self).__init__(download_func=download_func)
+        super(FilesPipeline, self).__init__(download_func=download_func)
 
     @classmethod
     def from_settings(cls, settings):

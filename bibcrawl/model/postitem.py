@@ -22,4 +22,3 @@ class PostItem(ObjectItem):
   comments = Field()
 
   screenshot = Field()
-
