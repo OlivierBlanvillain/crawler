@@ -10,9 +10,9 @@ from bibcrawl.spiders.rsscrawl import RssCrawl
 from twisted.internet import reactor
 
 class NewCrawl(RssCrawl):
-  name = "NewCrawl"
+  name = "newcrawl"
   
-  def __init__(self, startAt, maxDownloads=None):
+  def __init__(self, startat, maxdownloads=None):
     """Instantiate a newcrawl spider for a given start url maxdownloads.
   
     @type  startat: string
@@ -20,8 +20,8 @@ class NewCrawl(RssCrawl):
     @type  maxdownloads: integer
     @param maxdownloads: the maximum number of pages to download
     """
-    super(self.__class__, self).__init__(startAt)
-    self.maxDownloads = maxDownloads
+    super(self.__class__, self).__init__(startat)
+    self.maxDownloads = maxdownloads
     self.downloadsSoFar = 0
     self.seen = set()
     self.isBlogPost = None

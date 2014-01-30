@@ -7,9 +7,9 @@ from bibcrawl.utils.parsing import datetimeFromStructtime
 from bibcrawl.spiders.rsscrawl import RssCrawl
 from datetime import datetime
 class UpdateCrawl(RssCrawl):
-  name = "UpdateCrawl"
+  name = "updatecrawl"
 
-  def __init__(self, startAt, since):
+  def __init__(self, startat, since):
     """Instantiate an updatecrawl spider for a given start url and since date.
 
     @type  startat: string
@@ -17,7 +17,7 @@ class UpdateCrawl(RssCrawl):
     @type  since: string
     @param since: the unix timestamp after which content is considered new
     """
-    super(self.__class__, self).__init__(startAt)
+    super(self.__class__, self).__init__(startat)
     self.since = datetime.fromtimestamp(int(since))
     self.newRssLinks = list()
 

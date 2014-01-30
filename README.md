@@ -11,8 +11,8 @@ Installation for python 2.6:
 
 Run:
 
-    scrapy crawl NewCrawl -a startAt=http://www.quantumdiaries.org/
-    scrapy crawl UpdateCrawl -a startAt=http://www.quantumdiaries.org/ -a since=1388593000
+    scrapy crawl newcrawl -a startat=http://www.quantumdiaries.org/
+    scrapy crawl updatecrawl -a startat=http://www.quantumdiaries.org/ -a since=1388593000
 Test:
 
     pip install pytest pytest-incremental
