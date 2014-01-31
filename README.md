@@ -57,8 +57,8 @@ Blog monitor algo:
     │   ├── contentextractor.py: Extracts the content of blog posts using a RSS feed
     │   ├── ohpython.py: Essential functions that should have been part of python core
     │   ├── parsing.py: Parsing functions
-    │   ├── priorityheuristic.py: Priority heuristic for page download, favors page with links to blog posts
+    │   ├── priorityheuristic.py: Priority heuristic for page download, favors page with links to posts
     │   ├── stringsimilarity.py: Dice's coefficient similarity function
     │   └── webdriverpool.py: Pool of PhantomJS processes to parallelize page rendering
-    ├── blogmonitor.py: Queries the database and starts new and update crawls when needed, to be called periodically
+    ├── blogmonitor.py: Queries the database and starts new and update crawls when needed
     └── settings.py: Scrapy settings
