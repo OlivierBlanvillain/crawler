@@ -4,6 +4,7 @@ from bibcrawl.model.commentitem import CommentItem
 from bibcrawl.utils.ohpython import *
 from bibcrawl.utils.parsing import nodeToString, nodeQueries
 from bibcrawl.utils.stringsimilarity import stringSimilarity
+from feedparser import parse as feedparse
 
 class ExtractComments(object):
   """Extracts comments using comment feed."""
@@ -20,11 +21,20 @@ class ExtractComments(object):
     @rtype: bibcrawl.model.postitem.PostItem
     @return: the processed item
     """
-    if item.commentFeed and not "comments" in item:
-      comments = commentsFromFeed(item.commentFeed)
-      item.comments = (
-        commentsHtmlExtraction(comments, item.parsedBodies, spider.logDebug)
-        if feedOverflow(item.commentFeed) else comments)
+    comments = commentsFromFeed(feedparse(first(item.commentFeedUrls)))
+
+    # try:
+    #   comments = commentsFromFeed(item.commentFeed)
+    #   spider.logInfo("LOOOOOOOOOOOOOOOOOOOOOOOOOOL")
+    # except:
+    #   spider.logInfo("FUUUUUUUUUUUUUUUUUUUUUUUUUUUU")
+    # if "commentFeed" in item:
+    #  # and not "comments" in item:
+    #   comments = commentsFromFeed(item.commentFeed)
+    #   self.logInfo("LOOOOOOOOOOOOOOOOOOOOOOOOOOL")
+    #   # item.comments = (
+      #   commentsHtmlExtraction(comments, item.parsedBodies, spider.logDebug)
+      #   if feedOverflow(item.commentFeed) else comments)
     return item
 
 

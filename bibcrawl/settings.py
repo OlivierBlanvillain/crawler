@@ -8,7 +8,7 @@ ITEM_PIPELINES = {
   'bibcrawl.pipelines.processhtml.ProcessHtml': 400,
   'bibcrawl.pipelines.downloadimages.DownloadImages': 500,
   # 'bibcrawl.pipelines.downloadfeeds.DownloadFeeds': 600,
-  # 'bibcrawl.pipelines.extractcomments.ExtractComments': 700,
+  'bibcrawl.pipelines.extractcomments.ExtractComments': 700,
   'bibcrawl.pipelines.backendpropagate.BackendPropagate': 800,
 }
 FILES_STORE    = 'img'

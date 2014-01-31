@@ -22,7 +22,6 @@ class ProcessHtml(object):
     (item.content, item.title, item.author) = extracted # More to come.
 
     if not (item.content):
-      spider.logInfo("Empty content: DropItem")
       raise DropItem
     else:
       item.file_urls = tuple(extractImageLinks(item.content, item.url))
