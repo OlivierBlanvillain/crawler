@@ -1,4 +1,4 @@
-"""ExtractComments"""
+"""Extracts all comments from html using the comment feed"""
 
 from bibcrawl.model.commentitem import CommentItem
 from bibcrawl.utils.ohpython import *

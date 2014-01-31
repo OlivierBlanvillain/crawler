@@ -1,5 +1,4 @@
-"""oh python...
-Essential utility functions that should have been part of python core."""
+"""Essential functions that should have been part of python core"""
 
 from itertools import imap, ifilter, izip, chain
 from functools import partial

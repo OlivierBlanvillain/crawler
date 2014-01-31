@@ -1,4 +1,4 @@
-"""UpdateCrawl"""
+"""Partialy crawls a blog for new content of the web feed"""
 
 from bibcrawl.model.postitem import PostItem
 from bibcrawl.utils.ohpython import *
@@ -8,6 +8,7 @@ from bibcrawl.spiders.rsscrawl import RssCrawl
 from datetime import datetime
 
 class UpdateCrawl(RssCrawl):
+  """updatecrawl"""
   name = "updatecrawl"
 
   def __init__(self, startat, since):
@@ -38,7 +39,7 @@ class UpdateCrawl(RssCrawl):
     # Note: If all posts of the feed are new, we might have lost some of the
     # previous ones...
     # if len(self.newRssLinks) == len(self.contentExtractor.rssEntries): ...
-    
+
     if not self.newRssLinks:
       self.logWarning("No new entries.")
     else:

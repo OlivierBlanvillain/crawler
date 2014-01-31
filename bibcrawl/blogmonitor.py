@@ -1,9 +1,7 @@
-"BlogMonitor"
+"""(not completed) queries the database and starts new and update crawls when needed, to be called periodically"""
 
 from bibcrawl.utils.ohpython import *
 from httplib2 import Http
-
-#  trigger(since, BlogFeeds, CommentFeeds)
 
 def isFresh(url, etag):
   """Returns True if the resource at the given url  was modified.

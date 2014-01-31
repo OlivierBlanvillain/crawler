@@ -1,4 +1,4 @@
-"""PriorityHeuristic"""
+"""Priority heuristic for page download, favors page with links to blog posts"""
 
 from bibcrawl.utils.ohpython import *
 from bibcrawl.utils.parsing import asciiprojection
@@ -73,7 +73,7 @@ class PriorityHeuristic(object):
     @type  links: list of strings
     @param links: the links present on the page
     """
-    if not self.highScore(url):
+    if not self.highScore(url) and len(self.urlsZscore) < 1000:
       score = len(links) + 99 * len(tuple(ifilter(self.highScore, links)))
       # print "got {0}, panned {1} on {2}".format(score, self.__call__(url),url)
       self.urlsZscore.append((url, score))

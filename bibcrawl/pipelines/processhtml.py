@@ -1,15 +1,8 @@
-"""ProcessHtml"""
+"""Process html to extract article, title and author"""
 
 from bibcrawl.utils.ohpython import *
 from bibcrawl.utils.parsing import extractImageLinks, extractRssLinks
 from scrapy.exceptions import DropItem
-
-from bibcrawl.utils.parsing import parseHTML
-from bibcrawl.utils.stringsimilarity import cleanTags
-from scrapy import log
-from time import time
-import gc
-import sys
 
 class ProcessHtml(object):
   """Process html page to extract content, image urls and feed urls."""

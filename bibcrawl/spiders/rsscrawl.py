@@ -1,4 +1,4 @@
-"""RssCrawl"""
+"""Super class of new and update crawl"""
 
 from bibcrawl.utils.contentextractor import ContentExtractor
 from bibcrawl.utils.ohpython import *

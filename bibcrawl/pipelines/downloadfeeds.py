@@ -1,4 +1,4 @@
-"""DownloadFeeds"""
+"""Downloads comments web feed"""
 
 from bibcrawl.utils.ohpython import *
 from feedparser import parse as feedparse
@@ -6,7 +6,7 @@ from scrapy.contrib.pipeline.media import MediaPipeline
 from scrapy.http import Request
 
 class DownloadFeeds(MediaPipeline):
-  """Download comments RSS feeds."""
+  """Downloads comments web feed"""
   def get_media_requests(self, item, _):
     return tuple(imap(
       lambda _: Request(_, dont_filter=True),

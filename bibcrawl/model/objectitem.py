@@ -1,4 +1,4 @@
-"""ObjectItem"""
+"""Super class of comment and post item"""
 
 from scrapy.item import Item
 

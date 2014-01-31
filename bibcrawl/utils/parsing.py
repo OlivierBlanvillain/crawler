@@ -1,6 +1,5 @@
+"""Parsing functions"""
 # -*- coding: utf-8 -*-
-
-"""Utility functions for the RssBasedCrawler spider."""
 
 from bibcrawl.utils.ohpython import *
 from lxml import etree, html

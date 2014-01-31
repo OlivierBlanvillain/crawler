@@ -1,4 +1,4 @@
-"""PostItem"""
+"""Blog post Item"""
 
 from bibcrawl.model.objectitem import ObjectItem
 from scrapy.item import Field
@@ -12,7 +12,6 @@ class PostItem(ObjectItem):
   content = Field()
   title = Field()
   author = Field()
-  # More to come.
 
   file_urls = Field()
   files = Field()

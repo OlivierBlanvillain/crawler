@@ -1,4 +1,4 @@
-"""DownloadImages"""
+"""Download images"""
 
 from bibcrawl.pipelines.files import FilesPipeline
 

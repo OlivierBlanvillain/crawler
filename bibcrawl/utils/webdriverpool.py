@@ -1,9 +1,8 @@
-"""WebdriverPool"""
+"""Pool of PhantomJS processes to parallelize page rendering"""
 
 from bibcrawl.utils.ohpython import *
 from Queue import Queue, Empty
 from selenium import webdriver
-from os.path import dirname, join
 
 class WebdriverPool(object):
   """Manages a thread safe pool of PhantomJS processes.
@@ -18,7 +17,7 @@ class WebdriverPool(object):
   """
   def __init__(self, phantomjsPath):
     """Creates a new WebdriverPool instance with two empty queues.
- 
+
     @type  storeUri: string
     @param storeUri: the phantomjsPath
     """

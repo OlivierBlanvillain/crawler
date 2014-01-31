@@ -1,4 +1,4 @@
-"""CommentItem"""
+"""Blog comment Item"""
 
 from bibcrawl.model.objectitem import ObjectItem
 from scrapy.item import Field

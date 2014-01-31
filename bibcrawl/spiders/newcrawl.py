@@ -1,4 +1,4 @@
-"""NewCrawl"""
+"""Entirely crawls a new blog"""
 
 from bibcrawl.model.postitem import PostItem
 from bibcrawl.utils.priorityheuristic import PriorityHeuristic
@@ -10,11 +10,12 @@ from bibcrawl.spiders.rsscrawl import RssCrawl
 from twisted.internet import reactor
 
 class NewCrawl(RssCrawl):
+  """newcrawl"""
   name = "newcrawl"
-  
+
   def __init__(self, startat, maxdownloads=None):
     """Instantiate a newcrawl spider for a given start url maxdownloads.
-  
+
     @type  startat: string
     @param startat: the starting point of the crawl
     @type  maxdownloads: integer

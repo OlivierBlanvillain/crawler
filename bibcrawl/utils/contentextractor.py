@@ -1,4 +1,4 @@
-"""ContentExtractor"""
+"""Extracts the content of blog posts using a RSS feed"""
 
 from bibcrawl.utils.ohpython import *
 from bibcrawl.utils.parsing import parseHTML, extractFirst

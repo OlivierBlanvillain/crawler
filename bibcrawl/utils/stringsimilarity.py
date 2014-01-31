@@ -1,4 +1,4 @@
-"""Implements string similarity."""
+"""Dice's coefficient similarity function"""
 
 from bibcrawl.utils.ohpython import *
 from lxml.html.clean import Cleaner
@@ -71,21 +71,3 @@ def stringSimilarity(string1, string2, bufferDict=None):
   @return: the similarity of the inputs
   """
   return dicesCoeffSimilarity(string1, string2, bufferDict)
-  # from difflib import SequenceMatcher
-  # from itertools import imap
-
-  ## Google DMP:
-  # from diff_match_patch import diff_match_patch
-  # dmp = diff_match_patch()
-  # dmp.Diff_Timeout = 0.1
-  # diffs = dmp.diff_main(cleanTags(string1), cleanTags(string2))
-  # dmp.diff_cleanupEfficiency(diffs)
-  # return dmp.diff_levenshtein(diffs)
-
-  ## Dice's coefficient similarity
-
-  ## SequenceMatcher
-  # sm = SequenceMatcher(cleanTags(string1), cleanTags(string2))
-  # blocks = sm.get_matching_blocks()
-  # score = sum(imap(lambda _: _.size * _.size, blocks))
-  # return score

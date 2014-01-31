@@ -1,4 +1,4 @@
-"""RenderJavascript"""
+"""Renders the original page with PhantomJS and takes a screenshot"""
 
 # Access files downloaded by PhantomJS is WIP:
 # https://github.com/ariya/phantomjs/pull/11484
@@ -18,7 +18,7 @@
 
 from bibcrawl.model.commentitem import CommentItem
 from bibcrawl.pipelines.files import FSFilesStore
-from bibcrawl.pipelines.webdriverpool import WebdriverPool
+from bibcrawl.utils.webdriverpool import WebdriverPool
 from bibcrawl.utils.ohpython import *
 from bibcrawl.utils.parsing import xPathWithClass, parseHTML, extractFirst
 from collections import OrderedDict

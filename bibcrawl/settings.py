@@ -1,5 +1,7 @@
+"""Scrapy settings"""
+
 # See http://doc.scrapy.org/en/0.18/topics/settings.html#topics-settings-ref
-# for the complete list of scrapy 
+# for the complete list of scrapy
 
 ITEM_PIPELINES = {
   'bibcrawl.pipelines.renderjavascript.RenderJavascript': 300,

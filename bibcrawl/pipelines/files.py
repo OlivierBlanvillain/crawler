@@ -1,9 +1,7 @@
-"""Files Pipeline
+"""Files pipeline back-ported to python 2.6"""
 
-In the near future, this file will be part of the main Scrapy distribution. In
-the meantime, here it is, copy pasted from scrapy/master.
-https://github.com/scrapy/scrapy/blob/master/scrapy/contrib/pipeline/files.py
-"""
+# Copy pasted from
+# https://github.com/scrapy/scrapy/blob/master/scrapy/contrib/pipeline/files.py
 
 import hashlib
 import os
