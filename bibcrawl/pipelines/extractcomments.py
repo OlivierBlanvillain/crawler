@@ -4,7 +4,7 @@ from bibcrawl.model.commentitem import CommentItem
 from bibcrawl.utils.ohpython import *
 from bibcrawl.utils.parsing import nodeToString, nodeQueries
 from bibcrawl.utils.stringsimilarity import stringSimilarity
-from feedparser import parse as feedparse
+import feedparser
 
 class ExtractComments(object):
   """Extracts comments using comment feed."""
@@ -21,20 +21,21 @@ class ExtractComments(object):
     @rtype: bibcrawl.model.postitem.PostItem
     @return: the processed item
     """
-    comments = commentsFromFeed(feedparse(first(item.commentFeedUrls)))
+    if item:
+      item.comments = commentsFromFeed(feedparser.parse(first(item.commentFeedUrls)))
 
-    # try:
-    #   comments = commentsFromFeed(item.commentFeed)
-    #   spider.logInfo("LOOOOOOOOOOOOOOOOOOOOOOOOOOL")
-    # except:
-    #   spider.logInfo("FUUUUUUUUUUUUUUUUUUUUUUUUUUUU")
-    # if "commentFeed" in item:
-    #  # and not "comments" in item:
-    #   comments = commentsFromFeed(item.commentFeed)
-    #   self.logInfo("LOOOOOOOOOOOOOOOOOOOOOOOOOOL")
-    #   # item.comments = (
-      #   commentsHtmlExtraction(comments, item.parsedBodies, spider.logDebug)
-      #   if feedOverflow(item.commentFeed) else comments)
+      # try:
+      #   comments = commentsFromFeed(item.commentFeed)
+      #   spider.logInfo("LOOOOOOOOOOOOOOOOOOOOOOOOOOL")
+      # except:
+      #   spider.logInfo("FUUUUUUUUUUUUUUUUUUUUUUUUUUUU")
+      # if "commentFeed" in item:
+      #  # and not "comments" in item:
+      #   comments = commentsFromFeed(item.commentFeed)
+      #   self.logInfo("LOOOOOOOOOOOOOOOOOOOOOOOOOOL")
+      #   # item.comments = (
+        #   commentsHtmlExtraction(comments, item.parsedBodies, spider.logDebug)
+        #   if feedOverflow(item.commentFeed) else comments)
     return item
 
 

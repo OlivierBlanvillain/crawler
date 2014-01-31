@@ -1,6 +1,9 @@
 """Saves the item in the back-end"""
 
+from bibcrawl.utils.ohpython import *
 from bibcrawl.utils.stringsimilarity import cleanTags
+import feedparser
+from bibcrawl.model.commentitem import CommentItem
 
 class BackendPropagate(object):
   """Saves the item as Invenio records"""
@@ -15,11 +18,12 @@ class BackendPropagate(object):
     @rtype: bibcrawl.model.postitem.PostItem
     @return: the processed item
     """
+    item.comments = commentsFromFeed(feedparser.parse(first(item.commentFeedUrls)))
+
     item.title = cleanTags(item.title)
     item.author = cleanTags(item.author)
     spider.logInfo((
       """Completed %(url)s %(title)s
-        %(comments)s
         {0}
       """ % item).format(len(item.comments)))
 # (      with file_urls %(file_urls)s
@@ -36,3 +40,28 @@ class BackendPropagate(object):
     # any/share_save_171_16.png', 'path':
     # 'full/2c2e7f412bc1c9a9e7c7e11980f404ba9ae4452e.png', 'checksum':
     # '6d2d5ad6a6ad4a1eac14c0179a8561aa'}]
+
+
+def commentsFromFeed(feed):
+  """Extracts all the comments contained in a feed.
+
+    >>> from feedparser import parse
+    >>> comments = commentsFromFeed((parse(readtestdata("korben.info/hadopi"
+    ...   "-faut-il-vraiment-arreter-de-telecharger.html/feed"))))
+    >>> len(comments)
+    30
+
+  @type  feed: feedparser.FeedParserDict
+  @param feed: the feed to process
+  @rtype: tuple of CommentItem
+  @return: the extracted comments
+  """
+  return tuple(imap(
+    lambda _: CommentItem(
+      content=_.content[0].value,
+      author=None,
+      # author=_.author,
+      published=_.published,
+      avatarUrl=None,
+      parent=None),
+    feed.entries))
