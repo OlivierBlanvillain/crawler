@@ -6,7 +6,7 @@
 ITEM_PIPELINES = {
   'bibcrawl.pipelines.renderjavascript.RenderJavascript': 300,
   'bibcrawl.pipelines.processhtml.ProcessHtml': 400,
-  'bibcrawl.pipelines.downloadimages.DownloadImages': 500,
+  # 'bibcrawl.pipelines.downloadimages.DownloadImages': 500,
   # 'bibcrawl.pipelines.downloadfeeds.DownloadFeeds': 600,
   'bibcrawl.pipelines.extractcomments.ExtractComments': 501,
   'bibcrawl.pipelines.backendpropagate.BackendPropagate': 800,
